@@ -1,3 +1,3 @@
 export const environment = {
-  baseURL: 'https://localhost:44388/api/',
+  baseURL: 'https://e-com-app-xfqq.onrender.com/api/',
 };
