@@ -7,6 +7,10 @@ import { authGuard } from './guard/auth.guard';
 import { AboutComponent } from './about/about.component';
 import { BestSellersComponent } from './best-sellers/best-sellers.component';
 import { FavoriteComponent } from './favorite/favorite.component';
+import { DeliveryComponent } from './checkout/delivery/delivery.component';
+import { PrivacyPolicyComponent } from './home/privacy-policy/privacy-policy.component';
+import { TermsConditionComponent } from './home/terms-condition/terms-condition.component';
+import { DeliveryInfoComponent } from './home/delivery-info/delivery-info.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -39,7 +43,14 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent },
 
   { path: 'best-sellers', component: BestSellersComponent },
+
   { path: 'favorite', component: FavoriteComponent, canActivate:[authGuard] },
+
+  {path: 'delivery-info', component:DeliveryInfoComponent},
+
+  {path:'privacy-policy',component:PrivacyPolicyComponent},
+
+  {path:'terms-conditions',component:TermsConditionComponent},
 
 
   { path: '**', redirectTo: '', pathMatch: 'full' },

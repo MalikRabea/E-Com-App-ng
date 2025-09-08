@@ -5,7 +5,7 @@
       <!-- الصورة الرئيسية -->
       <img 
         *ngIf="product.photos?.length > 0"
-        [src]="'https://localhost:44388/' + product.photos[0].imageName"
+        [src]="'https://e-com-app-xfqq.onrender.com/' + product.photos[0].imageName"
         [alt]="product.name"
         class="card-img-top main-img"
       />
@@ -13,7 +13,7 @@
       <!-- صور مصغرة -->
       <div class="thumbnails d-flex justify-content-center gap-2 mt-2" *ngIf="product.photos?.length > 1">
         <img *ngFor="let photo of product.photos" 
-             [src]="'https://localhost:44388/' + photo.imageName"
+             [src]="'https://e-com-app-xfqq.onrender.com/' + photo.imageName"
              class="thumbnail-img" />
       </div>
 

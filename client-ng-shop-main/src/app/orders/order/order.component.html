@@ -24,7 +24,7 @@
                   <img
                     (click)="OpenModal(item.orderItems)"
                     class="order-image"
-                    src="https://localhost:44388/{{ getFirstImageOrderItem(item.orderItems) }}"
+                    src="https://e-com-app-xfqq.onrender.com/{{ getFirstImageOrderItem(item.orderItems) }}"
                     alt="Product"
                   />
                   @if (item.orderItems.length > 1) {
@@ -74,7 +74,7 @@
       <div class="modal-body text-center">
         @for (item of UrlImageModal; track $index) {
         <img
-          src="https://localhost:44388/{{ item }}"
+          src="https://e-com-app-xfqq.onrender.com/{{ item }}"
           class="order-images mb-3"
           alt="Product"
         />

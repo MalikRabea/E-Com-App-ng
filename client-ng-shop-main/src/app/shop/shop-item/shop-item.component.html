@@ -1,7 +1,7 @@
 <div class="card product-card h-100 shadow-sm">
   <div class="image-wrapper position-relative">
     <img
-      src="https://localhost:44388/{{ Product.photos[0]?.imageName }}"
+      src="https://e-com-app-xfqq.onrender.com/{{ Product.photos[0]?.imageName }}"
       class="card-img-top main-img"
       alt="{{ Product.name }}"
     />
@@ -14,7 +14,7 @@
     <!-- Thumbnails أسفل الصورة الرئيسية -->
     <div class="thumbnails d-flex gap-2 mt-2">
       <img *ngFor="let item of Product.photos" 
-           [src]="'https://localhost:44388/' + item.imageName"
+           [src]="'https://e-com-app-xfqq.onrender.com/' + item.imageName"
            alt="{{ Product.name }}"
            class="thumbnail-img"/>
     </div>

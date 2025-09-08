@@ -1,0 +1,55 @@
+.delivery-hero {
+  background: url('https://sccgltd.com/wp-content/uploads/2021/04/rsz_adobestock_389649537_editorial_use_only.jpg') center/cover no-repeat;
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  .overlay {
+    background: rgba(0, 0, 0, 0.55);
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+    color: white;
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 800;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-top: 1rem;
+    }
+  }
+}
+
+.delivery-content {
+  display: grid;
+  gap: 2rem;
+  margin: 4rem auto;
+
+  .card {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 0.8rem;
+      color: #111827;
+    }
+
+    p {
+      color: #4b5563;
+      line-height: 1.6;
+    }
+  }
+}

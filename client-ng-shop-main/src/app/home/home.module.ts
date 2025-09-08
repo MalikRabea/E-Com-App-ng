@@ -4,14 +4,20 @@ import { HomeComponent } from './home.component';
 import { NgParticlesModule } from 'ng-particles';
 import { Router } from 'express';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms'; // ← أضف هذا
+import { FormsModule } from '@angular/forms';
+import { DeliveryInfoComponent } from './delivery-info/delivery-info.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { TermsConditionComponent } from './terms-condition/terms-condition.component'; // ← أضف هذا
 
 
 
 
 @NgModule({
   declarations: [
-    HomeComponent
+    HomeComponent,
+    DeliveryInfoComponent,
+    PrivacyPolicyComponent,
+    TermsConditionComponent
   ],
   imports: [
     CommonModule,
