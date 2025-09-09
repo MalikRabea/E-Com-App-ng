@@ -14,6 +14,8 @@
     <!-- Thumbnails أسفل الصورة الرئيسية -->
     <div class="thumbnails d-flex gap-2 mt-2">
       <img *ngFor="let item of Product.photos" 
+                    (click)="ReplaceImage(item.imageName)"
+
            [src]="'https://e-com-app-xfqq.onrender.com/' + item.imageName"
            alt="{{ Product.name }}"
            class="thumbnail-img"/>
