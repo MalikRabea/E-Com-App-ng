@@ -30,11 +30,13 @@ export class ShopItemComponent implements OnInit {
   }
 
   getArrayofRating(rateOfnumber: number): number[] {
-    return Array(rateOfnumber).fill(0).map((x, i) => i);
+    return Array(rateOfnumber)
+      .fill(0)
+      .map((x, i) => i);
   }
 
   addToFavorites(productId: number) {
-    const username = 'MRX_17'; // أو خذه من AuthService
+    const username = 'MRX_17'; // لاحقاً خذه من AuthService
     this.favoriteService.addToFavorites(productId, username).subscribe({
       next: () => {
         this.favoriteService.incrementFavoriteCount();
@@ -49,8 +51,11 @@ export class ShopItemComponent implements OnInit {
       .subscribe({
         next: (value: IProduct) => {
           this.Product = value;
-          this.MainImage = this.Product.photos[0].imageName; // أول صورة
-          console.log(this.Product);
+          if (this.Product.photos && this.Product.photos.length > 0) {
+            this.MainImage = this.Product.photos[0].imageName;
+          } else {
+            this.MainImage = 'Images/placeholder.png'; // صورة افتراضية
+          }
         },
       });
   }
