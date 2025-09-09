@@ -54,7 +54,7 @@ export class ShopItemComponent implements OnInit {
           if (this.Product.photos && this.Product.photos.length > 0) {
             this.MainImage = this.Product.photos[0].imageName;
           } else {
-            this.MainImage = 'Images/placeholder.png'; // صورة افتراضية
+            this.MainImage = 'assets/placeholder.png'; // صورة افتراضية
           }
         },
       });

@@ -2,10 +2,9 @@
   <div class="image-wrapper position-relative">
     <!-- الصورة الرئيسية -->
     <img
-      *ngIf="MainImage"
-      [src]="'https://e-com-app-xfqq.onrender.com/' + MainImage"
+      [src]="MainImage ? 'https://e-com-app-xfqq.onrender.com/' + MainImage : 'assets/placeholder.png'"
       class="card-img-top main-img"
-      alt="{{ Product.name }}"
+      alt="{{ Product?.name }}"
     />
 
     <!-- أيقونة المفضلة -->
