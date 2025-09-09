@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { IProduct } from '../../shared/Models/Product';
 import { BasketService } from '../../basket/basket.service';
 import { FavoriteService } from '../../favorite/favorite.service';
@@ -11,9 +11,12 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './shop-item.component.html',
   styleUrl: './shop-item.component.scss',
 })
-export class ShopItemComponent {
+export class ShopItemComponent implements OnInit {
   constructor(private _service: BasketService ,private favoriteService: FavoriteService,private shopService: ShopService,private route: ActivatedRoute,) {}
   @Input() Product: IProduct;
+  ngOnInit(): void {
+    this.loadProduct();
+  }
   SetBasketValue() {
     this._service.addItemToBasket(this.Product);
   }
