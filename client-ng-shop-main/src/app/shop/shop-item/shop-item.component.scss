@@ -13,8 +13,10 @@
 
     .main-img {
       width: 100%;
-      height: 200px;
-      object-fit: cover;
+      height: 280px; // أطول شوي عشان الصورة ما تنقص
+      object-fit: contain; // تبين الصورة كاملة بدون قص
+      background: #f8f8f8; // خلفية فاتحة للصور الشفافة
+      border-radius: 0.5rem;
     }
 
     .favorite-btn {
@@ -46,18 +48,25 @@
       display: flex;
       gap: 0.3rem;
       margin-top: 0.5rem;
+      justify-content: center;
+      flex-wrap: wrap; // يخليهم صفين لو الشاشة صغيرة
 
       .thumbnail-img {
-        width: 40px;
-        height: 40px;
+        width: 50px;
+        height: 50px;
         object-fit: cover;
-        border: 1px solid #ddd;
+        border: 2px solid transparent;
         border-radius: 0.25rem;
         cursor: pointer;
-        transition: transform 0.2s;
+        transition: transform 0.2s, border-color 0.2s;
 
         &:hover {
           transform: scale(1.1);
+          border-color: #aaa;
+        }
+
+        &.active {
+          border-color: #000; // إطار أسود يبين الصورة المحددة
         }
       }
     }
