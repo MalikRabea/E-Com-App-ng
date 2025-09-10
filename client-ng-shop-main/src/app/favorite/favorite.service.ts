@@ -14,16 +14,18 @@ export class FavoriteService {
 
   constructor(private http: HttpClient) {}
 
-  getFavorites(username: string): Observable<Product[]> {
-  return this.http.get<Product[]>(`${this.apiUrl+"Favorites"}?username=${username}`, { withCredentials: true });
+addToFavorites(productId: number): Observable<any> {
+  return this.http.post(`${this.apiUrl}Favorites/${productId}`, {}, { withCredentials: true });
 }
-  addToFavorites(productId: number, username: string): Observable<any> {
-    return this.http.post(`${this.apiUrl+"Favorites"}/${productId}?username=${username}`, {}, { withCredentials: true });
-  }
 
-  removeFromFavorites(productId: number, username: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl+"Favorites"}/${productId}?username=${username}`, { withCredentials: true });
-  }
+getFavorites(): Observable<Product[]> {
+  return this.http.get<Product[]>(`${this.apiUrl}Favorites`, { withCredentials: true });
+}
+
+removeFromFavorites(productId: number): Observable<any> {
+  return this.http.delete(`${this.apiUrl}Favorites/${productId}`, { withCredentials: true });
+}
+
 
    setFavoriteCount(count: number) {
     this.favoriteCount.next(count);

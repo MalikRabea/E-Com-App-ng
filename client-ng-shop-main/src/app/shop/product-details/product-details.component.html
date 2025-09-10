@@ -66,11 +66,12 @@
         </div>
 
         <div class="buttons d-flex my-5">
+
           <div class="block pt-2">
-            <a href="#" class="shadow btn custom-btn">
+            <button (click)="addToFavorites(product.id)"  class="shadow btn custom-btn">
               <i class="fa fa-heart"></i>
-              Wishlist</a
-            >
+              Wishlist
+              </button>
           </div>
           <div class="block pt-2">
             <button (click)="AddToBasket()" class="shadow btn custom-btn">

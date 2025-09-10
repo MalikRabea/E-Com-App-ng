@@ -1,9 +1,7 @@
-// favorite.component.ts
 import { Component, OnInit } from '@angular/core';
 import { FavoriteService } from './favorite.service';
 import { BasketService } from '../basket/basket.service';
 import { Product } from '../shared/Models/Favorites';
-import { CoreService } from '../core/core.service';
 
 @Component({
   selector: 'app-favorite',
@@ -12,29 +10,21 @@ import { CoreService } from '../core/core.service';
 })
 export class FavoriteComponent implements OnInit {
   favorites: Product[] = [];
-  username: string | null = null;
 
   constructor(
     private favoriteService: FavoriteService,
-    private basketService: BasketService,
-    private coreService: CoreService
+    private basketService: BasketService
   ) {}
 
   ngOnInit(): void {
-    // الاشتراك على اسم المستخدم من CoreService
-    this.coreService.userName$.subscribe(username => {
-      this.username = username;
-      if (!username) return;
-
-      this.loadFavorites(username);
-    });
+    this.loadFavorites();
   }
 
-  loadFavorites(username: string) {
-    this.favoriteService.getFavorites(username).subscribe({
+  loadFavorites() {
+    this.favoriteService.getFavorites().subscribe({
       next: (data: Product[]) => {
         this.favorites = data;
-        this.favoriteService.setFavoriteCount(this.favorites.length); // تحديث badge
+        this.favoriteService.setFavoriteCount(this.favorites.length);
         console.log('Favorites loaded:', this.favorites);
       },
       error: (err) => console.error(err)
@@ -42,20 +32,14 @@ export class FavoriteComponent implements OnInit {
   }
 
   removeFavorite(productId: number) {
-    if (!this.username) return;
-
-    this.favoriteService.removeFromFavorites(productId, this.username).subscribe({
+    this.favoriteService.removeFromFavorites(productId).subscribe({
       next: () => {
         this.favorites = this.favorites.filter(p => p.id !== productId);
-        this.favoriteService.setFavoriteCount(this.favorites.length); // تحديث badge
+        this.favoriteService.setFavoriteCount(this.favorites.length);
       },
       error: (err) => console.error(err)
     });
   }
-
-  // addToBasket(product: Product) {
-  //   this.basketService.addItemToBasket(product);
-  // }
 
   getArrayofRating(rate: number): number[] {
     return Array(rate).fill(0).map((_, i) => i);

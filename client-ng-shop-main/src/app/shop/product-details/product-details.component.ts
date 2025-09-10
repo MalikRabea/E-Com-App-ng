@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BasketService } from '../../basket/basket.service';
 import { IReview } from '../../shared/Models/review';
+import { FavoriteService } from '../../favorite/favorite.service';
 
 @Component({
   selector: 'app-product-details',
@@ -16,7 +17,9 @@ export class ProductDetailsComponent implements OnInit {
     private shopService: ShopService,
     private route: ActivatedRoute,
     private toast:ToastrService,
-    private basketService:BasketService
+    private basketService:BasketService,
+    private favoriteService: FavoriteService
+    
   ) {}
   reviews:IReview[]=[]
   qunatity: number = 1;
@@ -77,5 +80,13 @@ export class ProductDetailsComponent implements OnInit {
       },
     })
   }
+  addToFavorites(productId: number) {
+  this.favoriteService.addToFavorites(productId).subscribe({
+    next: () => {
+      this.favoriteService.incrementFavoriteCount();
+    },
+    error: (err) => console.error(err)
+  });
+}
 }
 

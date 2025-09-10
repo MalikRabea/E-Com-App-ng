@@ -47,13 +47,12 @@ export class ShopItemComponent implements OnInit, OnChanges {
     return Array(rateOfnumber).fill(0).map((x, i) => i);
   }
 
-  addToFavorites(productId: number) {
-    const username = 'MRX_17';
-    this.favoriteService.addToFavorites(productId, username).subscribe({
-      next: () => {
-        this.favoriteService.incrementFavoriteCount();
-      },
-      error: (err) => console.error(err)
-    });
-  }
+ addToFavorites(productId: number) {
+  this.favoriteService.addToFavorites(productId).subscribe({
+    next: () => {
+      this.favoriteService.incrementFavoriteCount();
+    },
+    error: (err) => console.error(err)
+  });
+}
 }
