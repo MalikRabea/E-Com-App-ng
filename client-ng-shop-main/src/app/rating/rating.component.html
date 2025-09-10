@@ -1,32 +1,19 @@
-<div class="rating-container">
-  <!-- تفاصيل المنتج -->
-  <div class="product-details">
-    <img [src]="mainImage" [alt]="product.name" class="main-image" />
+<div class="rating-box">
+  <h5>قيم المنتج: {{ product.name }}</h5>
 
-    <div class="thumbnails">
-      <img *ngFor="let photo of product.photos"
-           [src]="'https://e-com-app-xfqq.onrender.com/' + photo.imageName"
-           (click)="changeMainImage(photo.imageName)" />
-    </div>
-
-    <h3>{{ product.name }}</h3>
-    <p>{{ product.description }}</p>
-    <p><strong>السعر:</strong> {{ product.newPrice && product.oldPrice| currency:'USD' }}</p>
+  <div class="stars">
+    <i *ngFor="let s of [1,2,3,4,5]" 
+       class="fa"
+       [ngClass]="s <= stars ? 'fa-star text-warning' : 'fa-star-o'"
+       (click)="stars = s"></i>
   </div>
 
-  <hr />
+  <textarea [(ngModel)]="content" placeholder="اكتب تعليقك"></textarea>
+  <button class="btn btn-success mt-2" (click)="submitRating()">إرسال التقييم</button>
 
-  <!-- فورم التقييم -->
-  <div class="rating-form">
-    <h3>قيّم المنتج ⭐</h3>
-
-    <label>عدد النجوم:</label>
-    <select [(ngModel)]="newRating.stars">
-      <option *ngFor="let i of [1,2,3,4,5]" [value]="i">{{i}}</option>
-    </select>
-
-    <textarea [(ngModel)]="newRating.content" placeholder="اكتب تعليقك..."></textarea>
-
-    <button (click)="submitRating()">إرسال التقييم</button>
+  <hr>
+  <h6>آراء العملاء:</h6>
+  <div *ngFor="let r of ratings" class="mb-2">
+    ⭐ {{ r.stars }} - {{ r.content }}
   </div>
 </div>

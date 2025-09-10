@@ -1,7 +1,8 @@
+// src/app/rating/rating.component.ts
 import { Component, Input, OnInit } from '@angular/core';
-import { IProduct } from '../shared/Models/Product';
-import { IRating } from '../shared/Models/rating';
 import { RatingService } from './rating.service';
+import { IRating } from '../shared/Models/rating';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-rating',
@@ -9,41 +10,46 @@ import { RatingService } from './rating.service';
   styleUrls: ['./rating.component.scss']
 })
 export class RatingComponent implements OnInit {
-  @Input() product: IProduct; // نجيب المنتج من الأب (مثلاً checkout-success)
-  mainImage: string;
-  newRating: IRating = { productId: 0, stars: 0, content: '' };
+  @Input() product: any;
+  ratings: IRating[] = [];
+  stars = 0;
+  content = '';
 
-  constructor(private ratingService: RatingService) {}
+  constructor(private ratingService: RatingService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
-    if (this.product) {
-      this.newRating.productId = this.product.id;
-      this.setDefaultImage();
+    if (this.product?.id) {
+      this.loadRatings();
     }
   }
 
-  private setDefaultImage() {
-    if (this.product?.photos && this.product.photos.length > 0) {
-      this.mainImage = 'https://e-com-app-xfqq.onrender.com/' + this.product.photos[0].imageName;
-    } else {
-      this.mainImage = 'assets/no-image.png';
-    }
-  }
-
-  changeMainImage(img: string) {
-    this.mainImage = 'https://e-com-app-xfqq.onrender.com/' + img;
+  loadRatings() {
+    this.ratingService.getRatings(this.product.id).subscribe({
+      next: (res) => this.ratings = res,
+      error: (err) => console.error(err)
+    });
   }
 
   submitRating() {
-    if (!this.newRating.stars) return;
+    if (!this.stars) {
+      this.toastr.warning('اختر عدد النجوم أولاً');
+      return;
+    }
 
-    this.ratingService.addRating(this.newRating).subscribe({
+    const newRating: IRating = {
+      productId: this.product.id,
+      stars: this.stars,
+      content: this.content   // بدل comment
+    };
+
+    this.ratingService.addRating(newRating).subscribe({
       next: () => {
-        alert('✅ شكراً على تقييمك!');
-        this.newRating.stars = 0;
-        this.newRating.content = '';
+        this.toastr.success('تم إضافة تقييمك 👌');
+        this.stars = 0;
+        this.content = '';
+        this.loadRatings();
       },
-      error: (err) => console.error(err)
+      error: () => this.toastr.error('حدث خطأ أثناء إضافة التقييم')
     });
   }
 }

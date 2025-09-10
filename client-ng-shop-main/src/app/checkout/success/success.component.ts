@@ -1,21 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IProduct } from '../../shared/Models/Product';
+import { IOrder } from '../../shared/Models/Order';
+import { OrdersService } from '../../orders/orders.service';
 
 @Component({
   selector: 'app-success',
   templateUrl: './success.component.html',
-  styleUrl: './success.component.scss'
+  styleUrls: ['./success.component.scss']
 })
 export class SuccessComponent implements OnInit {
-  products: IProduct[] = [];
-  constructor(private route:ActivatedRoute) { }
+  orderId: number;
+  order: IOrder | null = null;
+
+  constructor(
+    private route: ActivatedRoute,
+    private ordersService: OrdersService
+  ) {}
+
   ngOnInit(): void {
-    this.route.queryParams.subscribe(param=>{
-      this.orderId=param['orderId'];
-      this.orderId = history.state.orderId || null;
-    this.products = history.state.products || [];
-    })
+    this.orderId = Number(this.route.snapshot.queryParamMap.get('orderId'));
+
+    if (this.orderId) {
+      this.ordersService.getCurrentOrderForUser(this.orderId).subscribe({
+        next: (order) => {
+          this.order = order;
+        },
+        error: (err) => console.error(err)
+      });
+    }
   }
-  orderId:number=0;
 }
