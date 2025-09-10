@@ -14,8 +14,10 @@ export class BestSellersComponent implements OnInit {
   MainImages: { [key: number]: string } = {}; // لتخزين أول صورة لكل منتج
 
   loading: boolean = false;
-  currentSlide: number = 0;
-slideWidth: number = 300; // Adjust according to card width
+    currentSlide = 0;
+
+ slideWidth = 240; // عرض كل كارد + margin
+  visibleSlides = 5; // عدد الكروت الظاهرة في نفس الوقت
 
   constructor(
     private shopService: ShopService,
@@ -25,6 +27,8 @@ slideWidth: number = 300; // Adjust according to card width
 
   ngOnInit(): void {
     this.loadBestSellers();
+      this.updateSlideWidth();
+    window.addEventListener('resize', () => this.updateSlideWidth());
   }
 
     loadBestSellers() {
@@ -60,15 +64,22 @@ slideWidth: number = 300; // Adjust according to card width
     this.basketService.addItemToBasket(product, 1);
     this.toast.success('Item added to basket', 'SUCCESS');
   }
-  prevSlide() {
-  if (this.currentSlide > 0) {
-    this.currentSlide--;
-  }
-}
+   updateSlideWidth() {
+    const containerWidth = document.querySelector('.carousel-wrapper')?.clientWidth || 0;
+    if (containerWidth < 576) this.visibleSlides = 1;
+    else if (containerWidth < 768) this.visibleSlides = 2;
+    else if (containerWidth < 992) this.visibleSlides = 3;
+    else if (containerWidth < 1200) this.visibleSlides = 4;
+    else this.visibleSlides = 5;
 
-nextSlide() {
-  if (this.currentSlide < this.bestSellers.length - 1) {
-    this.currentSlide++;
+    this.slideWidth = containerWidth / this.visibleSlides;
   }
-}
+
+  nextSlide() {
+    if (this.currentSlide < this.bestSellers.length - this.visibleSlides) this.currentSlide++;
+  }
+
+  prevSlide() {
+    if (this.currentSlide > 0) this.currentSlide--;
+  }
 }

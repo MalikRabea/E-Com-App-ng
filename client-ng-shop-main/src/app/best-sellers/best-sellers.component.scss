@@ -1,78 +1,63 @@
-.best-sellers-carousel-container {
-  .carousel-wrapper {
-    position: relative;
-    overflow: hidden;
+.carousel-wrapper {
+  position: relative;
+  overflow: hidden;
 
-    .carousel-track {
-      display: flex;
-      transition: transform 0.5s ease-in-out;
-      gap: 1rem;
+  .carousel-track {
+    display: flex;
+    transition: transform 0.5s ease;
+    will-change: transform;
+  }
 
-      .carousel-card {
-        min-width: 300px; // matches slideWidth
-        flex-shrink: 0;
-      }
-    }
+  .carousel-card {
+    flex: 0 0 auto;
+    width: 240px;
+    margin: 0 10px;
+    transition: transform 0.3s;
 
-    .carousel-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      border: none;
-      background-color: rgba(0,0,0,0.5);
-      color: #fff;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-      transition: background-color 0.3s;
-
-      &:hover {
-        background-color: rgba(0,0,0,0.8);
-      }
-
-      &.prev {
-        left: 10px;
-      }
-
-      &.next {
-        right: 10px;
-      }
+    &:hover {
+      transform: translateY(-5px);
     }
 
     .card {
-      transition: transform 0.3s, box-shadow 0.3s;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      background: #fff;
 
-      &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
-      }
-
-      .main-img {
+      .image-wrapper img {
+        width: 100%;
         height: 200px;
         object-fit: cover;
         transition: transform 0.3s;
       }
 
-      &:hover .main-img {
+      &:hover .image-wrapper img {
         transform: scale(1.05);
       }
-
-      .hover-scale {
-        transition: transform 0.2s;
-        &:hover {
-          transform: scale(1.05);
-        }
-      }
-
-      .sold-badge {
-        font-size: 0.8rem;
-        border-bottom-right-radius: 5px;
-      }
     }
+  }
+
+  .carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.3s;
+
+    &:hover {
+      background: rgba(0,0,0,0.8);
+    }
+
+    &.prev { left: 10px; }
+    &.next { right: 10px; }
   }
 }
