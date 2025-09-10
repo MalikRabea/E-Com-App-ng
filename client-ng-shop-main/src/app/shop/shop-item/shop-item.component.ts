@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { IProduct } from '../../shared/Models/Product';
 import { BasketService } from '../../basket/basket.service';
 import { FavoriteService } from '../../favorite/favorite.service';
@@ -8,7 +8,7 @@ import { FavoriteService } from '../../favorite/favorite.service';
   templateUrl: './shop-item.component.html',
   styleUrls: ['./shop-item.component.scss']
 })
-export class ShopItemComponent implements OnInit {
+export class ShopItemComponent implements OnInit, OnChanges {
   @Input() Product: IProduct;
   mainImage: string;
 
@@ -18,6 +18,16 @@ export class ShopItemComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.setDefaultImage();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['Product'] && changes['Product'].currentValue) {
+      this.setDefaultImage();
+    }
+  }
+
+  private setDefaultImage() {
     if (this.Product?.photos && this.Product.photos.length > 0) {
       this.mainImage = 'https://e-com-app-xfqq.onrender.com/' + this.Product.photos[0].imageName;
     } else {
