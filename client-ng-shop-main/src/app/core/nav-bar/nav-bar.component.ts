@@ -45,7 +45,7 @@ export class NavBarComponent implements OnInit {
 
       if (username) {
         // جلب كل المفضلات وحساب العدد مباشرة
-        this.favoriteService.getFavorites(username).subscribe({
+        this.favoriteService.getFavorites().subscribe({
           next: (data) => {
             this.favoriteService.setFavoriteCount(data.length);
           },
