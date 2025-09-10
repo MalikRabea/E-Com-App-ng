@@ -40,13 +40,13 @@
         justify-content: center;
 
         @media (max-width: 1200px) {
-          flex: 0 0 calc((100% - 3rem) / 4); // 4 كروت
+          flex: 0 0 calc((100% - 3rem) / 4);
         }
         @media (max-width: 992px) {
-          flex: 0 0 calc((100% - 2rem) / 3); // 3 كروت
+          flex: 0 0 calc((100% - 2rem) / 3);
         }
         @media (max-width: 576px) {
-          flex: 0 0 calc((100% - 1rem) / 2); // 2 كروت
+          flex: 0 0 calc((100% - 1rem) / 2);
         }
 
         .product-card {
@@ -131,6 +131,7 @@
               margin-bottom: 0.75rem;
               i {
                 margin-right: 2px;
+
                 &.filled {
                   color: #ffb400;
                 }
