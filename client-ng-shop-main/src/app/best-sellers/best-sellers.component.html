@@ -1,39 +1,39 @@
-<div class="best-sellers-carousel-container" *ngIf="!loading; else loadingTpl">
-  <h2 class="section-title text-center mb-4">🔥 Best Sellers</h2>
+<div class="best-sellers-section" *ngIf="!loading; else loadingTpl">
+  <div class="section-header">
+    <h2>🔥 Best Sellers</h2>
+  </div>
 
-  <div class="carousel-wrapper">
-    <div class="carousel-track" [style.transform]="'translateX(-' + currentSlide * slideWidth + 'px)'">
-      <div class="carousel-card" *ngFor="let product of bestSellers">
-        <div class="card h-100 position-relative overflow-hidden">
-          <div class="card-img-container">
+  <div class="carousel">
+    <button class="carousel-btn prev" (click)="prevSlide()"><i class="fa fa-chevron-left"></i></button>
+
+    <div class="carousel-track">
+      <div class="carousel-item" *ngFor="let product of bestSellers">
+        <div class="product-card">
+          <div class="product-image-wrapper">
             <img
               [src]="'https://e-com-app-xfqq.onrender.com' + MainImages[product.id]"
               alt="{{ product.name }}"
-              class="card-img"
+              class="product-image"
             />
-            <span class="sold-badge">Sold: {{ product.soldCount }}</span>
+            <span class="badge sold">Sold: {{ product.soldCount }}</span>
           </div>
-
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title" title="{{ product.name }}">{{ product.name }}</h5>
-            <p class="card-text" title="{{ product.description }}">{{ product.description }}</p>
-
-            <p class="price mb-3">
+          <div class="product-details">
+            <h4 class="product-title" title="{{ product.name }}">{{ product.name }}</h4>
+            <p class="product-description" title="{{ product.description }}">{{ product.description }}</p>
+            <div class="price-wrapper">
               <span class="old-price">{{ product.oldPrice | currency }}</span>
               <span class="new-price">{{ product.newPrice | currency }}</span>
-            </p>
-
-            <div class="rating mb-3">
-              <i *ngFor="let star of [].constructor(product.rating || 0)" class="fa fa-star text-warning"></i>
-              <i *ngFor="let star of [].constructor(5 - (product.rating || 0))" class="fa fa-star text-secondary"></i>
             </div>
-
-            <div class="buttons mt-auto d-flex gap-2">
-              <button class="btn btn-cart">
-                <i class="fa fa-shopping-cart me-1"></i> Add to Cart
+            <div class="rating">
+              <i *ngFor="let star of [].constructor(product.rating || 0)" class="fa fa-star filled"></i>
+              <i *ngFor="let star of [].constructor(5 - (product.rating || 0))" class="fa fa-star empty"></i>
+            </div>
+            <div class="product-buttons">
+              <button class="btn add-cart">
+                <i class="fa fa-shopping-cart"></i> Add to Cart
               </button>
-              <button class="btn btn-details" [routerLink]="'/shop/product-details/' + product.id">
-                <i class="fa fa-info-circle me-1"></i> Details
+              <button class="btn details" [routerLink]="'/shop/product-details/' + product.id">
+                <i class="fa fa-info-circle"></i> Details
               </button>
             </div>
           </div>
@@ -41,13 +41,12 @@
       </div>
     </div>
 
-    <button class="carousel-btn prev" (click)="prevSlide()"><i class="fa fa-chevron-left"></i></button>
     <button class="carousel-btn next" (click)="nextSlide()"><i class="fa fa-chevron-right"></i></button>
   </div>
 </div>
 
 <ng-template #loadingTpl>
-  <div class="text-center py-5">
+  <div class="loading-wrapper">
     <div class="spinner-border text-primary" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
