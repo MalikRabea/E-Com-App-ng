@@ -14,13 +14,17 @@ import { credentialsInterceptor } from './core/Interceptor/credentials.intercept
 import { AboutComponent } from './about/about.component';
 import { BestSellersComponent } from './best-sellers/best-sellers.component';
 import { FavoriteComponent } from './favorite/favorite.component';
+import { RatingComponent } from './rating/rating.component';
+import { FormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     AboutComponent,
     BestSellersComponent,
-    FavoriteComponent
+    FavoriteComponent,
+    RatingComponent
   ],
   imports: [
     BrowserModule,
@@ -29,6 +33,7 @@ import { FavoriteComponent } from './favorite/favorite.component';
     HomeModule,
     RouterLink,
     NgxSpinnerModule,
+    FormsModule,
     ToastrModule.forRoot({
       closeButton: true,
       positionClass: 'toast-top-right',
