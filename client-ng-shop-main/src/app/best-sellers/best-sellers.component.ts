@@ -17,7 +17,6 @@ export class BestSellersComponent implements OnInit {
   currentSlide: number = 0;
 slideWidth: number = 300; // Adjust according to card width
 
-
   constructor(
     private shopService: ShopService,
     private basketService: BasketService,
@@ -61,20 +60,15 @@ slideWidth: number = 300; // Adjust according to card width
     this.basketService.addItemToBasket(product, 1);
     this.toast.success('Item added to basket', 'SUCCESS');
   }
+  prevSlide() {
+  if (this.currentSlide > 0) {
+    this.currentSlide--;
+  }
+}
 
 nextSlide() {
-  const track = document.querySelector('.carousel-track') as HTMLElement;
-  const itemWidth = (track.children[0] as HTMLElement).offsetWidth + 16; // 16px gap
-  const maxSlide = (track.children.length as number) - 5; // 5 كروت في اللابتوب
-  this.currentSlide = Math.min(this.currentSlide + 1, maxSlide);
-  track.style.transform = `translateX(-${this.currentSlide * itemWidth}px)`;
+  if (this.currentSlide < this.bestSellers.length - 1) {
+    this.currentSlide++;
+  }
 }
-
-prevSlide() {
-  const track = document.querySelector('.carousel-track') as HTMLElement;
-  const itemWidth = (track.children[0] as HTMLElement).offsetWidth + 16;
-  this.currentSlide = Math.max(this.currentSlide - 1, 0);
-}
- 
-
 }
