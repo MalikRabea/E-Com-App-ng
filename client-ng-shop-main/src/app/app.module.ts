@@ -24,7 +24,7 @@ import { FormsModule } from '@angular/forms';
     AboutComponent,
     BestSellersComponent,
     FavoriteComponent,
-    RatingComponent
+    
   ],
   imports: [
     BrowserModule,

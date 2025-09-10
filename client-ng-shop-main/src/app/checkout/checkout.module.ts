@@ -16,6 +16,8 @@ import {MatRadioModule} from '@angular/material/radio';
 import { PaymentComponent } from './payment/payment.component';
 import { SuccessComponent } from './success/success.component';
 import { CoreService } from '../core/core.service';
+import { RatingComponent } from '../rating/rating.component';
+import { RatingModule } from '../rating/rating.module';
 
 @NgModule({
   declarations: [
@@ -38,13 +40,17 @@ import { CoreService } from '../core/core.service';
     FormsModule,
     ReactiveFormsModule,
     MatRadioModule,
+    RatingModule
+    
+    
     
   ],
   exports:[
     StepperComponent,
     AddressComponent,
     DeliveryComponent,
-    PaymentComponent
+    PaymentComponent,
+    
   ]   
 })
 export class CheckoutModule { }
