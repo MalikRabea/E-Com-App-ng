@@ -17,7 +17,7 @@ export class BestSellersComponent implements OnInit {
     currentSlide = 0;
 
  slideWidth = 240; // عرض كل كارد + margin
-  visibleSlides = 5; // عدد الكروت الظاهرة في نفس الوقت
+visibleSlides = 5; // عدد الكروت الظاهرة في نفس الوقت
 
   constructor(
     private shopService: ShopService,
