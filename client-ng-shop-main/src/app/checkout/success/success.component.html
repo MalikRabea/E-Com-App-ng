@@ -1,39 +1,12 @@
-<div class="container mt-5 text-center">
-  <div>
-    <i class="fa fa-check-circle fa-5x" style="color: green;"></i>
-  </div>
-  <div>
-    <h2>Thank you, your order is Confirmed</h2>
-    <p class="mb-4">Your order will be shipped as soon as possible</p>
-    <button class="btn btn-outline-success"
-            routerLink="/orders/item" [queryParams]="{id:orderId}">
-      View Order
-    </button>
-  </div>
-
-  <hr />
-
-  <div *ngIf="order">
-    <h3>Rate Your Products</h3>
-    <div *ngFor="let item of order.orderItems" class="mb-4">
-
-      <!-- عرض تفاصيل المنتج -->
-      <div class="product-details">
-        <img [src]="'https://e-com-app-xfqq.onrender.com/' + item.mainImage"
-             [alt]="item.productName"
-             class="main-image" />
-        <h4>{{ item.productName }}</h4>
-        <p><strong>Price:</strong> {{ item.price | currency:'USD' }} x {{ item.quntity }}</p>
-      </div>
-
-      <!-- إدخال الريتنغ -->
-      <app-rating [product]="{
-        id: item.productItemId,
-        name: item.productName,
-        photos: [{ imageName: item.mainImage }]
-      }"></app-rating>
-
-      <hr />
+<div class="container mt-5">
+    <div>
+        <i class="fa fa-check-circle fa-5x" style="color: green;"></i>
     </div>
-  </div>
+    <div>
+        <h2>Thank you, your order is Confirmed</h2>
+        <p class="mb-4">Your order will shipping as soon as posible</p>
+        <button class="btn btn-outline-success"
+        routerLink="/orders/item" [queryParams]="{id:orderId}"
+        >View Order</button>
+    </div>
 </div>
