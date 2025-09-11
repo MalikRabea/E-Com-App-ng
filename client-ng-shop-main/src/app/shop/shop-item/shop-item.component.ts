@@ -43,9 +43,10 @@ export class ShopItemComponent implements OnInit, OnChanges {
     this._service.addItemToBasket(this.Product);
   }
 
-  getArrayofRating(rateOfnumber: number): number[] {
-    return Array(rateOfnumber).fill(0).map((x, i) => i);
-  }
+  getArrayofRating(rateOfnumber: number | undefined | null): number[] {
+  const safeNumber = Math.max(0, Math.floor(rateOfnumber || 0));
+  return Array.from({ length: safeNumber }, (_, i) => i);
+}
 
  addToFavorites(productId: number) {
   this.favoriteService.addToFavorites(productId).subscribe({
