@@ -16,10 +16,12 @@
               <span class="old-price">{{ product.oldPrice | currency }}</span>
               <span class="new-price">{{ product.newPrice | currency }}</span>
             </p>
-            <div class="rating">
-              <i *ngFor="let star of [].constructor(product.rating || 0)" class="fa fa-star filled"></i>
-              <i *ngFor="let star of [].constructor(8 - (product.rating || 0))" class="fa fa-star"></i>
-            </div>
+            <div class="rating mb-3">
+      <i
+        *ngFor="let star of getArrayofRating(product.rating)"
+        class="fa fa-star text-warning fs-6"
+      ></i>
+    </div>
             <div class="btn-group">
               <button class="btn add-cart">
                 <i class="fa fa-shopping-cart"></i> Add to Cart

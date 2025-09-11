@@ -56,7 +56,7 @@ visibleSlides = 5; // عدد الكروت الظاهرة في نفس الوقت
   }
   
 
-    getArrayofRating(rateOfnumber: number | undefined | null): number[] {
+ getArrayofRating(rateOfnumber: number | undefined | null): number[] {
   const safeNumber = Math.max(0, Math.floor(rateOfnumber || 0));
   return Array.from({ length: safeNumber }, (_, i) => i);
 }
