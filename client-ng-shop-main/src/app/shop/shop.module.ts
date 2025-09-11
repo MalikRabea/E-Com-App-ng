@@ -6,6 +6,8 @@ import { SharedModule } from '../shared/shared.module';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { ShopRoutingModule } from './shop-routing.module';
+import { FormsModule } from '@angular/forms';
+
 
 
 
@@ -21,6 +23,7 @@ import { ShopRoutingModule } from './shop-routing.module';
     CommonModule,
     SharedModule,
     NgxImageZoomModule,
+    FormsModule
   ],
   exports:[
    

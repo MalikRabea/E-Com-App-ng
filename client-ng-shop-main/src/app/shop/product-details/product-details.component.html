@@ -1,5 +1,6 @@
-<div class="container my-5">
+<div class="container my-5" *ngIf="product">
   <div class="row">
+    <!-- صور المنتج -->
     <div class="col-md-5">
       <div class="main-img">
         <lib-ngx-image-zoom
@@ -13,49 +14,44 @@
         ></lib-ngx-image-zoom>
 
         <div class="row my-3 previews">
-          @for (item of product.photos; track $index) {
-          <div class="col-md-3">
-            <img
-              (click)="ReplaceImage(item.imageName)"
-              class="w-100"
-              src="https://e-com-app-xfqq.onrender.com/{{ item.imageName }}"
-              alt="Sale"
-            />
-          </div>
+          @for (item of product?.photos; track $index) {
+            <div class="col-md-3">
+              <img
+                (click)="ReplaceImage(item.imageName)"
+                class="w-100"
+                src="https://e-com-app-xfqq.onrender.com/{{ item.imageName }}"
+                alt="Sale"
+              />
+            </div>
           }
         </div>
       </div>
     </div>
+
+    <!-- تفاصيل المنتج -->
     <div class="col-md-7">
       <div class="main-description px-2">
         <div class="category text-bold">
-          Category: {{ product.categoryName }}
+          Category: {{ product?.categoryName }}
         </div>
         <div class="product-title text-bold my-3">
-          {{ product.name }}
+          {{ product?.name }}
         </div>
 
         <div class="price-area my-4">
           <p class="old-price mb-1">
-            <del>{{ product.oldPrice | currency }}</del>
+            <del>{{ product?.oldPrice | currency }}</del>
             <span class="old-price-discount text-danger">
-              (%{{
-                CalucateDiscount(product.oldPrice, product.newPrice)
-                  | number : "1.0-2"
-              }}
-              off)</span
-            >
+              (%{{ CalucateDiscount(product?.oldPrice, product?.newPrice) | number : "1.0-2" }} off)
+            </span>
           </p>
           <p class="new-price text-bold mb-1">
-            {{ product.newPrice | currency }}
+            {{ product?.newPrice | currency }}
           </p>
 
           <p class="text-danger">quantity : {{ qunatity }}</p>
           <div>
-            <button
-              (click)="DecrementBasket()"
-              class="btn btn-danger text-white"
-            >
+            <button (click)="DecrementBasket()" class="btn btn-danger text-white">
               <i class="fa fa-minus"></i>
             </button>
             &nbsp;
@@ -66,23 +62,19 @@
         </div>
 
         <div class="buttons d-flex my-5">
-
           <div class="block pt-2">
-            <button (click)="addToFavorites(product.id)"  class="shadow btn custom-btn">
-              <i class="fa fa-heart"></i>
-              Wishlist
-              </button>
+            <button (click)="addToFavorites(product?.id)" class="shadow btn custom-btn">
+              <i class="fa fa-heart"></i> Wishlist
+            </button>
           </div>
           <div class="block pt-2">
             <button (click)="AddToBasket()" class="shadow btn custom-btn">
-              <i class="fa fa-shopping-cart"></i>
-              Add to cart
+              <i class="fa fa-shopping-cart"></i> Add to cart
             </button>
           </div>
           <div class="block pt-2">
             <button routerLink="/shop" class="shadow btn custom-btn">
-              <i class="fa fa-shopping-bag"></i>
-              shopping
+              <i class="fa fa-shopping-bag"></i> Shopping
             </button>
           </div>
           <div class="block quantity">
@@ -90,11 +82,9 @@
               type="number"
               class="form-control"
               id="cart_quantity"
-              value="1"
-              min="0"
-              max="5"
-              placeholder="Enter email"
-              name="cart_quantity"
+              [(ngModel)]="qunatity"
+              min="1"
+              max="10"
             />
           </div>
         </div>
@@ -102,7 +92,7 @@
 
       <div class="product-details my-4">
         <p class="details-title text-color mb-1">Product Details</p>
-        <p class="description">{{ product.description }}</p>
+        <p class="description">{{ product?.description }}</p>
       </div>
 
       <div class="row questions bg-light p-3">
@@ -122,46 +112,47 @@
         </p>
         <p class="text-secondary">Order now to get this product delivery</p>
       </div>
+
       <div class="delivery-options my-4">
         <p class="font-weight-bold mb-0">
           <span><i class="fa fa-solid fa-filter"></i></span>
           <b>Delivery options</b>
         </p>
         <p class="text-secondary">View delivery options here</p>
-        <button
-          class="btn btn-outline-primary w-100"
-          (click)="showReview(product.id)"
-        >
-          <strong>show review</strong>
+        <button class="btn btn-outline-primary w-100" (click)="showReview(product?.id)">
+          <strong>Show review</strong>
         </button>
       </div>
     </div>
   </div>
 </div>
+
 @if (loading) {
-<div class="loader">loading...</div>
+  <div class="loader">loading...</div>
 }
+
+<!-- المراجعات -->
 <div class="container my-4">
   <div class="row">
     <p *ngIf="reviews.length > 0" class="dispaly-5">Product Review</p>
     @for (item of reviews; track $index) {
-    <div class="col-md-4 mb-4">
-      <div class="review-card rounded p-3 shadow-sm border">
-        <div class="d-flex align-items-center mb-2">
-          <img
-            src="https://static.vecteezy.com/system/resources/previews/015/271/883/original/business-man-flat-icon-design-human-resource-and-businessman-icon-concept-man-icon-in-trendy-flat-style-symbol-for-your-web-site-design-logo-app-vector.jpg"
-            width="70"
-            class="rounded-circle me-3"
-            alt=""
-          />
-          <h5 class="text-info p-2" style="font-size: 15px">
-            {{ item.userName }}
-          </h5>
-          <h6 class="text-danger">Time-Reivew: {{ item.reviewTime | date }}</h6>
+      <div class="col-md-4 mb-4">
+        <div class="review-card rounded p-3 shadow-sm border">
+          <div class="d-flex align-items-center mb-2">
+            <img
+              src="https://static.vecteezy.com/system/resources/previews/015/271/883/original/business-man-flat-icon-design-human-resource-and-businessman-icon-concept-man-icon-in-trendy-flat-style-symbol-for-your-web-site-design-logo-app-vector.jpg"
+              width="70"
+              class="rounded-circle me-3"
+              alt=""
+            />
+            <h5 class="text-info p-2" style="font-size: 15px">
+              {{ item.userName }}
+            </h5>
+            <h6 class="text-danger">Time-Review: {{ item.reviewTime | date }}</h6>
+          </div>
+          <p class="review-text">{{ item.content }}</p>
         </div>
-        <P class="review-text">{{ item.content }}</P>
       </div>
-    </div>
     }
   </div>
 </div>

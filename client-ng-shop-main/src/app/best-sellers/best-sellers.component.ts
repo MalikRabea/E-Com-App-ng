@@ -56,9 +56,11 @@ visibleSlides = 5; // عدد الكروت الظاهرة في نفس الوقت
   }
   
 
-  getArrayofRating(rating: number) {
-    return Array(rating).fill(0);
-  }
+    getArrayofRating(rateOfnumber: number | undefined | null): number[] {
+  const safeNumber = Math.max(0, Math.floor(rateOfnumber || 0));
+  return Array.from({ length: safeNumber }, (_, i) => i);
+}
+
 
   addToBasket(product: IProduct) {
     this.basketService.addItemToBasket(product, 1);
