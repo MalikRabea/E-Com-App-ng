@@ -14,6 +14,7 @@ import { IBasket } from '../../shared/Models/Basket';
 import { ICreateOrder } from '../../shared/Models/Order';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 declare var Stripe: any;
 @Component({
   selector: 'app-payment',
@@ -55,32 +56,32 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const elements = this.stripe.elements({
       appearance: {
-        theme: 'flat',
+        theme: 'stripe',
         variables: {
           colorText:        '#000000',
           colorBackground:  '#ffffff',
           colorPrimary:     '#2563eb',
           colorDanger:      '#ef4444',
           fontFamily:       "'Inter', -apple-system, sans-serif",
-          fontSizeSm:       '14px',
-          spacingUnit:      '4px',
           borderRadius:     '8px',
         },
         rules: {
           '.Input': {
             color:           '#000000',
             backgroundColor: '#ffffff',
-            border:          '1.5px solid #e2e8f0',
             boxShadow:       'none',
-            padding:         '12px 16px',
+            border:          '1.5px solid #e2e8f0',
+            padding:         '10px 14px',
+            fontSize:        '15px',
           },
           '.Input:focus': {
-            border:     '1.5px solid #2563eb',
-            boxShadow:  '0 0 0 3px rgba(37,99,235,.12)',
+            border:    '1.5px solid #2563eb',
+            boxShadow: '0 0 0 3px rgba(37,99,235,.12)',
+            outline:   'none',
           },
           '.Input--invalid': {
-            color:   '#ef4444',
-            border:  '1.5px solid #ef4444',
+            color:  '#ef4444',
+            border: '1.5px solid #ef4444',
           },
         },
       },
@@ -136,15 +137,8 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
   async CreateOrder(order: ICreateOrder) {
-    this._service.CreateOrder(order).subscribe({
-      next: (value) => {
-        this.orderId = value.id;
-      },
-      error: (err) => {
-        console.log(err);
-        this.toast.error('something went wrong');
-      },
-    });
+    const value = await firstValueFrom(this._service.CreateOrder(order));
+    this.orderId = value.id;
   }
   getOrderCreate(basket: IBasket): ICreateOrder {
     return {
