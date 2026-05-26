@@ -34,10 +34,18 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     ToastrModule.forRoot({
       closeButton: true,
-      positionClass: 'toast-top-right',
+      positionClass: 'toast-bottom-right',
       countDuplicates: true,
-      timeOut:1500,
-      progressBar:true,
+      timeOut: 2500,
+      extendedTimeOut: 1500,
+      progressBar: true,
+      progressAnimation: 'decreasing',
+      preventDuplicates: true,
+      newestOnTop: true,
+      tapToDismiss: true,
+      maxOpened: 5,
+      autoDismiss: false,
+      enableHtml: false,
     }),
     
     

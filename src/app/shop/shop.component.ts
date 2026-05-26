@@ -7,6 +7,7 @@ import { IPagnation } from '../shared/Models/Pagnation';
 import { IProduct } from '../shared/Models/Product';
 import { ProductParam } from '../shared/Models/ProductParam';
 import { ToastrService } from 'ngx-toastr';
+import { CompareService } from './compare.service';
 
 @Component({
   selector: 'app-shop',
@@ -22,6 +23,7 @@ export class ShopComponent implements OnInit {
   quickViewProduct: IProduct | null = null;
   suggestions: IProduct[] = [];
   showSuggestions = false;
+  showCompareModal = false;
   private searchTerm$ = new Subject<string>();
 
   SortingOption = [
@@ -35,6 +37,7 @@ export class ShopComponent implements OnInit {
     private toast: ToastrService,
     private route: ActivatedRoute,
     private router: Router,
+    public compareService: CompareService,
   ) {}
 
   ngOnInit(): void {
@@ -134,6 +137,30 @@ export class ShopComponent implements OnInit {
   }
 
   get skeletonArray() { return Array(9); }
+
+  openCompareModal() { this.showCompareModal = true; document.body.style.overflow = 'hidden'; }
+  closeCompareModal() { this.showCompareModal = false; document.body.style.overflow = ''; }
+
+  getCompareKeys(): string[] {
+    return ['name', 'categoryName', 'newPrice', 'oldPrice', 'rating', 'stockQuantity', 'description'];
+  }
+
+  getCompareLabel(key: string): string {
+    const map: Record<string, string> = {
+      name: 'Name', categoryName: 'Category', newPrice: 'Price',
+      oldPrice: 'Old Price', rating: 'Rating', stockQuantity: 'Stock', description: 'Description'
+    };
+    return map[key] ?? key;
+  }
+
+  getCompareValue(product: IProduct, key: string): string {
+    const v = (product as any)[key];
+    if (key === 'newPrice' || key === 'oldPrice') return v != null ? '$' + Number(v).toFixed(2) : '-';
+    if (key === 'rating') return v ? Number(v).toFixed(1) : 'N/A';
+    if (key === 'stockQuantity') return v != null ? (v > 0 ? v + ' in stock' : 'Out of stock') : '-';
+    if (key === 'description') return v ? (v.length > 80 ? v.slice(0, 80) + '…' : v) : '-';
+    return v ?? '-';
+  }
 
   @ViewChild('search') searchInput!: ElementRef;
   @ViewChild('SortSelected') selected!: ElementRef;

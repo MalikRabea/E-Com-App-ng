@@ -5,6 +5,10 @@
       <h1>Orders</h1>
       <p class="section-sub" *ngIf="!loading">{{ totalCount }} total orders</p>
     </div>
+    <button class="btn btn-outline btn-sm" (click)="exportCsv()" style="display:flex;align-items:center;gap:6px">
+      <span class="material-icons" style="font-size:1rem">download</span>
+      Export CSV
+    </button>
   </div>
 
   <!-- Skeleton -->

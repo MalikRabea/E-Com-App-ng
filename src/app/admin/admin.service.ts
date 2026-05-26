@@ -67,4 +67,24 @@ export class AdminService {
   getMonthlySales() {
     return this.http.get<any[]>(`${this.base}Admin/monthly-sales`, { withCredentials: true });
   }
+
+  getLowStockProducts(threshold = 5) {
+    const params = new HttpParams().set('pageNumber', 1).set('pageSize', 200);
+    return this.http.get<any>(`${this.base}Products/get-all`, { params, withCredentials: true });
+  }
+
+  exportOrdersCsv() {
+    return this.http.get(`${this.base}Admin/orders/export`, {
+      responseType: 'blob',
+      withCredentials: true
+    });
+  }
+
+  getAllReviews() {
+    return this.http.get<any[]>(`${this.base}Admin/reviews`, { withCredentials: true });
+  }
+
+  deleteReview(id: number) {
+    return this.http.delete(`${this.base}Admin/reviews/${id}`, { withCredentials: true });
+  }
 }

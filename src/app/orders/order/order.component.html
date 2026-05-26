@@ -14,8 +14,23 @@
     </a>
   </div>
 
+  <!-- Skeleton -->
+  <div class="orders-list" *ngIf="loading">
+    <div class="order-card skeleton-card" *ngFor="let s of [1,2,3,4]">
+      <div class="skeleton" style="width:70px;height:70px;border-radius:12px;flex-shrink:0"></div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+        <div class="skeleton" style="height:16px;width:60px"></div>
+        <div class="skeleton" style="height:13px;width:120px"></div>
+        <div class="skeleton" style="height:12px;width:80px"></div>
+      </div>
+      <div class="skeleton" style="height:28px;width:80px;border-radius:20px"></div>
+      <div class="skeleton" style="height:20px;width:70px"></div>
+      <div class="skeleton" style="height:32px;width:80px;border-radius:8px"></div>
+    </div>
+  </div>
+
   <!-- Empty -->
-  <div class="empty-state" *ngIf="!orders || orders.length === 0">
+  <div class="empty-state" *ngIf="!loading && (!orders || orders.length === 0)">
     <span class="material-icons empty-icon">shopping_bag</span>
     <h2>No orders yet</h2>
     <p>Your orders will appear here after your first purchase</p>
@@ -26,7 +41,7 @@
   </div>
 
   <!-- Orders List -->
-  <div class="orders-list" *ngIf="orders?.length > 0">
+  <div class="orders-list" *ngIf="!loading && orders?.length > 0">
     <div class="order-card" *ngFor="let item of orders">
 
       <div class="order-thumb" (click)="openModal(item.orderItems)">

@@ -106,6 +106,45 @@
     </div>
   </div>
 
+  <!-- Low Stock Alert -->
+  <div class="section-card low-stock-card" *ngIf="!loading && lowStockProducts.length > 0">
+    <div class="section-card-header">
+      <h2><span class="material-icons" style="color:#f59e0b">warning</span> Low Stock Alert</h2>
+      <span class="low-stock-count">{{ lowStockProducts.length }} product{{ lowStockProducts.length > 1 ? 's' : '' }} need restocking</span>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of lowStockProducts">
+            <td><strong>{{ p.name }}</strong></td>
+            <td>{{ p.categoryName }}</td>
+            <td class="amount-cell">{{ p.newPrice | currency }}</td>
+            <td>
+              <span class="stock-chip" [ngClass]="p.stockQuantity === 0 ? 'stock-out' : 'stock-low'">
+                <span class="material-icons" style="font-size:0.85rem">
+                  {{ p.stockQuantity === 0 ? 'cancel' : 'warning' }}
+                </span>
+                {{ p.stockQuantity === 0 ? 'Out of Stock' : p.stockQuantity + ' left' }}
+              </span>
+            </td>
+            <td>
+              <a routerLink="/admin/products" class="btn btn-outline btn-sm">Restock</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   <!-- Error -->
   <div class="error-state" *ngIf="error">
     <span class="material-icons">error_outline</span>

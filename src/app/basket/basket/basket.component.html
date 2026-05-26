@@ -98,6 +98,37 @@
 
         <!-- Summary -->
         <div class="basket-summary">
+          <!-- Coupon Code -->
+          <div class="coupon-box">
+            <h4 class="coupon-title">
+              <span class="material-icons">local_offer</span>
+              Coupon Code
+            </h4>
+            @if (!appliedCoupon) {
+              <div class="coupon-input-row">
+                <input
+                  type="text"
+                  class="coupon-input"
+                  placeholder="Enter code..."
+                  [(ngModel)]="couponCode"
+                  (keyup.enter)="applyCoupon()"
+                />
+                <button class="btn btn-outline btn-sm" (click)="applyCoupon()" [disabled]="couponLoading">
+                  @if (couponLoading) { <span>...</span> } @else { Apply }
+                </button>
+              </div>
+            }
+            @if (appliedCoupon) {
+              <div class="coupon-applied">
+                <span class="material-icons" style="color:var(--color-success,#22c55e)">check_circle</span>
+                <span><strong>{{ appliedCoupon.code }}</strong> — {{ appliedCoupon.discountPercent }}% off</span>
+                <button class="coupon-remove" (click)="removeCoupon()">
+                  <span class="material-icons">close</span>
+                </button>
+              </div>
+            }
+          </div>
+
           <app-order-total></app-order-total>
           <a routerLink="/checkout" class="btn btn-primary btn-full btn-lg checkout-btn">
             <span class="material-icons">lock</span>

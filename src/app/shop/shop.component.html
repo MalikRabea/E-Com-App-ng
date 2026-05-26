@@ -158,6 +158,86 @@
   </div>
 </div>
 
+<!-- ── Compare Floating Bar ── -->
+@if ((compareService.compare$ | async)?.length > 0) {
+  <div class="compare-bar">
+    <div class="compare-bar-inner">
+      <div class="compare-bar-items">
+        @for (p of (compareService.compare$ | async); track p.id) {
+          <div class="compare-bar-item">
+            <img
+              [src]="p.photos?.[0]?.imageName || 'assets/no-image.png'"
+              onerror="this.src='assets/no-image.png'"
+              class="compare-bar-thumb"
+            />
+            <span class="compare-bar-name">{{ p.name }}</span>
+            <button class="compare-bar-remove" (click)="compareService.remove(p.id)">
+              <span class="material-icons">close</span>
+            </button>
+          </div>
+        }
+      </div>
+      <div class="compare-bar-actions">
+        <button class="btn btn-primary btn-sm" (click)="openCompareModal()">
+          <span class="material-icons">compare</span>
+          Compare ({{ (compareService.compare$ | async)?.length }})
+        </button>
+        <button class="btn btn-ghost btn-sm" (click)="compareService.clear()">Clear</button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- ── Compare Modal ── -->
+@if (showCompareModal) {
+  <div class="modal-overlay" (click)="closeCompareModal()">
+    <div class="modal-box compare-modal-box" (click)="$event.stopPropagation()">
+      <button class="qv-close btn btn-ghost btn-icon" (click)="closeCompareModal()">
+        <span class="material-icons">close</span>
+      </button>
+      <h2 class="compare-modal-title">
+        <span class="material-icons">compare</span>
+        Product Comparison
+      </h2>
+      <div class="compare-table-wrap">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th class="compare-attr-col">Attribute</th>
+              @for (p of (compareService.compare$ | async); track p.id) {
+                <th>
+                  <div class="compare-th-inner">
+                    <img [src]="p.photos?.[0]?.imageName || 'assets/no-image.png'" onerror="this.src='assets/no-image.png'" class="compare-th-img" />
+                    <a [routerLink]="'/shop/product-details/' + p.id" (click)="closeCompareModal()" class="compare-th-name">{{ p.name }}</a>
+                  </div>
+                </th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (key of getCompareKeys(); track key) {
+              <tr>
+                <td class="attr-label">{{ getCompareLabel(key) }}</td>
+                @for (p of (compareService.compare$ | async); track p.id) {
+                  <td>{{ getCompareValue(p, key) }}</td>
+                }
+              </tr>
+            }
+            <tr>
+              <td class="attr-label">Action</td>
+              @for (p of (compareService.compare$ | async); track p.id) {
+                <td>
+                  <a [routerLink]="'/shop/product-details/' + p.id" (click)="closeCompareModal()" class="btn btn-primary btn-sm">View Details</a>
+                </td>
+              }
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+}
+
 <!-- ── Quick View Modal ── -->
 @if (quickViewProduct) {
   <div class="modal-overlay" (click)="closeQuickView()">

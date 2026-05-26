@@ -15,7 +15,7 @@
   </div>
 
   <!-- Empty State -->
-  <div class="empty-state" *ngIf="favorites.length === 0">
+  <div class="empty-state" *ngIf="!loading && favorites.length === 0">
     <span class="material-icons empty-icon">favorite_border</span>
     <h2>Your wishlist is empty</h2>
     <p>Save products you love — click the heart icon on any product</p>
@@ -25,8 +25,21 @@
     </a>
   </div>
 
+  <!-- Skeleton -->
+  <div class="fav-grid" *ngIf="loading">
+    <div class="fav-card skeleton-card" *ngFor="let s of [1,2,3,4,5,6]">
+      <div class="skeleton" style="height:220px;width:100%"></div>
+      <div class="fav-body">
+        <div class="skeleton" style="height:12px;width:50%;margin-bottom:6px"></div>
+        <div class="skeleton" style="height:16px;width:80%;margin-bottom:6px"></div>
+        <div class="skeleton" style="height:14px;width:60%;margin-bottom:10px"></div>
+        <div class="skeleton" style="height:36px;width:100%;border-radius:8px"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Products Grid -->
-  <div class="fav-grid" *ngIf="favorites.length > 0">
+  <div class="fav-grid" *ngIf="!loading && favorites.length > 0">
     <div class="fav-card" *ngFor="let product of favorites">
 
       <!-- Image -->
@@ -58,6 +71,9 @@
           <span class="price-old" *ngIf="product.oldPrice > product.newPrice">{{ product.oldPrice | currency }}</span>
           <span class="discount-badge" *ngIf="product.oldPrice > product.newPrice">
             -{{ getDiscount(product) }}%
+          </span>
+          <span class="price-drop-badge" *ngIf="getPriceDrop(product) > 0">
+            ↓ ${{ getPriceDrop(product).toFixed(2) }} drop!
           </span>
         </div>
 

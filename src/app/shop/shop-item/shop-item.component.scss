@@ -81,6 +81,49 @@
   }
 }
 
+.flash-sale-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  letter-spacing: 0.05em;
+  z-index: 3;
+  animation: flashPulse 1.5s infinite;
+}
+
+@keyframes flashPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+.flash-countdown {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.25rem;
+
+  strong { color: #ef4444; font-variant-numeric: tabular-nums; }
+}
+
+.sale-price {
+  color: #ef4444 !important;
+}
+
+.compare-active {
+  background: var(--color-primary) !important;
+  color: #fff !important;
+}
+
 /* Thumbnails */
 .thumbnail-strip {
   position: absolute;

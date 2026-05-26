@@ -1,0 +1,138 @@
+<div class="ab-page page-content page-enter">
+  <div class="ab-header">
+    <div>
+      <h1 class="ab-title">
+        <span class="material-icons">location_on</span>
+        Address Book
+      </h1>
+      <p class="ab-sub">Manage your saved shipping addresses</p>
+    </div>
+    <button class="btn btn-primary" (click)="openAdd()">
+      <span class="material-icons">add</span>
+      Add Address
+    </button>
+  </div>
+
+  <!-- Empty State -->
+  <div class="ab-empty" *ngIf="addresses.length === 0 && !showForm">
+    <span class="material-icons ab-empty-icon">location_off</span>
+    <h3>No saved addresses</h3>
+    <p>Add a shipping address to save time at checkout</p>
+    <button class="btn btn-primary" (click)="openAdd()">Add Your First Address</button>
+  </div>
+
+  <!-- Address Grid -->
+  <div class="ab-grid" *ngIf="addresses.length > 0">
+    <div class="ab-card" *ngFor="let addr of addresses" [class.is-default]="addr.isDefault">
+      <div class="ab-card-head">
+        <div class="ab-label">
+          <span class="material-icons">home</span>
+          {{ addr.label || 'Home' }}
+        </div>
+        <span class="default-badge" *ngIf="addr.isDefault">
+          <span class="material-icons" style="font-size:0.8rem">check</span>
+          Default
+        </span>
+      </div>
+      <div class="ab-card-body">
+        <p class="ab-name">{{ addr.firstName }} {{ addr.lastName }}</p>
+        <p class="ab-line">{{ addr.street }}</p>
+        <p class="ab-line">{{ addr.city }}, {{ addr.state }} {{ addr.zip }}</p>
+        <p class="ab-line">{{ addr.country }}</p>
+      </div>
+      <div class="ab-card-actions">
+        <button class="btn btn-outline btn-sm" (click)="openEdit(addr)">
+          <span class="material-icons">edit</span>
+          Edit
+        </button>
+        <button class="btn btn-ghost btn-sm" (click)="setDefault(addr.id)" *ngIf="!addr.isDefault">
+          <span class="material-icons">star_border</span>
+          Set Default
+        </button>
+        <button class="btn btn-ghost btn-sm danger-btn" (click)="confirmDelete(addr.id)">
+          <span class="material-icons">delete_outline</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Add New Card -->
+    <div class="ab-card ab-add-card" (click)="openAdd()">
+      <span class="material-icons ab-add-icon">add_circle_outline</span>
+      <p>Add New Address</p>
+    </div>
+  </div>
+
+  <!-- Add/Edit Form -->
+  <div class="ab-form-overlay" *ngIf="showForm" (click)="cancelForm()">
+    <div class="ab-form-box" (click)="$event.stopPropagation()">
+      <div class="ab-form-header">
+        <h3>{{ editingId ? 'Edit Address' : 'Add New Address' }}</h3>
+        <button class="btn btn-ghost btn-icon" (click)="cancelForm()">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Label (e.g. Home, Office)</label>
+          <input type="text" class="form-control" [(ngModel)]="form.label" placeholder="Home" />
+        </div>
+        <div class="form-group">
+          <label>First Name *</label>
+          <input type="text" class="form-control" [(ngModel)]="form.firstName" placeholder="John" />
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" class="form-control" [(ngModel)]="form.lastName" placeholder="Doe" />
+        </div>
+        <div class="form-group full">
+          <label>Street Address *</label>
+          <input type="text" class="form-control" [(ngModel)]="form.street" placeholder="123 Main St" />
+        </div>
+        <div class="form-group">
+          <label>City *</label>
+          <input type="text" class="form-control" [(ngModel)]="form.city" placeholder="New York" />
+        </div>
+        <div class="form-group">
+          <label>State / Province</label>
+          <input type="text" class="form-control" [(ngModel)]="form.state" placeholder="NY" />
+        </div>
+        <div class="form-group">
+          <label>ZIP / Postal Code</label>
+          <input type="text" class="form-control" [(ngModel)]="form.zip" placeholder="10001" />
+        </div>
+        <div class="form-group">
+          <label>Country</label>
+          <input type="text" class="form-control" [(ngModel)]="form.country" placeholder="USA" />
+        </div>
+        <div class="form-group full">
+          <label class="checkbox-label">
+            <input type="checkbox" [(ngModel)]="form.isDefault" />
+            Set as default address
+          </label>
+        </div>
+      </div>
+
+      <div class="ab-form-actions">
+        <button class="btn btn-ghost" (click)="cancelForm()">Cancel</button>
+        <button class="btn btn-primary" (click)="submit()">
+          <span class="material-icons">save</span>
+          {{ editingId ? 'Save Changes' : 'Add Address' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirm -->
+  <div class="modal-overlay" *ngIf="deleteConfirmId !== null" (click)="cancelDelete()">
+    <div class="modal-box confirm-box" (click)="$event.stopPropagation()">
+      <span class="material-icons" style="font-size:2.5rem;color:#f59e0b;display:block;margin-bottom:1rem">warning</span>
+      <h3>Remove this address?</h3>
+      <p>This action cannot be undone.</p>
+      <div style="display:flex;gap:0.75rem;justify-content:center;margin-top:1.5rem">
+        <button class="btn btn-ghost" (click)="cancelDelete()">Cancel</button>
+        <button class="btn btn-primary" style="background:#ef4444;border-color:#ef4444" (click)="doDelete()">Remove</button>
+      </div>
+    </div>
+  </div>
+</div>

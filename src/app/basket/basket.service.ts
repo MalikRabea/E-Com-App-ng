@@ -7,6 +7,12 @@ import { IProduct } from '../shared/Models/Product';
 import { Delivery } from '../shared/Models/Delivery';
 import { environment } from '../../environments/environment.development';
 
+export interface ICoupon {
+  code: string;
+  discountPercent: number;
+  message: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -18,6 +24,8 @@ export class BasketService {
   private basketSourceTotal = new BehaviorSubject<IBasketTotal>(null);
   basketTotal$ = this.basketSourceTotal.asObservable();
   shipPrice: number = 0;
+  private couponSource = new BehaviorSubject<ICoupon | null>(null);
+  coupon$ = this.couponSource.asObservable();
   SetShippingPrice(delivery: Delivery) {
     this.shipPrice = delivery.price;
     this.clacualteTotal();
@@ -46,13 +54,22 @@ export class BasketService {
     this.basketSourceTotal.next(null);
     localStorage.removeItem('basketId');
   }
+  validateCoupon(code: string) {
+    return this.http.post<ICoupon>(this.BaseURL + 'Coupons/validate', { code });
+  }
+
+  applyCoupon(coupon: ICoupon) { this.couponSource.next(coupon); this.clacualteTotal(); }
+  removeCoupon() { this.couponSource.next(null); this.clacualteTotal(); }
+
   clacualteTotal() {
     const basket = this.GetCurrentValue();
     const shipping = this.shipPrice;
     const subtotal = basket.basketItems.reduce((a, c) => {
       return c.price * c.quantity + a;
     }, 0);
-    const total = shipping + subtotal;
+    const coupon = this.couponSource.value;
+    const discount = coupon ? subtotal * (coupon.discountPercent / 100) : 0;
+    const total = shipping + subtotal - discount;
     this.basketSourceTotal.next({ shipping, subtotal, total });
   }
 

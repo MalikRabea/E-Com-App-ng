@@ -10,6 +10,8 @@
     rating?:number
     soldCount: number;
     stockQuantity: number;
+    salePrice?: number;
+    saleEndDate?: string;
   }
   
   export interface IPhoto {

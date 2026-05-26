@@ -7,8 +7,14 @@
       onerror="this.src='assets/no-image.png'"
     />
 
+    <!-- Flash Sale Badge -->
+    <div class="flash-sale-badge" *ngIf="isOnSale()">
+      <span class="material-icons" style="font-size:0.85rem">bolt</span>
+      FLASH SALE
+    </div>
+
     <!-- Discount Badge -->
-    <div class="discount-badge" *ngIf="Product.oldPrice > Product.newPrice">
+    <div class="discount-badge" *ngIf="Product.oldPrice > Product.newPrice && !isOnSale()">
       {{ getDiscount() }}% OFF
     </div>
 
@@ -23,6 +29,13 @@
       <a class="overlay-btn" [routerLink]="'/shop/product-details/' + Product.id" title="View Details">
         <span class="material-icons">open_in_new</span>
       </a>
+      <button
+        class="overlay-btn"
+        [class.compare-active]="compareService.isAdded(Product.id)"
+        (click)="toggleCompare()"
+        title="Compare">
+        <span class="material-icons">compare</span>
+      </button>
     </div>
 
     <!-- Thumbnail strip -->
@@ -51,10 +64,17 @@
       <span class="rating-text">{{ Product.rating | number:'1.1-1' }}</span>
     </div>
 
+    <!-- Flash Sale Countdown -->
+    <div class="flash-countdown" *ngIf="isOnSale()">
+      <span class="material-icons" style="font-size:0.85rem;color:#ef4444">timer</span>
+      Ends in: <strong>{{ countdown }}</strong>
+    </div>
+
     <div class="card-price-row">
       <div class="price-group">
-        <span class="new-price">{{ Product.newPrice | currency }}</span>
-        <span class="old-price" *ngIf="Product.oldPrice > Product.newPrice">{{ Product.oldPrice | currency }}</span>
+        <span class="new-price" [class.sale-price]="isOnSale()">{{ displayPrice() | currency }}</span>
+        <span class="old-price" *ngIf="isOnSale()">{{ Product.newPrice | currency }}</span>
+        <span class="old-price" *ngIf="!isOnSale() && Product.oldPrice > Product.newPrice">{{ Product.oldPrice | currency }}</span>
       </div>
     </div>
 

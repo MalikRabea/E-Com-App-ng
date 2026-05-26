@@ -24,14 +24,42 @@ export class FavoriteComponent implements OnInit {
     this.loadFavorites();
   }
 
+  loading = true;
+  private readonly PRICE_KEY = 'wishlist_prices';
+
   loadFavorites() {
+    this.loading = true;
     this.favoriteService.getFavorites().subscribe({
       next: (data: Product[]) => {
         this.favorites = data;
         this.favoriteService.setFavoriteCount(this.favorites.length);
+        this.loading = false;
+        this.checkPriceDrops(data);
       },
-      error: (err) => console.error(err)
+      error: (err) => { console.error(err); this.loading = false; }
     });
+  }
+
+  private checkPriceDrops(products: Product[]) {
+    const stored: Record<number, number> = JSON.parse(localStorage.getItem(this.PRICE_KEY) || '{}');
+    products.forEach(p => {
+      if (stored[p.id] && p.newPrice < stored[p.id]) {
+        const diff = stored[p.id] - p.newPrice;
+        this.toast.info(
+          `Price dropped by $${diff.toFixed(2)} on "${p.name}"!`,
+          'Price Drop'
+        );
+      }
+    });
+    const prices: Record<number, number> = {};
+    products.forEach(p => prices[p.id] = p.newPrice);
+    localStorage.setItem(this.PRICE_KEY, JSON.stringify(prices));
+  }
+
+  getPriceDrop(product: Product): number {
+    const stored: Record<number, number> = JSON.parse(localStorage.getItem(this.PRICE_KEY) || '{}');
+    const prev = stored[product.id];
+    return prev && prev > product.newPrice ? prev - product.newPrice : 0;
   }
 
   removeFavorite(productId: number) {

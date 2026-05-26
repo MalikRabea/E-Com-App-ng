@@ -10,6 +10,7 @@ import { environment } from '../../../environments/environment';
 })
 export class OrderComponent implements OnInit {
   orders: IOrder[] = [];
+  loading = true;
   modalOpen = false;
   modalImages: string[] = [];
   private imgUrl = environment.imageUrl;
@@ -17,9 +18,10 @@ export class OrderComponent implements OnInit {
   constructor(private _service: OrdersService) {}
 
   ngOnInit(): void {
+    this.loading = true;
     this._service.getAllOrderForUser().subscribe({
-      next: (res) => (this.orders = res),
-      error: (err) => console.log(err),
+      next: (res) => { this.orders = res; this.loading = false; },
+      error: (err) => { console.log(err); this.loading = false; },
     });
   }
 

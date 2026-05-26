@@ -1,0 +1,89 @@
+<div class="admin-section page-enter">
+
+  <div class="section-top">
+    <div>
+      <h1>Reviews</h1>
+      <p class="section-sub" *ngIf="!loading">{{ filtered.length }} review{{ filtered.length !== 1 ? 's' : '' }}</p>
+    </div>
+    <div class="search-wrap">
+      <span class="material-icons search-icon">search</span>
+      <input [(ngModel)]="searchTerm" placeholder="Search reviews..." class="search-input" />
+    </div>
+  </div>
+
+  <!-- Skeleton -->
+  <div class="reviews-table-wrap" *ngIf="loading">
+    <table class="data-table">
+      <thead>
+        <tr><th>Product</th><th>User</th><th>Rating</th><th>Review</th><th>Date</th><th></th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of [1,2,3,4,5,6]">
+          <td><div class="skeleton sk-line w120"></div></td>
+          <td><div class="skeleton sk-line w100"></div></td>
+          <td><div class="skeleton sk-line w60"></div></td>
+          <td><div class="skeleton sk-line w200"></div></td>
+          <td><div class="skeleton sk-line w80"></div></td>
+          <td><div class="skeleton sk-line w60"></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Reviews Table -->
+  <div class="reviews-table-wrap" *ngIf="!loading">
+    <table class="data-table" *ngIf="filtered.length > 0">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>User</th>
+          <th>Rating</th>
+          <th>Review</th>
+          <th>Date</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of filtered">
+          <td>
+            <a [routerLink]="'/shop/product-details/' + r.productId" target="_blank" class="product-link">
+              {{ r.productName }}
+            </a>
+          </td>
+          <td class="email-cell">{{ r.userName }}</td>
+          <td>
+            <div class="stars-row">
+              <span class="material-icons star-icon" *ngFor="let s of getStars(r.stars)">star</span>
+              <span class="star-num">({{ r.stars }})</span>
+            </div>
+          </td>
+          <td class="review-content">{{ r.content }}</td>
+          <td class="date-cell">{{ r.reviewTime | date:'MMM d, y' }}</td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="confirmDelete(r.id)">
+              <span class="material-icons">delete</span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="empty-table" *ngIf="filtered.length === 0">
+      <span class="material-icons">rate_review</span>
+      <p>No reviews found</p>
+    </div>
+  </div>
+
+  <!-- Delete Confirm -->
+  <div class="modal-overlay" *ngIf="deleteConfirmId !== null" (click)="cancelDelete()">
+    <div class="modal-box confirm-box" (click)="$event.stopPropagation()">
+      <span class="material-icons confirm-icon">warning</span>
+      <h3>Delete this review?</h3>
+      <p>This action cannot be undone.</p>
+      <div class="confirm-actions">
+        <button class="btn btn-ghost" (click)="cancelDelete()">Cancel</button>
+        <button class="btn btn-danger" (click)="doDelete()">Delete</button>
+      </div>
+    </div>
+  </div>
+
+</div>

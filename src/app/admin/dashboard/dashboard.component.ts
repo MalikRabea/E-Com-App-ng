@@ -13,6 +13,8 @@ export class AdminDashboardComponent implements OnInit {
 
   monthlySales: any[] = [];
   maxRevenue = 1;
+  lowStockProducts: any[] = [];
+  readonly LOW_STOCK_THRESHOLD = 5;
 
   readonly monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
@@ -27,6 +29,12 @@ export class AdminDashboardComponent implements OnInit {
       next: (data) => {
         this.monthlySales = data;
         this.maxRevenue = Math.max(...data.map((d: any) => d.revenue), 1);
+      }
+    });
+    this.adminService.getLowStockProducts().subscribe({
+      next: (res) => {
+        const all: any[] = res.data ?? res;
+        this.lowStockProducts = all.filter(p => p.stockQuantity <= this.LOW_STOCK_THRESHOLD);
       }
     });
   }

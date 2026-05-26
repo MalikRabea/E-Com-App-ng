@@ -59,6 +59,21 @@ export class AdminOrdersComponent implements OnInit {
   get totalPages() { return Math.ceil(this.totalCount / this.pageSize); }
   get pages() { return Array.from({ length: this.totalPages }, (_, i) => i + 1); }
 
+  exportCsv() {
+    this.adminService.exportOrdersCsv().subscribe({
+      next: (blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `orders_${new Date().toISOString().slice(0,10)}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+        this.toast.success('Orders exported!', 'CSV');
+      },
+      error: () => this.toast.error('Export failed', 'Error')
+    });
+  }
+
   statusClass(status: string) {
     const map: Record<string, string> = {
       Pending:         'status-pending',

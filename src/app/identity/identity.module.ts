@@ -10,6 +10,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { LogoutComponent } from './logout/logout.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AddressBookComponent } from './address-book/address-book.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { ProfileComponent } from './profile/profile.component';
     LogoutComponent,
     ChangePasswordComponent,
     ProfileComponent,
+    AddressBookComponent,
   ],
   imports: [
     CommonModule,

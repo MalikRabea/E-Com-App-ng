@@ -200,6 +200,30 @@
   p { color: var(--color-text-muted); font-size: 0.9rem; margin: 0; }
 }
 
+.low-stock-card { border-left: 4px solid #f59e0b; }
+
+.low-stock-count {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #b45309;
+  background: #fef3c7;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+}
+
+.stock-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 1rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+
+  &.stock-out { background: #fee2e2; color: #991b1b; }
+  &.stock-low { background: #fef3c7; color: #92400e; }
+}
+
 .error-state {
   text-align: center;
   padding: 60px 20px;

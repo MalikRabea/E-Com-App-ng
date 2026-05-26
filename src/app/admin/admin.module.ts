@@ -10,6 +10,7 @@ import { AdminProductsComponent } from './products/products.component';
 import { AdminCategoriesComponent } from './categories/categories.component';
 import { AdminOrdersComponent } from './orders/admin-orders.component';
 import { AdminUsersComponent } from './users/admin-users.component';
+import { AdminReviewsComponent } from './reviews/admin-reviews.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { AdminUsersComponent } from './users/admin-users.component';
     AdminCategoriesComponent,
     AdminOrdersComponent,
     AdminUsersComponent,
+    AdminReviewsComponent,
   ],
   imports: [
     CommonModule,
