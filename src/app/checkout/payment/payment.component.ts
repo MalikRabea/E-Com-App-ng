@@ -52,32 +52,49 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.stripe = Stripe(
       'pk_test_51RxEIVDvC6EKzEmV1feScZWUPexKRzuZiwaqWiA4i79Y9SuSamynaWlbEHGUGjkuJf5imhyjbmGMrOlXEa93Hy9000jKAOE6ov'
     );
-    const elements = this.stripe.elements();
 
-    const style = {
-      base: {
-        color: '#000000',
-        fontSize: '15px',
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-        fontSmoothing: 'antialiased',
-        '::placeholder': { color: '#9ca3af' },
-        iconColor: '#374151',
+    const elements = this.stripe.elements({
+      appearance: {
+        theme: 'flat',
+        variables: {
+          colorText:        '#000000',
+          colorBackground:  '#ffffff',
+          colorPrimary:     '#2563eb',
+          colorDanger:      '#ef4444',
+          fontFamily:       "'Inter', -apple-system, sans-serif",
+          fontSizeSm:       '14px',
+          spacingUnit:      '4px',
+          borderRadius:     '8px',
+        },
+        rules: {
+          '.Input': {
+            color:           '#000000',
+            backgroundColor: '#ffffff',
+            border:          '1.5px solid #e2e8f0',
+            boxShadow:       'none',
+            padding:         '12px 16px',
+          },
+          '.Input:focus': {
+            border:     '1.5px solid #2563eb',
+            boxShadow:  '0 0 0 3px rgba(37,99,235,.12)',
+          },
+          '.Input--invalid': {
+            color:   '#ef4444',
+            border:  '1.5px solid #ef4444',
+          },
+        },
       },
-      invalid: {
-        color: '#ef4444',
-        iconColor: '#ef4444',
-      },
-    };
+    });
 
-    this.cardNumber = elements.create('cardNumber', { style });
+    this.cardNumber = elements.create('cardNumber');
     this.cardNumber.mount(this.cardNumberElement.nativeElement);
     this.cardNumber.addEventListener('change', this.cardHandler);
 
-    this.cardExpiry = elements.create('cardExpiry', { style });
+    this.cardExpiry = elements.create('cardExpiry');
     this.cardExpiry.mount(this.cardExpiryElement.nativeElement);
     this.cardExpiry.addEventListener('change', this.cardHandler);
 
-    this.cardCvc = elements.create('cardCvc', { style });
+    this.cardCvc = elements.create('cardCvc');
     this.cardCvc.mount(this.cardCvcElement.nativeElement);
     this.cardCvc.addEventListener('change', this.cardHandler);
   }
