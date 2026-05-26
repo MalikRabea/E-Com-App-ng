@@ -27,12 +27,12 @@ export class ShopItemComponent implements OnInit, OnChanges {
 
   private setDefaultImage() {
     this.mainImage = this.Product?.photos?.length
-      ? 'https://e-com-app-xfqq.onrender.com/' + this.Product.photos[0].imageName
+      ? this.Product.photos[0].imageName
       : 'assets/no-image.png';
   }
 
   changeMainImage(img: string) {
-    this.mainImage = 'https://e-com-app-xfqq.onrender.com/' + img;
+    this.mainImage = img;
   }
 
   SetBasketValue() { this.basketService.addItemToBasket(this.Product); }

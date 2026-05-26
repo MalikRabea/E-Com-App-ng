@@ -18,7 +18,7 @@
         <!-- Main Image -->
         <div class="main-image-wrap">
           <img
-            [src]="'https://e-com-app-xfqq.onrender.com/' + MainImage"
+            [src]="MainImage"
             [alt]="product?.name"
             class="main-image"
             onerror="this.src='assets/no-image.png'"
@@ -38,7 +38,7 @@
               (click)="ReplaceImage(item.imageName)"
             >
               <img
-                src="https://e-com-app-xfqq.onrender.com/{{ item.imageName }}"
+                [src]="item.imageName"
                 [alt]="product?.name"
               />
             </div>

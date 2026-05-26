@@ -147,7 +147,7 @@
       <div class="qv-content">
         <div class="qv-image">
           <img
-            [src]="'https://e-com-app-xfqq.onrender.com/' + quickViewProduct.photos?.[0]?.imageName"
+            [src]="quickViewProduct.photos?.[0]?.imageName"
             [alt]="quickViewProduct.name"
             onerror="this.src='assets/no-image.png'"
           />

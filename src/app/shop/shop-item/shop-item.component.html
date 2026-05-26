@@ -29,11 +29,11 @@
     <div class="thumbnail-strip" *ngIf="Product.photos?.length > 1">
       <img
         *ngFor="let item of Product.photos | slice:0:4"
-        [src]="'https://e-com-app-xfqq.onrender.com/' + item.imageName"
+        [src]="item.imageName"
         [alt]="Product.name"
         class="thumbnail"
         (click)="changeMainImage(item.imageName)"
-        [class.active]="mainImage.endsWith(item.imageName)"
+        [class.active]="mainImage === item.imageName"
       />
     </div>
   </div>
