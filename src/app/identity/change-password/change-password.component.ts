@@ -1,8 +1,20 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { IdentityService } from '../identity.service';
+
+function passwordMatchValidator(): ValidatorFn {
+  return (form: AbstractControl): ValidationErrors | null => {
+    const np = form.get('newPassword')?.value;
+    const cp = form.get('confirmPassword')?.value;
+    if (np && cp && np !== cp) {
+      form.get('confirmPassword')?.setErrors({ mismatch: true });
+      return { mismatch: true };
+    }
+    return null;
+  };
+}
 
 @Component({
   selector: 'app-change-password',
@@ -22,17 +34,10 @@ export class ChangePasswordComponent {
   ) {
     this.form = this.fb.group({
       currentPassword: ['', Validators.required],
-      newPassword: ['', [Validators.required, Validators.minLength(6),
+      newPassword: ['', [Validators.required,
         Validators.pattern(/^(?=.*[0-9])(?=.*[#$@!.\-])[A-Za-z\d#$@!.\-]{8,}$/)]],
       confirmPassword: ['', Validators.required],
-    }, { validators: this.passwordMatchValidator });
-  }
-
-  passwordMatchValidator(form: FormGroup) {
-    const np = form.get('newPassword')?.value;
-    const cp = form.get('confirmPassword')?.value;
-    if (np !== cp) form.get('confirmPassword')?.setErrors({ mismatch: true });
-    else form.get('confirmPassword')?.setErrors(null);
+    }, { validators: passwordMatchValidator() });
   }
 
   get currentPassword() { return this.form.get('currentPassword'); }

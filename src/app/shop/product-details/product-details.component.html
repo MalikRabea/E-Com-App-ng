@@ -82,7 +82,7 @@
         <div class="divider"></div>
 
         <!-- Stock indicator -->
-        <div class="pd-stock" *ngIf="product?.stockQuantity !== undefined">
+        <div class="pd-stock" *ngIf="product?.id">
           <span class="material-icons stock-icon"
                 [style.color]="product.stockQuantity > 0 ? 'var(--color-success)' : 'var(--color-danger)'">
             {{ product.stockQuantity > 0 ? 'check_circle' : 'cancel' }}
