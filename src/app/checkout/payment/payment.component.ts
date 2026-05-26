@@ -55,21 +55,22 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     const isDark = document.documentElement.classList.contains('dark');
-    const bg   = isDark ? '#1e293b' : '#ffffff';
-    const text = isDark ? '#f1f5f9' : '#1e293b';
+    const bg          = isDark ? '#0a0f1e' : '#ffffff';
+    const text        = isDark ? '#f1f5f9' : '#1e293b';
     const placeholder = isDark ? '#64748b' : '#94a3b8';
 
     const elements = this.stripe.elements({
       appearance: {
         theme: isDark ? 'night' : 'stripe',
         variables: {
-          colorText:        text,
-          colorBackground:  bg,
-          colorPrimary:     '#2563eb',
-          colorDanger:      '#ef4444',
-          fontFamily:       "'Inter', -apple-system, sans-serif",
-          borderRadius:     '8px',
+          colorText:            text,
+          colorBackground:      bg,
+          colorPrimary:         '#2563eb',
+          colorDanger:          '#ef4444',
+          fontFamily:           "'Inter', -apple-system, sans-serif",
+          borderRadius:         '12px',
           colorTextPlaceholder: placeholder,
+          fontSizeBase:         '15px',
         },
         rules: {
           '.Input': {
@@ -77,8 +78,9 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
             backgroundColor: bg,
             border:          'none',
             boxShadow:       'none',
-            padding:         '8px 14px',
+            padding:         '11px 16px',
             fontSize:        '15px',
+            lineHeight:      '1.6',
           },
           '.Input:focus': {
             border:    'none',
