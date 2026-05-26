@@ -44,7 +44,7 @@
                 <div class="item-product">
                   <a routerLink="/shop/product-details/{{ item.id }}" class="item-image-link">
                     <img
-                      src="https://e-com-app-xfqq.onrender.com/{{ item.image }}"
+                      [src]="item.image"
                       [alt]="item.name"
                       class="item-image"
                       onerror="this.src='assets/no-image.png'"
