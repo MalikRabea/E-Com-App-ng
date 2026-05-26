@@ -145,26 +145,56 @@
         <a routerLink="/shop" class="btn btn-outline btn-sm">See All</a>
       </div>
 
-      <div class="featured-grid">
-        <a *ngFor="let product of featuredProducts"
-           routerLink="/shop"
-           class="featured-card">
-          <div class="featured-img-wrap">
-            <img [src]="product.image" [alt]="product.name" class="featured-img"/>
-            <div class="featured-discount">
-              <span class="material-icons" style="font-size:13px">local_offer</span>
-              {{ product.price }} OFF
+      <!-- Skeleton while loading -->
+      <div class="fp-grid" *ngIf="featuredLoading">
+        <div class="fp-card fp-skeleton" *ngFor="let s of skeletons">
+          <div class="fp-img-wrap skeleton"></div>
+          <div class="fp-body">
+            <div class="skeleton fp-sk-line" style="width:55%;height:11px"></div>
+            <div class="skeleton fp-sk-line" style="width:85%;height:15px;margin-top:7px"></div>
+            <div class="skeleton fp-sk-line" style="width:40%;height:19px;margin-top:10px"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real products from API -->
+      <div class="fp-grid" *ngIf="!featuredLoading">
+        <a *ngFor="let product of featuredProducts; let i = index"
+           [routerLink]="'/shop/product-details/' + product.id"
+           class="fp-card"
+           [style.animation-delay]="(i * 55) + 'ms'">
+
+          <div class="fp-img-wrap">
+            <img *ngIf="product.photos?.length > 0"
+                 [src]="imgUrl + product.photos[0].imageName"
+                 [alt]="product.name"
+                 class="fp-img" />
+            <img *ngIf="!product.photos?.length"
+                 src="assets/no-image.png"
+                 [alt]="product.name"
+                 class="fp-img" />
+
+            <div class="fp-discount-badge" *ngIf="getDiscount(product) > 0">
+              -{{ getDiscount(product) }}%
+            </div>
+
+            <div class="fp-overlay">
+              <button class="btn btn-primary btn-sm fp-cart-btn"
+                      (click)="addToBasket(product, $event)">
+                <span class="material-icons">shopping_cart</span>
+                Add to Cart
+              </button>
             </div>
           </div>
-          <div class="featured-info">
-            <h3 class="featured-name">{{ product.name }}</h3>
-            <div class="featured-rating">
-              <span class="material-icons" style="font-size:14px;color:var(--color-accent)">star</span>
-              <span class="material-icons" style="font-size:14px;color:var(--color-accent)">star</span>
-              <span class="material-icons" style="font-size:14px;color:var(--color-accent)">star</span>
-              <span class="material-icons" style="font-size:14px;color:var(--color-accent)">star</span>
-              <span class="material-icons" style="font-size:14px;color:var(--color-border)">star</span>
-              <span class="featured-rating-text">4.0</span>
+
+          <div class="fp-body">
+            <p class="fp-category">{{ product.categoryName }}</p>
+            <h3 class="fp-name">{{ product.name }}</h3>
+            <div class="fp-price">
+              <span class="fp-new">{{ product.newPrice | currency }}</span>
+              <span class="fp-old" *ngIf="product.oldPrice > product.newPrice">
+                {{ product.oldPrice | currency }}
+              </span>
             </div>
           </div>
         </a>

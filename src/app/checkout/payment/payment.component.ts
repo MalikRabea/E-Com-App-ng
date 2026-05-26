@@ -52,17 +52,32 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.stripe = Stripe(
       'pk_test_51RxEIVDvC6EKzEmV1feScZWUPexKRzuZiwaqWiA4i79Y9SuSamynaWlbEHGUGjkuJf5imhyjbmGMrOlXEa93Hy9000jKAOE6ov'
     );
-    const element = this.stripe.elements();
+    const elements = this.stripe.elements();
 
-    this.cardNumber = element.create('cardNumber');
+    const style = {
+      base: {
+        color: '#1e293b',
+        fontSize: '15px',
+        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+        fontSmoothing: 'antialiased',
+        '::placeholder': { color: '#94a3b8' },
+        iconColor: '#64748b',
+      },
+      invalid: {
+        color: '#ef4444',
+        iconColor: '#ef4444',
+      },
+    };
+
+    this.cardNumber = elements.create('cardNumber', { style });
     this.cardNumber.mount(this.cardNumberElement.nativeElement);
     this.cardNumber.addEventListener('change', this.cardHandler);
 
-    this.cardExpiry = element.create('cardExpiry');
+    this.cardExpiry = elements.create('cardExpiry', { style });
     this.cardExpiry.mount(this.cardExpiryElement.nativeElement);
     this.cardExpiry.addEventListener('change', this.cardHandler);
 
-    this.cardCvc = element.create('cardCvc');
+    this.cardCvc = elements.create('cardCvc', { style });
     this.cardCvc.mount(this.cardCvcElement.nativeElement);
     this.cardCvc.addEventListener('change', this.cardHandler);
   }

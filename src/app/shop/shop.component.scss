@@ -223,6 +223,57 @@
   padding-bottom: 40px;
 }
 
+/* ngx-bootstrap pagination override */
+::ng-deep .pagination {
+  display: flex !important;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-wrap: wrap;
+
+  .page-item {
+    .page-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 38px;
+      height: 38px;
+      padding: 0 12px;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--color-border);
+      color: var(--color-text);
+      font-weight: 500;
+      font-size: 0.875rem;
+      text-decoration: none;
+      background: var(--color-surface);
+      transition: var(--transition);
+      cursor: pointer;
+
+      &:hover {
+        border-color: var(--color-primary);
+        color: var(--color-primary);
+        background: rgba(37, 99, 235, 0.06);
+      }
+    }
+
+    &.active .page-link {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: #fff;
+    }
+
+    &.disabled {
+      .page-link {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+    }
+  }
+}
+
 /* ── Quick View ── */
 .quick-view-box {
   padding: 0;
