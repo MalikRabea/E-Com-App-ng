@@ -113,6 +113,11 @@
       </div>
 
       <div class="form-group">
+        <label class="form-label">Stock Quantity</label>
+        <input type="number" class="form-control" [(ngModel)]="form.stockQuantity" placeholder="0" min="0" />
+      </div>
+
+      <div class="form-group">
         <label class="form-label">
           Product Photos {{ editMode ? '(leave empty to keep current)' : '*' }}
         </label>

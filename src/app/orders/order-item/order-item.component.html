@@ -14,6 +14,21 @@
     </a>
   </div>
 
+  <!-- Tracking Timeline -->
+  <div class="tracking-timeline" *ngIf="order.status !== 'PaymentFailed' && order.status !== 'PaymentFaild'">
+    @for (step of trackingSteps; track $index) {
+      <div class="tracking-step"
+           [class.done]="$index <= getStepIndex(order.status)"
+           [class.active]="$index === getStepIndex(order.status)">
+        <div class="step-circle">
+          <span class="material-icons">{{ step.icon }}</span>
+        </div>
+        <span class="step-label">{{ step.label }}</span>
+        <div class="step-connector" *ngIf="$index < trackingSteps.length - 1"></div>
+      </div>
+    }
+  </div>
+
   <!-- Layout -->
   <div class="order-detail-layout">
 

@@ -26,6 +26,18 @@ export class IdentityService {
    return this.http.post(this.baseURL+"Account/reset-password",param)
   } 
   Logout() {
-  return this.http.post(this.baseURL + "Account/Logout", {}, { withCredentials: true });
-}     
+    return this.http.post(this.baseURL + "Account/Logout", {}, { withCredentials: true });
+  }
+
+  changePassword(currentPassword: string, newPassword: string) {
+    return this.http.post(this.baseURL + "Account/change-password", { currentPassword, newPassword }, { withCredentials: true });
+  }
+
+  getProfile() {
+    return this.http.get<{ email: string; displayName: string }>(this.baseURL + "Account/profile", { withCredentials: true });
+  }
+
+  updateProfile(displayName: string) {
+    return this.http.put(this.baseURL + "Account/profile", { displayName }, { withCredentials: true });
+  }
 }

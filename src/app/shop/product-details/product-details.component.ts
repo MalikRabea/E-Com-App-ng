@@ -36,29 +36,54 @@ export class ProductDetailsComponent implements OnInit {
 
   };
   loading: boolean = false;
-  MainImage: string = 'assets/default.jpg'; // صورة افتراضية
+  MainImage: string = 'assets/default.jpg';
+  recentlyViewed: IProduct[] = [];
+  relatedProducts: IProduct[] = [];
+
+  private readonly RV_KEY = 'recentlyViewed';
+  private readonly RV_MAX = 6;
 
   ngOnInit(): void {
-    this.loadProduct();
+    this.route.paramMap.subscribe(params => {
+      const productId = parseInt(params.get('id') || '0');
+      if (productId) this.loadProduct(productId);
+    });
   }
 
-  loadProduct() {
-    const productId = parseInt(this.route.snapshot.paramMap.get('id') || '0');
-    if (!productId) return;
-
+  loadProduct(productId: number) {
     this.shopService.getProductDetails(productId).subscribe({
       next: (value: IProduct) => {
         this.product = value;
-        if (this.product.photos?.length > 0) {
-          this.MainImage = this.product.photos[0].imageName;
-        } else {
-          this.MainImage = 'assets/default.jpg'; // صورة بديلة لو ما في صور
-        }
+        this.MainImage = this.product.photos?.length > 0
+          ? this.product.photos[0].imageName
+          : 'assets/default.jpg';
+        this.saveRecentlyViewed(value);
+        this.loadRecentlyViewed(value.id);
+        this.loadRelatedProducts(productId);
       },
       error: (err) => {
         console.error(err);
         this.toast.error('Error loading product details', 'Error');
       }
+    });
+  }
+
+  private saveRecentlyViewed(product: IProduct) {
+    const stored: IProduct[] = JSON.parse(localStorage.getItem(this.RV_KEY) || '[]');
+    const filtered = stored.filter(p => p.id !== product.id);
+    filtered.unshift(product);
+    localStorage.setItem(this.RV_KEY, JSON.stringify(filtered.slice(0, this.RV_MAX)));
+  }
+
+  private loadRecentlyViewed(currentId: number) {
+    const stored: IProduct[] = JSON.parse(localStorage.getItem(this.RV_KEY) || '[]');
+    this.recentlyViewed = stored.filter(p => p.id !== currentId).slice(0, 4);
+  }
+
+  private loadRelatedProducts(productId: number) {
+    this.shopService.getRelatedProducts(productId).subscribe({
+      next: (products) => { this.relatedProducts = products; },
+      error: () => {}
     });
   }
 

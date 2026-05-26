@@ -9,7 +9,7 @@
     categoryName: string
     rating?:number
     soldCount: number;
-
+    stockQuantity: number;
   }
   
   export interface IPhoto {

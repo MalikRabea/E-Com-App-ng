@@ -1,0 +1,66 @@
+<div class="profile-page page-enter page-content">
+  <div class="container" style="max-width:600px">
+
+    <h1 class="profile-title">
+      <span class="material-icons">account_circle</span>
+      My Profile
+    </h1>
+
+    <!-- Skeleton -->
+    @if (loading) {
+      <div class="profile-card">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="skeleton" style="height:24px;width:60%;border-radius:8px"></div>
+          <div class="skeleton" style="height:20px;width:80%;border-radius:8px"></div>
+        </div>
+      </div>
+    }
+
+    @if (!loading && profile) {
+      <!-- Avatar + info -->
+      <div class="profile-card">
+        <div class="profile-avatar">{{ profile.displayName?.charAt(0)?.toUpperCase() }}</div>
+        <div class="profile-info">
+          <div class="profile-name">{{ profile.displayName }}</div>
+          <div class="profile-email">{{ profile.email }}</div>
+        </div>
+      </div>
+
+      <!-- Edit Display Name -->
+      <div class="profile-section">
+        <h2>Edit Name</h2>
+        <div class="form-group">
+          <label class="form-label">Display Name</label>
+          <input type="text" class="form-input" [(ngModel)]="displayName" placeholder="Your name" />
+        </div>
+        <button class="btn btn-primary" (click)="save()" [disabled]="saving || !displayName.trim()">
+          <span class="material-icons" *ngIf="!saving">save</span>
+          <span *ngIf="saving" class="spinner-sm"></span>
+          {{ saving ? 'Saving...' : 'Save Changes' }}
+        </button>
+      </div>
+
+      <!-- Quick links -->
+      <div class="profile-section">
+        <h2>Account</h2>
+        <div class="profile-links">
+          <a routerLink="/Account/change-password" class="profile-link">
+            <span class="material-icons">lock_reset</span>
+            Change Password
+            <span class="material-icons ml-auto">chevron_right</span>
+          </a>
+          <a routerLink="/orders" class="profile-link">
+            <span class="material-icons">inventory_2</span>
+            My Orders
+            <span class="material-icons ml-auto">chevron_right</span>
+          </a>
+          <a routerLink="/favorite" class="profile-link">
+            <span class="material-icons">favorite</span>
+            Wishlist
+            <span class="material-icons ml-auto">chevron_right</span>
+          </a>
+        </div>
+      </div>
+    }
+  </div>
+</div>

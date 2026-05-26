@@ -42,6 +42,16 @@ export class ShopService {
     return this.http.get<IReview[]>(this.baseURL + 'Ratings/get-rating/' + id);
   }
   getBestSellers() {
-  return this.http.get<IProduct[]>(this.baseURL + 'Products/best-sellers');
-}
+    return this.http.get<IProduct[]>(this.baseURL + 'Products/best-sellers');
+  }
+
+  getRelatedProducts(id: number) {
+    return this.http.get<IProduct[]>(this.baseURL + 'Products/related/' + id);
+  }
+
+  getSearchSuggestions(term: string) {
+    return this.http.get<IPagnation>(this.baseURL + 'Products/get-all', {
+      params: { Search: term, pageNumber: 1, pageSize: 5 }
+    });
+  }
 }

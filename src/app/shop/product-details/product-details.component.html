@@ -81,6 +81,18 @@
 
         <div class="divider"></div>
 
+        <!-- Stock indicator -->
+        <div class="pd-stock" *ngIf="product?.stockQuantity !== undefined">
+          <span class="material-icons stock-icon"
+                [style.color]="product.stockQuantity > 0 ? 'var(--color-success)' : 'var(--color-danger)'">
+            {{ product.stockQuantity > 0 ? 'check_circle' : 'cancel' }}
+          </span>
+          <span [style.color]="product.stockQuantity > 0 ? 'var(--color-success)' : 'var(--color-danger)'"
+                style="font-size:0.85rem;font-weight:600">
+            {{ product.stockQuantity > 0 ? product.stockQuantity + ' in stock' : 'Out of stock' }}
+          </span>
+        </div>
+
         <!-- Description -->
         <p class="pd-description">{{ product?.description }}</p>
 
@@ -174,6 +186,60 @@
           }
         </div>
       </div>
+    }
+
+    <!-- Related Products -->
+    @if (relatedProducts.length > 0) {
+      <section class="rv-section">
+        <h2 class="rv-title">
+          <span class="material-icons">grid_view</span>
+          You May Also Like
+        </h2>
+        <div class="rv-strip">
+          @for (item of relatedProducts; track item.id) {
+            <a class="rv-card" [routerLink]="['/product-details', item.id]">
+              <div class="rv-img-wrap">
+                <img
+                  [src]="item.photos?.[0]?.imageName || 'assets/no-image.png'"
+                  [alt]="item.name"
+                  onerror="this.src='assets/no-image.png'"
+                />
+              </div>
+              <div class="rv-info">
+                <span class="rv-name">{{ item.name }}</span>
+                <span class="rv-price">{{ item.newPrice | currency }}</span>
+              </div>
+            </a>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- Recently Viewed -->
+    @if (recentlyViewed.length > 0) {
+      <section class="rv-section">
+        <h2 class="rv-title">
+          <span class="material-icons">history</span>
+          Recently Viewed
+        </h2>
+        <div class="rv-strip">
+          @for (item of recentlyViewed; track item.id) {
+            <a class="rv-card" [routerLink]="['/product-details', item.id]">
+              <div class="rv-img-wrap">
+                <img
+                  [src]="item.photos?.[0]?.imageName || 'assets/no-image.png'"
+                  [alt]="item.name"
+                  onerror="this.src='assets/no-image.png'"
+                />
+              </div>
+              <div class="rv-info">
+                <span class="rv-name">{{ item.name }}</span>
+                <span class="rv-price">{{ item.newPrice | currency }}</span>
+              </div>
+            </a>
+          }
+        </div>
+      </section>
     }
 
   </div>

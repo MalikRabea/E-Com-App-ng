@@ -45,6 +45,20 @@ export class OrderItemComponent implements OnInit {
     }
   }
 
+  readonly trackingSteps = [
+    { key: 'Pending',         label: 'Order Placed',  icon: 'receipt_long' },
+    { key: 'PaymentReceived', label: 'Payment Received', icon: 'payments' },
+    { key: 'Shipped',         label: 'Shipped',       icon: 'local_shipping' },
+    { key: 'Delivered',       label: 'Delivered',     icon: 'done_all' },
+  ];
+
+  getStepIndex(status: string): number {
+    const map: Record<string, number> = {
+      Pending: 0, PaymentReceived: 1, Shipped: 2, Delivered: 3, PaymentFailed: -1
+    };
+    return map[status] ?? 0;
+  }
+
   openRatingModal(productId: number) {
     this.rating = { productId, content: '', stars: 0 };
     this.ratingOpen = true;

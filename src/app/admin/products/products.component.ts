@@ -21,7 +21,7 @@ export class AdminProductsComponent implements OnInit {
   deleteConfirmId: number | null = null;
   editMode = false;
 
-  form = { id: 0, name: '', description: '', newPrice: 0, oldPrice: 0, categoryId: 0 };
+  form = { id: 0, name: '', description: '', newPrice: 0, oldPrice: 0, categoryId: 0, stockQuantity: 0 };
   selectedFiles: File[] = [];
 
   constructor(private adminService: AdminService, private toast: ToastrService) {}
@@ -45,7 +45,7 @@ export class AdminProductsComponent implements OnInit {
 
   openAdd() {
     this.editMode = false;
-    this.form = { id: 0, name: '', description: '', newPrice: 0, oldPrice: 0, categoryId: 0 };
+    this.form = { id: 0, name: '', description: '', newPrice: 0, oldPrice: 0, categoryId: 0, stockQuantity: 0 };
     this.selectedFiles = [];
     this.modalOpen = true;
   }
@@ -54,7 +54,8 @@ export class AdminProductsComponent implements OnInit {
     this.editMode = true;
     this.form = {
       id: p.id, name: p.name, description: p.description,
-      newPrice: p.newPrice, oldPrice: p.oldPrice, categoryId: 0
+      newPrice: p.newPrice, oldPrice: p.oldPrice, categoryId: p.categoryId ?? 0,
+      stockQuantity: p.stockQuantity ?? 0
     };
     this.selectedFiles = [];
     this.modalOpen = true;
@@ -74,6 +75,7 @@ export class AdminProductsComponent implements OnInit {
     fd.append('NewPrice', String(this.form.newPrice));
     fd.append('OldPrice', String(this.form.oldPrice));
     fd.append('CategoryId', String(this.form.categoryId));
+    fd.append('StockQuantity', String(this.form.stockQuantity));
     this.selectedFiles.forEach(f => fd.append('Photo', f));
 
     const req = this.editMode

@@ -1,5 +1,6 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, debounceTime, distinctUntilChanged, switchMap, of } from 'rxjs';
 import { ShopService } from './shop.service';
 import { ICategory } from '../shared/Models/Category';
 import { IPagnation } from '../shared/Models/Pagnation';
@@ -19,6 +20,9 @@ export class ShopComponent implements OnInit {
   ProductParam = new ProductParam();
   loading = true;
   quickViewProduct: IProduct | null = null;
+  suggestions: IProduct[] = [];
+  showSuggestions = false;
+  private searchTerm$ = new Subject<string>();
 
   SortingOption = [
     { name: 'Default',       value: 'Name'     },
@@ -30,6 +34,7 @@ export class ShopComponent implements OnInit {
     private shopService: ShopService,
     private toast: ToastrService,
     private route: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +50,15 @@ export class ShopComponent implements OnInit {
     });
 
     this.getCategory();
+
+    this.searchTerm$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(term => term.length >= 2 ? this.shopService.getSearchSuggestions(term) : of(null))
+    ).subscribe(res => {
+      this.suggestions = res ? res.data.slice(0, 5) : [];
+      this.showSuggestions = this.suggestions.length > 0;
+    });
   }
 
   getAllProduct() {
@@ -79,9 +93,26 @@ export class ShopComponent implements OnInit {
   }
 
   OnSearch(Search: string) {
+    this.showSuggestions = false;
     this.ProductParam.search = Search;
     this.ProductParam.pageNumber = 1;
     this.getAllProduct();
+  }
+
+  onSearchInput(value: string) {
+    this.searchTerm$.next(value);
+    if (!value) this.showSuggestions = false;
+  }
+
+  selectSuggestion(product: IProduct) {
+    this.showSuggestions = false;
+    this.router.navigate(['/shop/product-details', product.id]);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.search-bar')) this.showSuggestions = false;
   }
 
   OnChangePage(event: any) {

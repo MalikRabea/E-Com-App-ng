@@ -88,11 +88,17 @@
           </ng-container>
 
           <ng-container *ngIf="userName">
+            <a routerLink="/Account/profile" class="dropdown-item" (click)="closeDropdown()">
+              <span class="material-icons">account_circle</span> My Profile
+            </a>
             <a routerLink="/orders" class="dropdown-item" (click)="closeDropdown()">
               <span class="material-icons">inventory_2</span> My Orders
             </a>
             <a routerLink="/favorite" class="dropdown-item" (click)="closeDropdown()">
               <span class="material-icons">favorite</span> Wishlist
+            </a>
+            <a routerLink="/Account/change-password" class="dropdown-item" (click)="closeDropdown()">
+              <span class="material-icons">lock_reset</span> Change Password
             </a>
             <ng-container *ngIf="isAdmin">
               <div class="dropdown-divider"></div>

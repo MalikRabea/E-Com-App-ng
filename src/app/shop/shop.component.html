@@ -12,14 +12,16 @@
 
       <!-- Search + Sort Bar -->
       <div class="shop-controls">
-        <div class="search-bar">
+        <div class="search-bar" style="position:relative">
           <span class="material-icons">search</span>
           <input
             #search
             type="text"
             placeholder="Search products..."
             (keyup.enter)="OnSearch(search.value)"
+            (input)="onSearchInput(search.value)"
             [value]="ProductParam.search"
+            autocomplete="off"
           />
           <button class="search-btn" (click)="OnSearch(search.value)">
             <span class="material-icons">arrow_forward</span>
@@ -27,6 +29,25 @@
           <button class="reset-btn" (click)="ResetValue()" *ngIf="ProductParam.search || ProductParam.CategoryId">
             <span class="material-icons">close</span>
           </button>
+
+          <!-- Autocomplete Dropdown -->
+          @if (showSuggestions) {
+            <div class="autocomplete-dropdown">
+              @for (s of suggestions; track s.id) {
+                <div class="autocomplete-item" (click)="selectSuggestion(s)">
+                  <img
+                    [src]="s.photos?.[0]?.imageName || 'assets/no-image.png'"
+                    onerror="this.src='assets/no-image.png'"
+                    class="ac-thumb"
+                  />
+                  <div class="ac-text">
+                    <span class="ac-name">{{ s.name }}</span>
+                    <span class="ac-price">{{ s.newPrice | currency }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          }
         </div>
 
         <select #SortSelected class="form-select sort-select" (change)="SortingByPrice($event)">

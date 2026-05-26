@@ -187,6 +187,86 @@
   }
 }
 
+/* ── Tracking Timeline ── */
+.tracking-timeline {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 2rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.tracking-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+
+  .step-circle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--color-bg-muted);
+    border: 2px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s ease;
+    .material-icons { font-size: 20px; color: var(--color-text-muted); }
+  }
+
+  .step-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    transition: color 0.4s;
+  }
+
+  .step-connector {
+    position: absolute;
+    top: 21px;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background: var(--color-border);
+    z-index: -1;
+    transition: background 0.4s;
+  }
+
+  &.done {
+    .step-circle {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      .material-icons { color: #fff; }
+    }
+    .step-label { color: var(--color-primary); }
+    .step-connector { background: var(--color-primary); }
+  }
+
+  &.active .step-circle {
+    box-shadow: 0 0 0 4px rgba(37,99,235,.2);
+    animation: pulse-ring 1.5s infinite;
+  }
+}
+
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(37,99,235,.4); }
+  70%  { box-shadow: 0 0 0 8px rgba(37,99,235,0); }
+  100% { box-shadow: 0 0 0 0 rgba(37,99,235,0); }
+}
+
 /* Rating Modal */
 .rating-modal {
   max-width: 420px;
