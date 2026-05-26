@@ -1,4 +1,19 @@
-<div class="page-content page-enter" *ngIf="order; else noOrder">
+<!-- Loading skeleton -->
+<div class="page-content page-enter" *ngIf="loading">
+  <div class="orders-header">
+    <div>
+      <div class="skeleton" style="height:32px;width:180px;border-radius:8px"></div>
+      <div class="skeleton" style="height:16px;width:120px;border-radius:6px;margin-top:8px"></div>
+    </div>
+  </div>
+  <div class="skeleton" style="height:100px;width:100%;border-radius:16px;margin-bottom:1.5rem"></div>
+  <div class="order-detail-layout">
+    <div class="skeleton" style="height:300px;border-radius:16px"></div>
+    <div class="skeleton" style="height:260px;border-radius:16px"></div>
+  </div>
+</div>
+
+<div class="page-content page-enter" *ngIf="!loading && order; else noOrder">
 
   <div class="orders-header">
     <div>
@@ -115,7 +130,7 @@
 </div>
 
 <ng-template #noOrder>
-  <div class="page-content empty-state">
+  <div class="page-content empty-state" *ngIf="!loading">
     <span class="material-icons empty-icon">error_outline</span>
     <h2>Order not found</h2>
     <p>This order doesn't exist or you're not logged in.</p>

@@ -268,10 +268,24 @@
   100% { box-shadow: 0 0 0 0 rgba(37,99,235,0); }
 }
 
+/* Skeleton */
+.skeleton {
+  background: linear-gradient(90deg, var(--color-border) 25%, var(--color-bg) 50%, var(--color-border) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
 /* Rating Modal */
 .rating-modal {
   max-width: 420px;
   width: 90%;
+  padding: 1.75rem 2rem;
+  position: relative;
 }
 
 .modal-close-btn {

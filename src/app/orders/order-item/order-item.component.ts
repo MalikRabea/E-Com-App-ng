@@ -14,6 +14,7 @@ import { environment } from '../../../environments/environment';
 export class OrderItemComponent implements OnInit {
   order: IOrder | null = null;
   id: number = 0;
+  loading = true;
   ratingOpen = false;
   imgUrl = environment.imageUrl;
 
@@ -33,8 +34,12 @@ export class OrderItemComponent implements OnInit {
 
     if (this.id) {
       this._service.getCurrentOrderForUser(this.id).subscribe({
-        next: (response) => (this.order = response),
+        next: (response) => {
+          this.order = response;
+          this.loading = false;
+        },
         error: (err) => {
+          this.loading = false;
           if (err.status === 401) {
             this.router.navigate(['/Account/Login'], {
               queryParams: { returnUrl: `/orders?id=${this.id}` },
@@ -42,6 +47,8 @@ export class OrderItemComponent implements OnInit {
           }
         },
       });
+    } else {
+      this.loading = false;
     }
   }
 

@@ -54,21 +54,27 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
       'pk_test_51RxEIVDvC6EKzEmV1feScZWUPexKRzuZiwaqWiA4i79Y9SuSamynaWlbEHGUGjkuJf5imhyjbmGMrOlXEa93Hy9000jKAOE6ov'
     );
 
+    const isDark = document.documentElement.classList.contains('dark');
+    const bg   = isDark ? '#1e293b' : '#ffffff';
+    const text = isDark ? '#f1f5f9' : '#1e293b';
+    const placeholder = isDark ? '#64748b' : '#94a3b8';
+
     const elements = this.stripe.elements({
       appearance: {
-        theme: 'stripe',
+        theme: isDark ? 'night' : 'stripe',
         variables: {
-          colorText:        '#000000',
-          colorBackground:  '#ffffff',
+          colorText:        text,
+          colorBackground:  bg,
           colorPrimary:     '#2563eb',
           colorDanger:      '#ef4444',
           fontFamily:       "'Inter', -apple-system, sans-serif",
           borderRadius:     '8px',
+          colorTextPlaceholder: placeholder,
         },
         rules: {
           '.Input': {
-            color:           '#000000',
-            backgroundColor: '#ffffff',
+            color:           text,
+            backgroundColor: bg,
             border:          'none',
             boxShadow:       'none',
             padding:         '8px 14px',
