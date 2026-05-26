@@ -261,8 +261,8 @@
 
           <div class="qv-price">
             <span class="qv-new-price">{{ quickViewProduct.newPrice | currency }}</span>
-            <span class="qv-old-price">{{ quickViewProduct.oldPrice | currency }}</span>
-            <span class="qv-discount">
+            <span class="qv-old-price" *ngIf="quickViewProduct.oldPrice > quickViewProduct.newPrice">{{ quickViewProduct.oldPrice | currency }}</span>
+            <span class="qv-discount" *ngIf="quickViewProduct.oldPrice > quickViewProduct.newPrice">
               {{ ((quickViewProduct.oldPrice - quickViewProduct.newPrice) / quickViewProduct.oldPrice * 100) | number:'1.0-0' }}% OFF
             </span>
           </div>

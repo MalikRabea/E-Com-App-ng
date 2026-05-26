@@ -125,7 +125,8 @@
 }
 
 /* Summary */
-.order-summary-card { position: sticky; top: calc(var(--navbar-h) + 1rem); }
+.order-items-card { padding: 24px; }
+.order-summary-card { position: sticky; top: calc(var(--navbar-h) + 1rem); padding: 24px; }
 
 .summary-rows { display: flex; flex-direction: column; gap: 0; }
 
