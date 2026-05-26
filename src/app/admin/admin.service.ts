@@ -51,4 +51,20 @@ export class AdminService {
   deleteCategory(id: number) {
     return this.http.delete(`${this.base}Category/delete-category/${id}`, { withCredentials: true });
   }
+
+  updateOrderStatus(id: number, status: string) {
+    return this.http.patch(`${this.base}Admin/orders/${id}/status`, { status }, { withCredentials: true });
+  }
+
+  getUsers() {
+    return this.http.get<any[]>(`${this.base}Admin/users`, { withCredentials: true });
+  }
+
+  deleteUser(id: string) {
+    return this.http.delete(`${this.base}Admin/users/${id}`, { withCredentials: true });
+  }
+
+  getMonthlySales() {
+    return this.http.get<any[]>(`${this.base}Admin/monthly-sales`, { withCredentials: true });
+  }
 }

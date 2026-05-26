@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../admin.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-orders',
@@ -12,10 +13,12 @@ export class AdminOrdersComponent implements OnInit {
   totalCount = 0;
   page = 1;
   pageSize = 10;
-
   detailOrder: any = null;
+  updatingStatus = false;
 
-  constructor(private adminService: AdminService) {}
+  readonly allStatuses = ['Pending', 'PaymentReceived', 'PaymentFailed', 'Shipped', 'Delivered'];
+
+  constructor(private adminService: AdminService, private toast: ToastrService) {}
 
   ngOnInit() { this.load(); }
 
@@ -31,8 +34,26 @@ export class AdminOrdersComponent implements OnInit {
     });
   }
 
-  openDetail(order: any) { this.detailOrder = order; }
+  openDetail(order: any) { this.detailOrder = { ...order }; }
   closeDetail() { this.detailOrder = null; }
+
+  changeStatus(newStatus: string) {
+    if (!this.detailOrder || this.updatingStatus) return;
+    this.updatingStatus = true;
+    this.adminService.updateOrderStatus(this.detailOrder.id, newStatus).subscribe({
+      next: () => {
+        this.detailOrder.status = newStatus;
+        const idx = this.orders.findIndex(o => o.id === this.detailOrder.id);
+        if (idx !== -1) this.orders[idx].status = newStatus;
+        this.toast.success('Order status updated', 'Success');
+        this.updatingStatus = false;
+      },
+      error: () => {
+        this.toast.error('Failed to update status', 'Error');
+        this.updatingStatus = false;
+      },
+    });
+  }
 
   onPageChange(p: number) { this.page = p; this.load(); }
   get totalPages() { return Math.ceil(this.totalCount / this.pageSize); }
@@ -40,18 +61,22 @@ export class AdminOrdersComponent implements OnInit {
 
   statusClass(status: string) {
     const map: Record<string, string> = {
-      Pending: 'status-pending',
+      Pending:         'status-pending',
       PaymentReceived: 'status-success',
-      PaymentFailed: 'status-failed',
+      PaymentFailed:   'status-failed',
+      Shipped:         'status-shipped',
+      Delivered:       'status-delivered',
     };
     return map[status] ?? 'status-pending';
   }
 
   statusLabel(status: string) {
     const map: Record<string, string> = {
-      Pending: 'Pending',
+      Pending:         'Pending',
       PaymentReceived: 'Paid',
-      PaymentFailed: 'Failed',
+      PaymentFailed:   'Failed',
+      Shipped:         'Shipped',
+      Delivered:       'Delivered',
     };
     return map[status] ?? status;
   }

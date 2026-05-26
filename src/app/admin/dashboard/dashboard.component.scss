@@ -142,9 +142,55 @@
   white-space: nowrap;
   .material-icons { font-size: 13px; }
 
-  &.status-success { background: rgba(16,185,129,.12); color: #059669; }
-  &.status-failed  { background: rgba(239,68,68,.12);  color: #dc2626; }
-  &.status-pending { background: rgba(245,158,11,.12); color: #d97706; }
+  &.status-success   { background: rgba(16,185,129,.12);  color: #059669; }
+  &.status-failed    { background: rgba(239,68,68,.12);   color: #dc2626; }
+  &.status-pending   { background: rgba(245,158,11,.12);  color: #d97706; }
+  &.status-shipped   { background: rgba(59,130,246,.12);  color: #2563eb; }
+  &.status-delivered { background: rgba(139,92,246,.12);  color: #7c3aed; }
+}
+
+/* ── Chart ── */
+.chart-card { margin-bottom: 24px; }
+
+.chart-body { padding: 24px 20px 16px; }
+
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  height: 160px;
+}
+
+.chart-bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.bar-value {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  text-align: center;
+}
+
+.bar-fill {
+  width: 100%;
+  background: linear-gradient(180deg, var(--color-primary) 0%, rgba(37,99,235,.4) 100%);
+  border-radius: 6px 6px 0 0;
+  transition: height 0.6s cubic-bezier(.4,0,.2,1);
+  min-height: 4px;
+}
+
+.bar-month {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
 }
 
 .empty-table {

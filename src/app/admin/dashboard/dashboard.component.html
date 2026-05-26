@@ -48,6 +48,22 @@
     </div>
   </div>
 
+  <!-- Monthly Sales Chart -->
+  <div class="section-card chart-card" *ngIf="!loading && monthlySales.length > 0">
+    <div class="section-card-header">
+      <h2><span class="material-icons">bar_chart</span> Revenue — Last 6 Months</h2>
+    </div>
+    <div class="chart-body">
+      <div class="chart-bars">
+        <div class="chart-bar-col" *ngFor="let m of monthlySales">
+          <span class="bar-value">{{ m.revenue | currency:'USD':'symbol':'1.0-0' }}</span>
+          <div class="bar-fill" [style.height.%]="getBarHeight(m.revenue)"></div>
+          <span class="bar-month">{{ getMonthName(m.month) }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Recent Orders -->
   <div class="section-card" *ngIf="!loading && stats">
     <div class="section-card-header">

@@ -105,9 +105,16 @@
       <div class="detail-meta">
         <div class="meta-item">
           <span class="meta-label">Status</span>
-          <span class="status-chip" [ngClass]="statusClass(detailOrder.status)">
-            {{ statusLabel(detailOrder.status) }}
-          </span>
+          <div class="status-change-row">
+            <span class="status-chip" [ngClass]="statusClass(detailOrder.status)">
+              {{ statusLabel(detailOrder.status) }}
+            </span>
+            <select class="status-select" [(ngModel)]="detailOrder.status"
+                    (change)="changeStatus(detailOrder.status)"
+                    [disabled]="updatingStatus">
+              <option *ngFor="let s of allStatuses" [value]="s">{{ statusLabel(s) }}</option>
+            </select>
+          </div>
         </div>
         <div class="meta-item">
           <span class="meta-label">Date</span>

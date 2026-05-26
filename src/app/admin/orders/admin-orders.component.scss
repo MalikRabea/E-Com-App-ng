@@ -65,9 +65,31 @@
   text-transform: uppercase;
   letter-spacing: 0.4px;
 
-  &.status-success { background: rgba(16,185,129,0.12); color: #059669; }
-  &.status-failed  { background: rgba(239,68,68,0.12);  color: #dc2626; }
-  &.status-pending { background: rgba(245,158,11,0.12); color: #d97706; }
+  &.status-success   { background: rgba(16,185,129,0.12);  color: #059669; }
+  &.status-failed    { background: rgba(239,68,68,0.12);   color: #dc2626; }
+  &.status-pending   { background: rgba(245,158,11,0.12);  color: #d97706; }
+  &.status-shipped   { background: rgba(59,130,246,0.12);  color: #2563eb; }
+  &.status-delivered { background: rgba(139,92,246,0.12);  color: #7c3aed; }
+}
+
+.status-change-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.status-select {
+  padding: 4px 8px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 0.8rem;
+  cursor: pointer;
+  outline: none;
+  &:focus { border-color: var(--color-primary); }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 
 /* Skeleton lines */

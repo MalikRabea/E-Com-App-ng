@@ -1,0 +1,84 @@
+<div class="admin-section page-enter">
+
+  <div class="section-top">
+    <div>
+      <h1>Users</h1>
+      <p class="section-sub" *ngIf="!loading">{{ users.length }} registered users</p>
+    </div>
+    <div class="search-wrap">
+      <span class="material-icons search-icon">search</span>
+      <input class="search-input" type="text" placeholder="Search by name or email..."
+             [(ngModel)]="search" (input)="onSearch()" />
+    </div>
+  </div>
+
+  <!-- Skeleton -->
+  <div class="users-table-wrap" *ngIf="loading">
+    <table class="data-table">
+      <thead>
+        <tr><th>User</th><th>Email</th><th>Role</th><th></th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of [1,2,3,4,5,6]">
+          <td><div class="skeleton sk-line w50"></div></td>
+          <td><div class="skeleton sk-line w70"></div></td>
+          <td><div class="skeleton sk-line w30"></div></td>
+          <td><div class="skeleton sk-line w20"></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Table -->
+  <div class="users-table-wrap" *ngIf="!loading">
+    <table class="data-table" *ngIf="filtered.length > 0">
+      <thead>
+        <tr>
+          <th>Display Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of filtered">
+          <td>
+            <div class="user-avatar-cell">
+              <div class="user-avatar">{{ user.displayName?.[0]?.toUpperCase() || '?' }}</div>
+              <span class="user-name">{{ user.displayName || '—' }}</span>
+            </div>
+          </td>
+          <td class="td-email">{{ user.email }}</td>
+          <td>
+            <span class="role-chip" [ngClass]="roleClass(user.role)">{{ user.role }}</span>
+          </td>
+          <td class="td-action">
+            <button class="btn btn-danger btn-sm" (click)="confirmDelete(user.id)"
+                    [disabled]="user.role === 'Admin'" title="Delete user">
+              <span class="material-icons">delete</span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="empty-state" *ngIf="filtered.length === 0">
+      <span class="material-icons">people</span>
+      <p>No users found</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Delete Confirm Modal -->
+<div class="modal-overlay" *ngIf="deleteConfirmId" (click)="cancelDelete()">
+  <div class="modal-box confirm-modal" (click)="$event.stopPropagation()">
+    <span class="material-icons confirm-icon">warning</span>
+    <h3>Delete User?</h3>
+    <p>This action cannot be undone. The user's orders and data will remain.</p>
+    <div class="confirm-actions">
+      <button class="btn btn-ghost" (click)="cancelDelete()">Cancel</button>
+      <button class="btn btn-danger" (click)="doDelete()">Delete</button>
+    </div>
+  </div>
+</div>
