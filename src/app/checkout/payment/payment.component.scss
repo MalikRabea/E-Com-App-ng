@@ -48,12 +48,10 @@
 .stripe-field-group { display: flex; flex-direction: column; gap: 0.4rem; }
 
 .stripe-element {
-  min-height: 44px;
   background: var(--color-bg);
   border: 1.5px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: 0;
-  overflow: hidden;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
   &:focus-within {
