@@ -56,12 +56,12 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const style = {
       base: {
-        color: '#1e293b',
+        color: '#000000',
         fontSize: '15px',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
         fontSmoothing: 'antialiased',
-        '::placeholder': { color: '#94a3b8' },
-        iconColor: '#64748b',
+        '::placeholder': { color: '#9ca3af' },
+        iconColor: '#374151',
       },
       invalid: {
         color: '#ef4444',
