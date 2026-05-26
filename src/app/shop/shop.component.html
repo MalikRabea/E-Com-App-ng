@@ -139,7 +139,7 @@
             <!-- Pagination -->
             <div class="pagination-wrap">
               <pagination
-                [(page)]="ProductParam.pageNumber"
+                [(ngModel)]="ProductParam.pageNumber"
                 (pageChanged)="OnChangePage($event.page)"
                 [itemsPerPage]="ProductParam.pageSize"
                 [totalItems]="TotatlCount"
