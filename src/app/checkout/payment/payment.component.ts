@@ -54,18 +54,15 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
       'pk_test_51RxEIVDvC6EKzEmV1feScZWUPexKRzuZiwaqWiA4i79Y9SuSamynaWlbEHGUGjkuJf5imhyjbmGMrOlXEa93Hy9000jKAOE6ov'
     );
 
-    const computed     = getComputedStyle(document.documentElement);
-    const colorText    = computed.getPropertyValue('--color-text').trim()      || '#1e293b';
-    const colorBg      = computed.getPropertyValue('--color-bg').trim()        || '#ffffff';
-    const colorMuted   = computed.getPropertyValue('--color-text-muted').trim()|| '#94a3b8';
-    const isDark       = document.documentElement.classList.contains('dark');
+    const isDark    = document.documentElement.classList.contains('dark');
+    const colorText = isDark ? '#f1f5f9' : '#1e293b';
+    const colorMuted= isDark ? '#94a3b8' : '#64748b';
 
     const elements = this.stripe.elements({
       appearance: {
         theme: isDark ? 'night' : 'stripe',
         variables: {
           colorText,
-          colorBackground:      colorBg,
           colorTextPlaceholder: colorMuted,
           colorPrimary:         '#2563eb',
           colorDanger:          '#ef4444',
