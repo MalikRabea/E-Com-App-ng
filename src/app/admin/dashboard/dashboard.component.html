@@ -1,0 +1,100 @@
+<div class="dash-page page-enter">
+
+  <div class="dash-heading">
+    <h1>Dashboard</h1>
+    <p>Welcome back, Admin 👋</p>
+  </div>
+
+  <!-- Skeleton -->
+  <div class="stats-grid" *ngIf="loading">
+    <div class="stat-card skeleton-card" *ngFor="let s of [1,2,3,4,5,6]">
+      <div class="skeleton sk-icon"></div>
+      <div class="skeleton sk-num"></div>
+      <div class="skeleton sk-label"></div>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid" *ngIf="!loading && stats">
+    <div class="stat-card blue">
+      <span class="material-icons stat-icon">inventory_2</span>
+      <div class="stat-num">{{ stats.totalProducts }}</div>
+      <div class="stat-label">Total Products</div>
+    </div>
+    <div class="stat-card purple">
+      <span class="material-icons stat-icon">category</span>
+      <div class="stat-num">{{ stats.totalCategories }}</div>
+      <div class="stat-label">Categories</div>
+    </div>
+    <div class="stat-card green">
+      <span class="material-icons stat-icon">payments</span>
+      <div class="stat-num">{{ stats.totalRevenue | currency }}</div>
+      <div class="stat-label">Total Revenue</div>
+    </div>
+    <div class="stat-card amber">
+      <span class="material-icons stat-icon">receipt_long</span>
+      <div class="stat-num">{{ stats.totalOrders }}</div>
+      <div class="stat-label">Total Orders</div>
+    </div>
+    <div class="stat-card orange">
+      <span class="material-icons stat-icon">schedule</span>
+      <div class="stat-num">{{ stats.pendingOrders }}</div>
+      <div class="stat-label">Pending Orders</div>
+    </div>
+    <div class="stat-card indigo">
+      <span class="material-icons stat-icon">people</span>
+      <div class="stat-num">{{ stats.totalUsers }}</div>
+      <div class="stat-label">Registered Users</div>
+    </div>
+  </div>
+
+  <!-- Recent Orders -->
+  <div class="section-card" *ngIf="!loading && stats">
+    <div class="section-card-header">
+      <h2><span class="material-icons">receipt_long</span> Recent Orders</h2>
+      <a routerLink="/admin/orders" class="btn btn-outline btn-sm">View All</a>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Customer</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of stats.recentOrders">
+            <td class="order-id">#{{ order.id }}</td>
+            <td class="email-cell">{{ order.buyerEmail }}</td>
+            <td>{{ order.itemCount }} item{{ order.itemCount !== 1 ? 's' : '' }}</td>
+            <td class="amount-cell">{{ order.total | currency }}</td>
+            <td class="date-cell">{{ order.orderDate | date:'MMM d, y' }}</td>
+            <td>
+              <span class="status-chip" [ngClass]="getStatusClass(order.status)">
+                <span class="material-icons">{{ getStatusIcon(order.status) }}</span>
+                {{ getStatusLabel(order.status) }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="empty-table" *ngIf="stats.recentOrders?.length === 0">
+        <span class="material-icons">inbox</span>
+        <p>No orders yet</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error -->
+  <div class="error-state" *ngIf="error">
+    <span class="material-icons">error_outline</span>
+    <h3>Failed to load dashboard data</h3>
+    <p>Make sure you're logged in as Admin.</p>
+  </div>
+
+</div>

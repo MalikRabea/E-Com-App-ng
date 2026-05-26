@@ -274,6 +274,16 @@
   }
 }
 
+.admin-link {
+  color: var(--color-primary) !important;
+  font-weight: 700 !important;
+}
+
+.admin-dropdown-item {
+  color: var(--color-primary) !important;
+  .material-icons { color: var(--color-primary) !important; }
+}
+
 /* ── Mobile Menu Button ── */
 .mobile-menu-btn {
   display: none;

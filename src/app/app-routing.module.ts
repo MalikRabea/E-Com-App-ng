@@ -4,6 +4,7 @@ import { ShopComponent } from './shop/shop.component';
 import { HomeComponent } from './home/home.component';
 import { ProductDetailsComponent } from './shop/product-details/product-details.component';
 import { authGuard } from './guard/auth.guard';
+import { adminGuard } from './guard/admin.guard';
 import { AboutComponent } from './about/about.component';
 import { BestSellersComponent } from './best-sellers/best-sellers.component';
 import { FavoriteComponent } from './favorite/favorite.component';
@@ -40,6 +41,12 @@ const routes: Routes = [
     canActivate:[authGuard]
   },
   
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then((m) => m.AdminModule),
+    canActivate: [adminGuard],
+  },
+
   { path: 'about', component: AboutComponent },
 
   { path: 'best-sellers', component: BestSellersComponent },

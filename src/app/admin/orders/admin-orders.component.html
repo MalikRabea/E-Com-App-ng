@@ -1,0 +1,162 @@
+<div class="admin-section page-enter">
+
+  <div class="section-top">
+    <div>
+      <h1>Orders</h1>
+      <p class="section-sub" *ngIf="!loading">{{ totalCount }} total orders</p>
+    </div>
+  </div>
+
+  <!-- Skeleton -->
+  <div class="orders-table-wrap" *ngIf="loading">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Order ID</th><th>Customer</th><th>Date</th><th>Total</th><th>Status</th><th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of [1,2,3,4,5,6,7,8]">
+          <td><div class="skeleton sk-line w40"></div></td>
+          <td><div class="skeleton sk-line w70"></div></td>
+          <td><div class="skeleton sk-line w50"></div></td>
+          <td><div class="skeleton sk-line w30"></div></td>
+          <td><div class="skeleton sk-line w50"></div></td>
+          <td><div class="skeleton sk-line w30"></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Orders Table -->
+  <div class="orders-table-wrap" *ngIf="!loading">
+    <table class="data-table" *ngIf="orders.length > 0">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Customer</th>
+          <th>Date</th>
+          <th>Items</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders">
+          <td class="td-id">#{{ order.id }}</td>
+          <td>
+            <div class="customer-cell">
+              <span class="customer-name">{{ order.buyerEmail }}</span>
+            </div>
+          </td>
+          <td class="td-date">{{ order.orderDate | date:'MMM d, y' }}</td>
+          <td class="td-items">{{ order.orderItems?.length ?? 0 }} items</td>
+          <td class="td-total">{{ order.total | currency }}</td>
+          <td>
+            <span class="status-chip" [ngClass]="statusClass(order.status)">
+              {{ statusLabel(order.status) }}
+            </span>
+          </td>
+          <td class="td-view">
+            <button class="btn btn-outline btn-sm" (click)="openDetail(order)">
+              <span class="material-icons">visibility</span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="empty-state" *ngIf="orders.length === 0">
+      <span class="material-icons">receipt_long</span>
+      <p>No orders found</p>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-wrap" *ngIf="totalPages > 1">
+    <button class="pg-btn" [disabled]="page === 1" (click)="onPageChange(page - 1)">
+      <span class="material-icons">chevron_left</span>
+    </button>
+    <button *ngFor="let p of pages"
+            class="pg-btn"
+            [class.active]="p === page"
+            (click)="onPageChange(p)">{{ p }}</button>
+    <button class="pg-btn" [disabled]="page === totalPages" (click)="onPageChange(page + 1)">
+      <span class="material-icons">chevron_right</span>
+    </button>
+  </div>
+
+</div>
+
+<!-- Order Detail Modal -->
+<div class="modal-overlay" *ngIf="detailOrder" (click)="closeDetail()">
+  <div class="modal-box order-detail-modal" (click)="$event.stopPropagation()">
+    <div class="modal-head">
+      <h3>Order #{{ detailOrder.id }}</h3>
+      <button class="modal-close" (click)="closeDetail()">
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+
+      <!-- Status & Date -->
+      <div class="detail-meta">
+        <div class="meta-item">
+          <span class="meta-label">Status</span>
+          <span class="status-chip" [ngClass]="statusClass(detailOrder.status)">
+            {{ statusLabel(detailOrder.status) }}
+          </span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Date</span>
+          <span class="meta-val">{{ detailOrder.orderDate | date:'medium' }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Customer</span>
+          <span class="meta-val">{{ detailOrder.buyerEmail }}</span>
+        </div>
+        <div class="meta-item" *ngIf="detailOrder.deliveryMethod">
+          <span class="meta-label">Delivery</span>
+          <span class="meta-val">{{ detailOrder.deliveryMethod?.shortName }} — {{ detailOrder.deliveryMethod?.price | currency }}</span>
+        </div>
+      </div>
+
+      <!-- Shipping Address -->
+      <div class="detail-section" *ngIf="detailOrder.shippingAddress">
+        <h4 class="detail-section-title">
+          <span class="material-icons">location_on</span> Shipping Address
+        </h4>
+        <p class="addr-line">{{ detailOrder.shippingAddress.firstName }} {{ detailOrder.shippingAddress.lastName }}</p>
+        <p class="addr-line">{{ detailOrder.shippingAddress.street }}</p>
+        <p class="addr-line">{{ detailOrder.shippingAddress.city }}, {{ detailOrder.shippingAddress.state }}</p>
+        <p class="addr-line">{{ detailOrder.shippingAddress.zipCode }}</p>
+      </div>
+
+      <!-- Order Items -->
+      <div class="detail-section">
+        <h4 class="detail-section-title">
+          <span class="material-icons">shopping_bag</span> Items
+        </h4>
+        <div class="order-items-list">
+          <div class="order-item-row" *ngFor="let item of detailOrder.orderItems">
+            <img [src]="item.pictureUrl" [alt]="item.productName" class="item-img" onerror="this.src='assets/no-image.png'" />
+            <div class="item-info">
+              <span class="item-name">{{ item.productName }}</span>
+              <span class="item-qty">× {{ item.quantity }}</span>
+            </div>
+            <span class="item-price">{{ item.price | currency }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total -->
+      <div class="detail-total">
+        <span>Total</span>
+        <span class="total-val">{{ detailOrder.total | currency }}</span>
+      </div>
+
+    </div>
+  </div>
+</div>
