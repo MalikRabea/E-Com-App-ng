@@ -1,0 +1,68 @@
+<div class="checkout-step">
+
+  <div class="step-header">
+    <h2>
+      <span class="material-icons">credit_card</span>
+      Payment
+    </h2>
+    <div class="secure-badge">
+      <span class="material-icons">lock</span>
+      Secured by Stripe
+    </div>
+  </div>
+
+  <form [formGroup]="paymentform" class="payment-form">
+
+    <div class="form-group">
+      <label class="form-label">Name on Card</label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="nameOnCard"
+        placeholder="John Doe"
+        [class.is-invalid]="paymentform.get('nameOnCard')?.invalid && paymentform.get('nameOnCard')?.touched"
+      />
+    </div>
+
+    <div class="stripe-fields">
+      <div class="stripe-field-group">
+        <label class="form-label">Card Number</label>
+        <div #cardNumber class="stripe-element form-control"></div>
+      </div>
+      <div class="stripe-field-row">
+        <div class="stripe-field-group">
+          <label class="form-label">Expiry Date</label>
+          <div #cardExpiry class="stripe-element form-control"></div>
+        </div>
+        <div class="stripe-field-group">
+          <label class="form-label">CVC</label>
+          <div #cardCvc class="stripe-element form-control"></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="card-error" *ngIf="cardErrors">
+      <span class="material-icons">error_outline</span>
+      {{ cardErrors }}
+    </p>
+
+    <div class="step-footer">
+      <button type="button" class="btn btn-ghost" matStepperPrevious>
+        <span class="material-icons">arrow_back</span>
+        Back
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary pay-btn"
+        [disabled]="cardErrors != null || paymentform.invalid"
+        (click)="SubmetOrder()"
+      >
+        <span class="material-icons" *ngIf="!loader">payment</span>
+        <span class="spinner" *ngIf="loader"></span>
+        {{ loader ? 'Processing...' : 'Pay Now' }}
+      </button>
+    </div>
+
+  </form>
+
+</div>

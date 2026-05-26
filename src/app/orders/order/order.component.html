@@ -1,0 +1,86 @@
+<div class="page-content page-enter">
+
+  <div class="orders-header">
+    <div>
+      <h1 class="section-title">
+        <span class="material-icons">receipt_long</span>
+        My Orders
+      </h1>
+      <p class="section-sub" *ngIf="orders?.length > 0">{{ orders.length }} order{{ orders.length > 1 ? 's' : '' }}</p>
+    </div>
+    <a routerLink="/shop" class="btn btn-outline">
+      <span class="material-icons">storefront</span>
+      Continue Shopping
+    </a>
+  </div>
+
+  <!-- Empty -->
+  <div class="empty-state" *ngIf="!orders || orders.length === 0">
+    <span class="material-icons empty-icon">shopping_bag</span>
+    <h2>No orders yet</h2>
+    <p>Your orders will appear here after your first purchase</p>
+    <a routerLink="/shop" class="btn btn-primary">
+      <span class="material-icons">storefront</span>
+      Start Shopping
+    </a>
+  </div>
+
+  <!-- Orders List -->
+  <div class="orders-list" *ngIf="orders?.length > 0">
+    <div class="order-card" *ngFor="let item of orders">
+
+      <div class="order-thumb" (click)="openModal(item.orderItems)">
+        <img [src]="getFirstImage(item.orderItems)" alt="Order" />
+        <span class="thumb-more" *ngIf="item.orderItems.length > 1">+{{ item.orderItems.length - 1 }}</span>
+      </div>
+
+      <div class="order-info">
+        <div class="order-id">#{{ item.id }}</div>
+        <div class="order-date">
+          <span class="material-icons">calendar_today</span>
+          {{ item.orderDate | date:'mediumDate' }}
+        </div>
+        <div class="order-items-count">{{ item.orderItems.length }} item{{ item.orderItems.length > 1 ? 's' : '' }}</div>
+      </div>
+
+      <div class="order-status-col">
+        <span class="status-badge" [ngClass]="{
+          'status-pending':  item.status === 'Pending',
+          'status-failed':   item.status === 'PaymentFaild',
+          'status-success':  item.status === 'PaymentReceived'
+        }">
+          <span class="material-icons status-icon">
+            {{ item.status === 'PaymentReceived' ? 'check_circle' : item.status === 'PaymentFaild' ? 'cancel' : 'schedule' }}
+          </span>
+          {{ item.status === 'PaymentReceived' ? 'Paid' : item.status === 'PaymentFaild' ? 'Failed' : 'Pending' }}
+        </span>
+      </div>
+
+      <div class="order-total-col">
+        <div class="order-price">{{ item.total | currency }}</div>
+      </div>
+
+      <div class="order-actions">
+        <a routerLink="/orders/item" [queryParams]="{ id: item.id }" class="btn btn-outline btn-sm">
+          <span class="material-icons">visibility</span>
+          View
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Images Modal (Angular, no Bootstrap) -->
+<div class="modal-overlay" *ngIf="modalOpen" (click)="closeModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <button class="modal-close-btn" (click)="closeModal()">
+      <span class="material-icons">close</span>
+    </button>
+    <h3 class="modal-title">Order Items</h3>
+    <div class="modal-images-grid">
+      <img *ngFor="let url of modalImages" [src]="url" alt="Product" />
+    </div>
+  </div>
+</div>

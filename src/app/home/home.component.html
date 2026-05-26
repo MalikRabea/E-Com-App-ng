@@ -1,0 +1,302 @@
+<div class="home-page page-enter">
+
+  <!-- ══════════════════════════════════════════
+       HERO SECTION
+  ══════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-particles"></div>
+
+    <div class="container hero-content">
+      <div class="hero-text">
+        <span class="hero-badge">
+          <span class="material-icons" style="font-size:14px">bolt</span>
+          New Arrivals 2026
+        </span>
+        <h1 class="hero-title">
+          Discover the <span class="hero-highlight">Latest</span><br>
+          Tech & Electronics
+        </h1>
+        <p class="hero-subtitle">
+          Premium gadgets at unbeatable prices. Free delivery on orders over $100.
+        </p>
+        <div class="hero-actions">
+          <a routerLink="/shop" class="btn btn-primary btn-xl">
+            <span class="material-icons">shopping_bag</span>
+            Shop Now
+          </a>
+          <a routerLink="/best-sellers" class="btn btn-outline hero-outline-btn btn-xl">
+            <span class="material-icons">star</span>
+            Best Sellers
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-num">10K+</span>
+            <span class="stat-label">Products</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-num">50K+</span>
+            <span class="stat-label">Customers</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-num">4.9★</span>
+            <span class="stat-label">Rating</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-card-wrapper">
+          <div class="hero-glow"></div>
+          <img
+            src="https://m.media-amazon.com/images/I/61LdecwlWYL.jpg"
+            alt="Featured Product"
+            class="hero-product-img"
+          />
+          <div class="hero-float-badge">
+            <span class="material-icons">verified</span>
+            Premium Quality
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-indicator">
+      <span class="material-icons">expand_more</span>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       TRUST STRIP
+  ══════════════════════════════════════════ -->
+  <section class="trust-strip">
+    <div class="container trust-items">
+      <div class="trust-item">
+        <span class="material-icons trust-icon">local_shipping</span>
+        <div>
+          <strong>Free Delivery</strong>
+          <span>Orders over $100</span>
+        </div>
+      </div>
+      <div class="trust-item">
+        <span class="material-icons trust-icon">verified_user</span>
+        <div>
+          <strong>2-Year Warranty</strong>
+          <span>On all products</span>
+        </div>
+      </div>
+      <div class="trust-item">
+        <span class="material-icons trust-icon">replay</span>
+        <div>
+          <strong>Easy Returns</strong>
+          <span>30-day policy</span>
+        </div>
+      </div>
+      <div class="trust-item">
+        <span class="material-icons trust-icon">support_agent</span>
+        <div>
+          <strong>24/7 Support</strong>
+          <span>Always here for you</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       CATEGORIES
+  ══════════════════════════════════════════ -->
+  <section class="categories-section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <p class="section-eyebrow">Browse by Category</p>
+          <h2 class="section-title">Shop by Category</h2>
+        </div>
+        <a routerLink="/shop" class="btn btn-outline btn-sm">View All</a>
+      </div>
+
+      <div class="categories-grid">
+        <a *ngFor="let cat of categories" routerLink="/shop" [queryParams]="{category: cat.id}" class="category-card">
+          <div class="cat-icon-wrap" [style.background]="cat.color">
+            <span class="material-icons">{{ cat.icon }}</span>
+          </div>
+          <span class="cat-name">{{ cat.name }}</span>
+          <span class="cat-count">{{ cat.count }} items</span>
+          <span class="material-icons cat-arrow">arrow_forward</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       FEATURED PRODUCTS
+  ══════════════════════════════════════════ -->
+  <section class="featured-section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <p class="section-eyebrow">Handpicked For You</p>
+          <h2 class="section-title">Featured Products</h2>
+        </div>
+        <a routerLink="/shop" class="btn btn-outline btn-sm">See All</a>
+      </div>
+
+      <div class="featured-grid">
+        <a *ngFor="let product of featuredProducts"
+           routerLink="/shop"
+           class="featured-card">
+          <div class="featured-img-wrap">
+            <img [src]="product.image" [alt]="product.name" class="featured-img"/>
+            <div class="featured-discount">
+              <span class="material-icons" style="font-size:13px">local_offer</span>
+              {{ product.price }} OFF
+            </div>
+          </div>
+          <div class="featured-info">
+            <h3 class="featured-name">{{ product.name }}</h3>
+            <div class="featured-rating">
+              <span class="material-icons" style="font-size:14px;color:var(--color-accent)">star</span>
+              <span class="material-icons" style="font-size:14px;color:var(--color-accent)">star</span>
+              <span class="material-icons" style="font-size:14px;color:var(--color-accent)">star</span>
+              <span class="material-icons" style="font-size:14px;color:var(--color-accent)">star</span>
+              <span class="material-icons" style="font-size:14px;color:var(--color-border)">star</span>
+              <span class="featured-rating-text">4.0</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       BANNER / PROMO
+  ══════════════════════════════════════════ -->
+  <section class="promo-section">
+    <div class="container promo-grid">
+      <div class="promo-card promo-blue">
+        <div class="promo-content">
+          <span class="promo-eyebrow">Limited Time</span>
+          <h3>Up to <strong>40% OFF</strong><br>on Laptops</h3>
+          <a routerLink="/shop" class="btn btn-primary btn-sm">Shop Now</a>
+        </div>
+        <img src="https://m.media-amazon.com/images/I/61LdecwlWYL.jpg" alt="Laptops" class="promo-img"/>
+      </div>
+      <div class="promo-card promo-dark">
+        <div class="promo-content">
+          <span class="promo-eyebrow">New Collection</span>
+          <h3>Smart Watches<br><strong>From $199</strong></h3>
+          <a routerLink="/shop" class="btn btn-accent btn-sm">Explore</a>
+        </div>
+        <img src="https://themewagon.github.io/MiniStore/images/product-item7.jpg" alt="Watches" class="promo-img"/>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       NEWSLETTER
+  ══════════════════════════════════════════ -->
+  <section class="newsletter-section">
+    <div class="container newsletter-inner">
+      <div class="newsletter-text">
+        <h2>Stay in the loop</h2>
+        <p>Get exclusive deals, new arrivals, and tech news — straight to your inbox.</p>
+      </div>
+      <form class="newsletter-form" (submit)="subscribeNewsletter(); $event.preventDefault()">
+        <input
+          [(ngModel)]="email"
+          name="email"
+          type="email"
+          placeholder="Enter your email address"
+          class="newsletter-input"
+        />
+        <button type="submit" class="btn btn-primary">
+          <span class="material-icons">send</span>
+          Subscribe
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <span class="material-icons">bolt</span>
+          <span>E-<strong>Shop</strong></span>
+        </div>
+        <p class="footer-tagline">Your one-stop destination for premium electronics in Jordan.</p>
+        <div class="footer-social">
+          <a href="#" class="social-btn" aria-label="Facebook">
+            <span class="material-icons">language</span>
+          </a>
+          <a href="#" class="social-btn" aria-label="Instagram">
+            <span class="material-icons">photo_camera</span>
+          </a>
+          <a href="#" class="social-btn" aria-label="Twitter">
+            <span class="material-icons">campaign</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Information</h4>
+        <ul>
+          <li><a routerLink="/about">About Us</a></li>
+          <li><a routerLink="/delivery-info">Delivery Information</a></li>
+          <li><a routerLink="/privacy-policy">Privacy Policy</a></li>
+          <li><a routerLink="/terms-conditions">Terms & Conditions</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>My Account</h4>
+        <ul>
+          <li><a routerLink="/Account/Login">Sign In</a></li>
+          <li><a routerLink="/Account/Register">Register</a></li>
+          <li><a routerLink="/orders">My Orders</a></li>
+          <li><a routerLink="/favorite">Wishlist</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <ul class="footer-contact">
+          <li>
+            <span class="material-icons">location_on</span>
+            Wasfi Al-Tal St., Building 32, Amman, Jordan
+          </li>
+          <li>
+            <span class="material-icons">schedule</span>
+            Sat–Thu: 9AM – 6PM
+          </li>
+          <li>
+            <span class="material-icons">phone</span>
+            +962-999 999 999
+          </li>
+          <li>
+            <span class="material-icons">email</span>
+            <a href="mailto:info@eshop-jo.com">info&#64;eshop-jo.com</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 <strong>E-Shop</strong>. All rights reserved. Built with ❤️ in Jordan.</p>
+      <div class="footer-payments">
+        <span class="payment-badge">VISA</span>
+        <span class="payment-badge">MC</span>
+        <span class="payment-badge">PayPal</span>
+        <span class="payment-badge">Stripe</span>
+      </div>
+    </div>
+  </footer>
+</div>

@@ -1,0 +1,130 @@
+<div class="auth-page page-enter">
+  <div class="auth-container">
+
+    <!-- Left Panel -->
+    <div class="auth-visual">
+      <div class="auth-visual-content">
+        <div class="auth-logo">
+          <span class="material-icons">bolt</span>
+          <span>E-Shop</span>
+        </div>
+        <h2>Welcome back to the best electronics store in Jordan</h2>
+        <p>Discover premium gadgets, exclusive deals, and fast delivery — all in one place.</p>
+        <div class="auth-features">
+          <div class="auth-feature">
+            <span class="material-icons">verified</span>
+            <span>100% authentic products</span>
+          </div>
+          <div class="auth-feature">
+            <span class="material-icons">local_shipping</span>
+            <span>Free delivery on orders over $100</span>
+          </div>
+          <div class="auth-feature">
+            <span class="material-icons">support_agent</span>
+            <span>24/7 customer support</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="auth-form-panel">
+      <div class="auth-form-inner">
+
+        <div class="auth-form-header">
+          <h1>Sign In</h1>
+          <p>Don't have an account? <a routerLink="/Account/Register">Create one</a></p>
+        </div>
+
+        <form [formGroup]="formGroup" (ngSubmit)="Submit()">
+
+          <div class="form-group">
+            <label class="form-label">Email address</label>
+            <input
+              type="email"
+              class="form-control"
+              formControlName="email"
+              [class.is-invalid]="_email.invalid && _email.touched"
+              [class.is-valid]="_email.valid && _email.touched"
+              placeholder="you@example.com"
+            />
+            <span class="form-error" *ngIf="_email.hasError('required') && _email.touched">Email is required</span>
+            <span class="form-error" *ngIf="_email.hasError('email') && _email.touched">Invalid email format</span>
+          </div>
+
+          <div class="form-group">
+            <div class="label-row">
+              <label class="form-label">Password</label>
+              <button type="button" class="forgot-link" (click)="forgotOpen = true">Forgot password?</button>
+            </div>
+            <div class="password-wrap">
+              <input
+                [type]="showPass ? 'text' : 'password'"
+                class="form-control"
+                formControlName="password"
+                [class.is-invalid]="_password.invalid && _password.touched"
+                [class.is-valid]="_password.valid && _password.touched"
+                placeholder="Enter your password"
+              />
+              <button type="button" class="pass-toggle" (click)="showPass = !showPass">
+                <span class="material-icons">{{ showPass ? 'visibility_off' : 'visibility' }}</span>
+              </button>
+            </div>
+            <span class="form-error" *ngIf="_password.hasError('required') && _password.touched">Password is required</span>
+            <span class="form-error" *ngIf="_password.hasError('pattern') && _password.touched">
+              Minimum 8 characters with a number and special character
+            </span>
+          </div>
+
+          <button class="btn btn-primary btn-full btn-lg" [disabled]="formGroup.invalid" type="submit">
+            Sign In
+            <span class="material-icons">arrow_forward</span>
+          </button>
+
+        </form>
+
+        <div class="auth-divider"><span>or</span></div>
+
+        <a routerLink="/Account/Register" class="btn btn-outline btn-full">
+          Create a new account
+        </a>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Forgot Password Modal -->
+@if (forgotOpen) {
+  <div class="modal-overlay" (click)="forgotOpen = false">
+    <div class="modal-box forgot-modal" (click)="$event.stopPropagation()">
+      <button class="modal-close btn btn-ghost btn-icon" (click)="forgotOpen = false">
+        <span class="material-icons">close</span>
+      </button>
+      <div class="forgot-icon">
+        <span class="material-icons">lock_reset</span>
+      </div>
+      <h3>Reset Your Password</h3>
+      <p>Enter your email address and we'll send you a reset link.</p>
+
+      <div class="form-group">
+        <label class="form-label">Email address</label>
+        <input
+          type="email"
+          [(ngModel)]="emailModel"
+          name="forgetEmail"
+          class="form-control"
+          placeholder="you@example.com"
+        />
+      </div>
+
+      <div class="forgot-actions">
+        <button class="btn btn-outline btn-sm" (click)="forgotOpen = false">Cancel</button>
+        <button class="btn btn-primary" (click)="SendEmailForgetpassword(); forgotOpen = false">
+          <span class="material-icons">send</span>
+          Send Reset Link
+        </button>
+      </div>
+    </div>
+  </div>
+}

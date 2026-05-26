@@ -1,0 +1,35 @@
+.checkout-header {
+  margin-bottom: 1.75rem;
+
+  h1 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--color-text);
+    margin: 0;
+
+    .material-icons { color: var(--color-primary); }
+  }
+}
+
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 1.5rem;
+  align-items: start;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.checkout-stepper {
+  padding: 2rem;
+}
+
+.checkout-sidebar {
+  position: sticky;
+  top: calc(var(--navbar-h) + 1rem);
+}

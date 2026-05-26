@@ -1,0 +1,22 @@
+<mat-stepper [linear]="true" #stepper>
+
+  <mat-step [stepControl]="Address">
+    <ng-template matStepLabel>Fill out your Address</ng-template>
+    <app-address [address]="Address"></app-address>
+    <div>
+    </div>
+  </mat-step>
+
+  <mat-step [stepControl]="DeliveryMethod" label="Delivery">
+    <app-delivery [delivery]="DeliveryMethod"></app-delivery>
+    <div>
+    </div>
+  </mat-step>
+
+  <mat-step label="Payment Checkout">
+    <app-payment [paymentform]="PaymentForm" [Address]="Address" [delivery]="DeliveryMethod"></app-payment>
+    <div>
+    </div>
+  </mat-step>
+
+</mat-stepper>

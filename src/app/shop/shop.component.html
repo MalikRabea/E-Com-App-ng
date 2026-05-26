@@ -1,0 +1,180 @@
+<div class="shop-page page-content page-enter">
+  <div class="container">
+
+    <!-- Page Header -->
+    <div class="shop-header">
+      <div>
+        <h1 class="shop-title">Our Products</h1>
+        <p class="shop-subtitle" *ngIf="!loading">
+          Showing <strong>{{ product.length }}</strong> of <strong>{{ TotatlCount }}</strong> results
+        </p>
+      </div>
+
+      <!-- Search + Sort Bar -->
+      <div class="shop-controls">
+        <div class="search-bar">
+          <span class="material-icons">search</span>
+          <input
+            #search
+            type="text"
+            placeholder="Search products..."
+            (keyup.enter)="OnSearch(search.value)"
+            [value]="ProductParam.search"
+          />
+          <button class="search-btn" (click)="OnSearch(search.value)">
+            <span class="material-icons">arrow_forward</span>
+          </button>
+          <button class="reset-btn" (click)="ResetValue()" *ngIf="ProductParam.search || ProductParam.CategoryId">
+            <span class="material-icons">close</span>
+          </button>
+        </div>
+
+        <select #SortSelected class="form-select sort-select" (change)="SortingByPrice($event)">
+          @for (item of SortingOption; track $index) {
+            <option [value]="item.value">{{ item.name }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <div class="shop-layout">
+
+      <!-- ── Sidebar ── -->
+      <aside class="shop-sidebar">
+        <div class="sidebar-card">
+          <h3 class="sidebar-title">
+            <span class="material-icons">category</span>
+            Categories
+          </h3>
+          <ul class="category-list">
+            <li
+              class="cat-item"
+              [class.active]="ProductParam.CategoryId === 0"
+              (click)="SelectedId(0)"
+            >
+              <span class="material-icons cat-icon">apps</span>
+              All Products
+              <span class="cat-badge" *ngIf="ProductParam.CategoryId === 0">✓</span>
+            </li>
+            @for (item of Cateogry; track $index) {
+              <li
+                class="cat-item"
+                [class.active]="item.id === ProductParam.CategoryId"
+                (click)="SelectedId(item.id)"
+              >
+                <span class="material-icons cat-icon">chevron_right</span>
+                {{ item.name }}
+                <span class="cat-badge" *ngIf="item.id === ProductParam.CategoryId">✓</span>
+              </li>
+            }
+          </ul>
+        </div>
+      </aside>
+
+      <!-- ── Products Grid ── -->
+      <main class="shop-products">
+
+        <!-- Skeleton Loaders -->
+        @if (loading) {
+          <div class="products-grid">
+            @for (s of skeletonArray; track $index) {
+              <div class="skeleton-card">
+                <div class="skeleton skeleton-img"></div>
+                <div class="skeleton-body">
+                  <div class="skeleton skeleton-text" style="width:70%;height:16px"></div>
+                  <div class="skeleton skeleton-text" style="width:50%;height:14px;margin-top:8px"></div>
+                  <div class="skeleton skeleton-text" style="width:40%;height:20px;margin-top:12px"></div>
+                  <div style="display:flex;gap:8px;margin-top:16px">
+                    <div class="skeleton" style="flex:1;height:36px;border-radius:8px"></div>
+                    <div class="skeleton" style="flex:1;height:36px;border-radius:8px"></div>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Actual Products -->
+        @if (!loading) {
+          @if (product.length === 0) {
+            <div class="empty-state">
+              <span class="material-icons empty-icon">search_off</span>
+              <h3>No products found</h3>
+              <p>Try different keywords or browse all categories.</p>
+              <button class="btn btn-primary" (click)="ResetValue()">Browse All</button>
+            </div>
+          }
+
+          @if (product.length > 0) {
+            <div class="products-grid">
+              @for (item of product; track $index) {
+                <app-shop-item
+                  [Product]="item"
+                  (quickView)="openQuickView($event)">
+                </app-shop-item>
+              }
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination-wrap">
+              <pagination
+                (pageChanged)="OnChangePage($event.page)"
+                [itemsPerPage]="ProductParam.pageSize"
+                [totalItems]="TotatlCount"
+                [maxSize]="5"
+                [boundaryLinks]="true"
+                previousText="‹"
+                nextText="›"
+                firstText="«"
+                lastText="»">
+              </pagination>
+            </div>
+          }
+        }
+      </main>
+    </div>
+  </div>
+</div>
+
+<!-- ── Quick View Modal ── -->
+@if (quickViewProduct) {
+  <div class="modal-overlay" (click)="closeQuickView()">
+    <div class="modal-box quick-view-box" (click)="$event.stopPropagation()">
+      <button class="qv-close btn btn-ghost btn-icon" (click)="closeQuickView()">
+        <span class="material-icons">close</span>
+      </button>
+
+      <div class="qv-content">
+        <div class="qv-image">
+          <img
+            [src]="'https://e-com-app-xfqq.onrender.com/' + quickViewProduct.photos?.[0]?.imageName"
+            [alt]="quickViewProduct.name"
+            onerror="this.src='assets/no-image.png'"
+          />
+        </div>
+
+        <div class="qv-info">
+          <span class="qv-category">{{ quickViewProduct.categoryName }}</span>
+          <h2 class="qv-name">{{ quickViewProduct.name }}</h2>
+
+          <div class="qv-price">
+            <span class="qv-new-price">{{ quickViewProduct.newPrice | currency }}</span>
+            <span class="qv-old-price">{{ quickViewProduct.oldPrice | currency }}</span>
+            <span class="qv-discount">
+              {{ ((quickViewProduct.oldPrice - quickViewProduct.newPrice) / quickViewProduct.oldPrice * 100) | number:'1.0-0' }}% OFF
+            </span>
+          </div>
+
+          <p class="qv-desc">{{ quickViewProduct.description }}</p>
+
+          <div class="qv-actions">
+            <a [routerLink]="'/shop/product-details/' + quickViewProduct.id" class="btn btn-primary btn-full" (click)="closeQuickView()">
+              <span class="material-icons">visibility</span>
+              View Full Details
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

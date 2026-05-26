@@ -1,0 +1,44 @@
+<div class="success-page page-enter">
+  <div class="success-card card">
+
+    <div class="success-icon">
+      <span class="material-icons">check_circle</span>
+    </div>
+
+    <h1>Order Confirmed!</h1>
+    <p class="success-msg">
+      Thank you for your purchase. Your order has been placed and will be shipped as soon as possible.
+    </p>
+
+    <div class="success-info">
+      <div class="info-item">
+        <span class="material-icons">receipt</span>
+        <span>Order #{{ orderId }}</span>
+      </div>
+      <div class="info-item">
+        <span class="material-icons">local_shipping</span>
+        <span>Shipping soon</span>
+      </div>
+      <div class="info-item">
+        <span class="material-icons">email</span>
+        <span>Confirmation email sent</span>
+      </div>
+    </div>
+
+    <div class="success-actions">
+      <a
+        routerLink="/orders/item"
+        [queryParams]="{id: orderId}"
+        class="btn btn-primary"
+      >
+        <span class="material-icons">visibility</span>
+        View Order
+      </a>
+      <a routerLink="/shop" class="btn btn-outline">
+        <span class="material-icons">storefront</span>
+        Continue Shopping
+      </a>
+    </div>
+
+  </div>
+</div>

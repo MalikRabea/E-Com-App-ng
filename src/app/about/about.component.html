@@ -1,0 +1,141 @@
+<div class="about-page page-enter">
+
+  <!-- Hero -->
+  <section class="about-hero">
+    <div class="hero-inner container">
+      <div class="hero-badge">About Us</div>
+      <h1>The Store Built for <span class="highlight">Tech Lovers</span></h1>
+      <p>E-Shop brings you the latest electronics and gadgets with fast delivery, genuine products, and unbeatable prices — all in one place.</p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num">10K+</span>
+          <span class="stat-label">Products</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">50K+</span>
+          <span class="stat-label">Customers</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">4.9★</span>
+          <span class="stat-label">Rating</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">24/7</span>
+          <span class="stat-label">Support</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Story -->
+  <section class="story-section container">
+    <div class="split-card card">
+      <div class="split-image">
+        <div class="image-badge">Est. 2023</div>
+        <div class="image-placeholder">
+          <span class="material-icons">bolt</span>
+        </div>
+      </div>
+      <div class="split-content">
+        <span class="tag">Our Story</span>
+        <h2>Welcome to <span class="brand">E-Shop</span></h2>
+        <p>
+          We started E-Shop with a simple belief: everyone deserves access to the best tech at fair prices.
+          From smartphones to laptops, cameras to wearables — we curate only the products worth your money.
+        </p>
+        <p>
+          Every product listed on E-Shop is hand-picked, quality-tested, and backed by our customer satisfaction guarantee.
+        </p>
+        <div class="brand-values">
+          <div class="bv">
+            <span class="material-icons">verified</span>
+            <span>Genuine Products</span>
+          </div>
+          <div class="bv">
+            <span class="material-icons">local_shipping</span>
+            <span>Fast Delivery</span>
+          </div>
+          <div class="bv">
+            <span class="material-icons">support_agent</span>
+            <span>24/7 Support</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Mission -->
+  <section class="mission-section">
+    <div class="container">
+      <div class="mission-grid">
+        <div class="mission-card">
+          <span class="material-icons">rocket_launch</span>
+          <h3>Our Mission</h3>
+          <p>Deliver high-quality products at affordable prices while ensuring a smooth and secure shopping experience for every customer.</p>
+        </div>
+        <div class="mission-card">
+          <span class="material-icons">visibility</span>
+          <h3>Our Vision</h3>
+          <p>To become the most trusted online electronics destination in the region — where technology meets simplicity.</p>
+        </div>
+        <div class="mission-card">
+          <span class="material-icons">favorite</span>
+          <h3>Our Promise</h3>
+          <p>If you're not satisfied, we'll make it right. No questions asked — your happiness is our top priority.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Values -->
+  <section class="values-section container">
+    <div class="section-header">
+      <h2>Why Choose <span class="brand">E-Shop</span>?</h2>
+      <p>We've built everything around your experience</p>
+    </div>
+
+    <div class="values-grid">
+      <div class="value-item" *ngFor="let v of values">
+        <div class="value-icon">
+          <span class="material-icons">{{ v.icon }}</span>
+        </div>
+        <h3>{{ v.title }}</h3>
+        <p>{{ v.desc }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact-section" id="contact">
+    <div class="container">
+      <div class="contact-card card">
+        <div class="contact-left">
+          <span class="tag">Get In Touch</span>
+          <h2>We're Here to Help</h2>
+          <p>Have a question or need assistance? Reach out to our support team — we're available around the clock.</p>
+          <div class="contact-links">
+            <a href="mailto:support@eshop.com" class="contact-link">
+              <span class="material-icons">email</span>
+              <span>support&#64;eshop.com</span>
+            </a>
+            <div class="contact-link">
+              <span class="material-icons">phone</span>
+              <span>+962 7 9999 9999</span>
+            </div>
+            <div class="contact-link">
+              <span class="material-icons">schedule</span>
+              <span>24/7 Support</span>
+            </div>
+          </div>
+        </div>
+        <div class="contact-right">
+          <a routerLink="/shop" class="btn btn-primary btn-lg">
+            <span class="material-icons">storefront</span>
+            Start Shopping
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>

@@ -1,0 +1,85 @@
+<section class="bestsellers-section">
+  <div class="bs-header">
+    <div>
+      <h2 class="bs-title">
+        <span class="material-icons">trending_up</span>
+        Best Sellers
+      </h2>
+      <p class="bs-sub">Top picks loved by our customers</p>
+    </div>
+    <a routerLink="/shop" class="btn btn-outline btn-sm">
+      View All
+      <span class="material-icons">arrow_forward</span>
+    </a>
+  </div>
+
+  <!-- Skeleton loading -->
+  <div class="bs-track" *ngIf="loading">
+    <div class="bs-card skeleton" *ngFor="let s of [1,2,3,4,5]">
+      <div class="skeleton-img"></div>
+      <div class="skeleton-body">
+        <div class="skeleton-line w-80"></div>
+        <div class="skeleton-line w-50"></div>
+        <div class="skeleton-line w-60"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Carousel -->
+  <div class="bs-carousel" *ngIf="!loading && bestSellers.length > 0">
+    <button class="bs-nav prev" (click)="prevSlide()" [disabled]="currentSlide === 0">
+      <span class="material-icons">chevron_left</span>
+    </button>
+
+    <div class="bs-viewport">
+      <div class="bs-track" [style.transform]="'translateX(-' + currentSlide * slideWidth + 'px)'">
+        <div class="bs-card" *ngFor="let product of bestSellers">
+
+          <div class="bs-image" [routerLink]="'/shop/product-details/' + product.id">
+            <img [src]="imgUrl + MainImages[product.id]" [alt]="product.name" />
+            <div class="sold-chip">
+              <span class="material-icons">trending_up</span>
+              {{ product.soldCount }} sold
+            </div>
+          </div>
+
+          <div class="bs-body">
+            <p class="bs-category">{{ product.categoryName || 'Electronics' }}</p>
+            <h3 class="bs-name" [routerLink]="'/shop/product-details/' + product.id">{{ product.name }}</h3>
+
+            <div class="bs-stars">
+              <span class="material-icons star" *ngFor="let s of getArrayofRating(product.rating)">star</span>
+              <span class="material-icons star empty" *ngFor="let s of getEmptyStars(product.rating)">star_border</span>
+            </div>
+
+            <div class="bs-price">
+              <span class="price-new">{{ product.newPrice | currency }}</span>
+              <span class="price-old" *ngIf="product.oldPrice > product.newPrice">{{ product.oldPrice | currency }}</span>
+            </div>
+
+            <button class="btn btn-primary bs-cart-btn" (click)="addToBasket(product)">
+              <span class="material-icons">shopping_cart</span>
+              Add to Cart
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <button class="bs-nav next" (click)="nextSlide()" [disabled]="currentSlide >= bestSellers.length - visibleSlides">
+      <span class="material-icons">chevron_right</span>
+    </button>
+  </div>
+
+  <!-- Dots -->
+  <div class="bs-dots" *ngIf="!loading && bestSellers.length > visibleSlides">
+    <button
+      *ngFor="let d of getDots()"
+      class="bs-dot"
+      [class.active]="d === currentSlide"
+      (click)="currentSlide = d"
+    ></button>
+  </div>
+
+</section>

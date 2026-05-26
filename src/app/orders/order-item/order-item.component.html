@@ -1,0 +1,148 @@
+<div class="page-content page-enter" *ngIf="order; else noOrder">
+
+  <div class="orders-header">
+    <div>
+      <h1 class="section-title">
+        <span class="material-icons">receipt</span>
+        Order #{{ order.id }}
+      </h1>
+      <p class="section-sub">{{ order.orderDate | date:'longDate' }}</p>
+    </div>
+    <a routerLink="/orders" class="btn btn-outline">
+      <span class="material-icons">arrow_back</span>
+      All Orders
+    </a>
+  </div>
+
+  <!-- Layout -->
+  <div class="order-detail-layout">
+
+    <!-- Items Table -->
+    <div class="order-items-card card">
+      <h2 class="card-heading">
+        <span class="material-icons">inventory_2</span>
+        Items ({{ order.orderItems?.length }})
+      </h2>
+
+      <div class="items-list">
+        <div class="item-row" *ngFor="let item of order.orderItems">
+          <div class="item-image">
+            <img [src]="imgUrl + item.mainImage" [alt]="item.productName" />
+          </div>
+          <div class="item-info">
+            <a [routerLink]="'/shop/product-details/' + item.productItemId" class="item-name">
+              {{ item.productName }}
+            </a>
+            <div class="item-meta">
+              <span>Qty: {{ item.quntity }}</span>
+              <span>{{ item.price | currency }} each</span>
+            </div>
+          </div>
+          <div class="item-total">
+            {{ item.quntity * item.price | currency }}
+          </div>
+          <div class="item-rate">
+            <button class="btn btn-accent btn-sm" (click)="openRatingModal(item.productItemId)">
+              <span class="material-icons">star</span>
+              Rate
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="order-summary-card card">
+      <h2 class="card-heading">
+        <span class="material-icons">summarize</span>
+        Order Summary
+      </h2>
+
+      <div class="summary-rows">
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span>{{ order.subTotal | currency }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping</span>
+          <span>{{ (order.total - order.subTotal) | currency }}</span>
+        </div>
+        <div class="summary-row summary-total">
+          <span>Total</span>
+          <span>{{ order.total | currency }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Status</span>
+          <span class="status-badge" [ngClass]="{
+            'status-pending':  order.status === 'Pending',
+            'status-failed':   order.status === 'PaymentFaild',
+            'status-success':  order.status === 'PaymentReceived'
+          }">
+            <span class="material-icons">
+              {{ order.status === 'PaymentReceived' ? 'check_circle' : order.status === 'PaymentFaild' ? 'cancel' : 'schedule' }}
+            </span>
+            {{ order.status === 'PaymentReceived' ? 'Paid' : order.status === 'PaymentFaild' ? 'Failed' : 'Pending' }}
+          </span>
+        </div>
+      </div>
+
+      <div class="shipping-info" *ngIf="order.shippingAddress">
+        <h3><span class="material-icons">local_shipping</span> Ship To</h3>
+        <p>
+          {{ order.shippingAddress?.firstName }} {{ order.shippingAddress?.lastName }}<br/>
+          {{ order.shippingAddress?.street }}, {{ order.shippingAddress?.city }}<br/>
+          {{ order.shippingAddress?.state }} {{ order.shippingAddress?.zipCode }}
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<ng-template #noOrder>
+  <div class="page-content empty-state">
+    <span class="material-icons empty-icon">error_outline</span>
+    <h2>Order not found</h2>
+    <p>This order doesn't exist or you're not logged in.</p>
+    <a routerLink="/Account/Login" class="btn btn-primary">Sign In</a>
+  </div>
+</ng-template>
+
+<!-- Rating Modal (Angular, no Bootstrap) -->
+<div class="modal-overlay" *ngIf="ratingOpen" (click)="closeRatingModal()">
+  <div class="modal-box rating-modal" (click)="$event.stopPropagation()">
+    <button class="modal-close-btn" (click)="closeRatingModal()">
+      <span class="material-icons">close</span>
+    </button>
+    <h3 class="modal-title">Rate this Product</h3>
+
+    <div class="star-selector">
+      <button
+        *ngFor="let s of [1,2,3,4,5]"
+        class="star-btn"
+        [class.active]="s <= rating.stars"
+        (click)="rating.stars = s"
+      >
+        <span class="material-icons">{{ s <= rating.stars ? 'star' : 'star_border' }}</span>
+      </button>
+    </div>
+
+    <div class="form-group" style="margin-top:1rem">
+      <label class="form-label">Your Review</label>
+      <textarea
+        [(ngModel)]="rating.content"
+        placeholder="Share your experience with this product..."
+        class="form-control"
+        rows="4"
+      ></textarea>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" (click)="closeRatingModal()">Cancel</button>
+      <button class="btn btn-primary" (click)="submitRating()" [disabled]="rating.stars === 0">
+        <span class="material-icons">send</span>
+        Submit Review
+      </button>
+    </div>
+  </div>
+</div>

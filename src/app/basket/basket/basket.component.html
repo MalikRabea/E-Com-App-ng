@@ -1,0 +1,116 @@
+<div class="basket-page page-content page-enter">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="basket-header">
+      <h1 class="basket-title">Shopping Cart</h1>
+      <a routerLink="/shop" class="btn btn-ghost btn-sm">
+        <span class="material-icons">arrow_back</span>
+        Continue Shopping
+      </a>
+    </div>
+
+    <!-- Empty -->
+    @if (!basket.id || basket.basketItems?.length === 0) {
+      <div class="basket-empty">
+        <span class="material-icons empty-icon">shopping_bag</span>
+        <h2>Your cart is empty</h2>
+        <p>Looks like you haven't added anything to your cart yet.</p>
+        <a routerLink="/shop" class="btn btn-primary btn-lg">
+          <span class="material-icons">storefront</span>
+          Start Shopping
+        </a>
+      </div>
+    }
+
+    <!-- Cart Content -->
+    @if (basket.id && basket.basketItems?.length > 0) {
+      <div class="basket-layout">
+
+        <!-- Items -->
+        <div class="basket-items">
+          <div class="items-header">
+            <span>Product</span>
+            <span>Price</span>
+            <span>Quantity</span>
+            <span>Total</span>
+            <span></span>
+          </div>
+
+          <div class="items-list">
+            @for (item of basket.basketItems; track $index) {
+              <div class="cart-item">
+                <!-- Product Info -->
+                <div class="item-product">
+                  <a routerLink="/shop/product-details/{{ item.id }}" class="item-image-link">
+                    <img
+                      src="https://e-com-app-xfqq.onrender.com/{{ item.image }}"
+                      [alt]="item.name"
+                      class="item-image"
+                      onerror="this.src='assets/no-image.png'"
+                    />
+                  </a>
+                  <div class="item-details">
+                    <a routerLink="/shop/product-details/{{ item.id }}" class="item-name">
+                      {{ item.name }}
+                    </a>
+                    <span class="item-category">{{ item.category }}</span>
+                    <p class="item-desc">{{ item.description }}</p>
+                  </div>
+                </div>
+
+                <!-- Price -->
+                <div class="item-price">
+                  <span class="cell-label">Price</span>
+                  {{ item.price | currency }}
+                </div>
+
+                <!-- Quantity -->
+                <div class="item-qty">
+                  <span class="cell-label">Qty</span>
+                  <div class="qty-control">
+                    <button class="qty-btn" (click)="DecrementQuantity(item)">
+                      <span class="material-icons">remove</span>
+                    </button>
+                    <span class="qty-value">{{ item.quantity }}</span>
+                    <button class="qty-btn" (click)="incrementQuantity(item)">
+                      <span class="material-icons">add</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Total -->
+                <div class="item-total">
+                  <span class="cell-label">Total</span>
+                  <strong>{{ item.quantity * item.price | currency }}</strong>
+                </div>
+
+                <!-- Remove -->
+                <div class="item-remove">
+                  <button class="remove-btn" (click)="RemoveBasket(item)" title="Remove item">
+                    <span class="material-icons">delete_outline</span>
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="basket-summary">
+          <app-order-total></app-order-total>
+          <a routerLink="/checkout" class="btn btn-primary btn-full btn-lg checkout-btn">
+            <span class="material-icons">lock</span>
+            Secure Checkout
+          </a>
+          <p class="secure-note">
+            <span class="material-icons" style="font-size:14px">verified_user</span>
+            Your payment information is encrypted and secure
+          </p>
+        </div>
+
+      </div>
+    }
+
+  </div>
+</div>

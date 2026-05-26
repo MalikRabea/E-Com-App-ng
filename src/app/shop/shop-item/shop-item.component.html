@@ -1,0 +1,66 @@
+<div class="product-card">
+  <div class="card-image-wrap">
+    <img
+      [src]="mainImage"
+      [alt]="Product.name"
+      class="card-image"
+      onerror="this.src='assets/no-image.png'"
+    />
+
+    <!-- Discount Badge -->
+    <div class="discount-badge" *ngIf="Product.oldPrice > Product.newPrice">
+      {{ getDiscount() }}% OFF
+    </div>
+
+    <!-- Actions Overlay -->
+    <div class="card-actions-overlay">
+      <button class="overlay-btn" (click)="addToFavorites(Product.id)" title="Add to Wishlist">
+        <span class="material-icons">favorite_border</span>
+      </button>
+      <button class="overlay-btn" (click)="emitQuickView()" title="Quick View">
+        <span class="material-icons">visibility</span>
+      </button>
+      <a class="overlay-btn" [routerLink]="'/shop/product-details/' + Product.id" title="View Details">
+        <span class="material-icons">open_in_new</span>
+      </a>
+    </div>
+
+    <!-- Thumbnail strip -->
+    <div class="thumbnail-strip" *ngIf="Product.photos?.length > 1">
+      <img
+        *ngFor="let item of Product.photos | slice:0:4"
+        [src]="'https://e-com-app-xfqq.onrender.com/' + item.imageName"
+        [alt]="Product.name"
+        class="thumbnail"
+        (click)="changeMainImage(item.imageName)"
+        [class.active]="mainImage.endsWith(item.imageName)"
+      />
+    </div>
+  </div>
+
+  <div class="card-body">
+    <span class="card-category">{{ Product.categoryName }}</span>
+    <h3 class="card-name">{{ Product.name }}</h3>
+
+    <!-- Rating -->
+    <div class="card-rating" *ngIf="Product.rating">
+      <div class="stars">
+        <span class="material-icons star" *ngFor="let s of getArrayofRating(Product.rating)">star</span>
+        <span class="material-icons star empty" *ngFor="let s of getEmptyStars(Product.rating)">star_border</span>
+      </div>
+      <span class="rating-text">{{ Product.rating | number:'1.1-1' }}</span>
+    </div>
+
+    <div class="card-price-row">
+      <div class="price-group">
+        <span class="new-price">{{ Product.newPrice | currency }}</span>
+        <span class="old-price" *ngIf="Product.oldPrice > Product.newPrice">{{ Product.oldPrice | currency }}</span>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-sm btn-full cart-btn" (click)="SetBasketValue()">
+      <span class="material-icons">shopping_bag</span>
+      Add to Cart
+    </button>
+  </div>
+</div>

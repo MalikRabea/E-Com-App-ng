@@ -1,0 +1,43 @@
+<div class="checkout-step">
+
+  <div class="step-header">
+    <h2>
+      <span class="material-icons">local_shipping</span>
+      Delivery Method
+    </h2>
+  </div>
+
+  <form [formGroup]="delivery">
+    <mat-radio-group
+      formControlName="delivery"
+      (change)="SetShipptingPrice()"
+      class="delivery-options"
+    >
+      <mat-radio-button
+        *ngFor="let item of deliveries; trackBy: trackByIndex"
+        [value]="item.id"
+        class="delivery-card"
+      >
+        <div class="delivery-inner">
+          <div class="delivery-left">
+            <span class="delivery-name">{{ item.name }}</span>
+            <span class="delivery-meta">{{ item.description }} • {{ item.deliveryTime }}</span>
+          </div>
+          <span class="delivery-price">{{ item.price | currency }}</span>
+        </div>
+      </mat-radio-button>
+    </mat-radio-group>
+
+    <div class="step-footer">
+      <button type="button" class="btn btn-ghost" matStepperPrevious>
+        <span class="material-icons">arrow_back</span>
+        Back
+      </button>
+      <button type="button" class="btn btn-primary" (click)="CreatePayment()" matStepperNext [disabled]="delivery.invalid">
+        Continue
+        <span class="material-icons">arrow_forward</span>
+      </button>
+    </div>
+  </form>
+
+</div>

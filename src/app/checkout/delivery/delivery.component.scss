@@ -1,0 +1,97 @@
+.checkout-step { padding: 0; }
+
+.step-header {
+  margin-bottom: 1.5rem;
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0;
+    .material-icons { color: var(--color-primary); }
+  }
+}
+
+.delivery-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.delivery-card {
+  display: block !important;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 0 1rem 0 0;
+  background: var(--color-surface);
+  transition: var(--transition-base);
+  cursor: pointer;
+  width: 100%;
+
+  &:hover {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+  }
+
+  &.mat-mdc-radio-checked {
+    border-color: var(--color-primary);
+    background: rgba(37,99,235,0.05);
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
+  }
+
+  ::ng-deep .mdc-radio { flex-shrink: 0; }
+  ::ng-deep .mdc-form-field { width: 100%; }
+  ::ng-deep .mdc-label { width: 100%; cursor: pointer; }
+}
+
+.delivery-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.delivery-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.delivery-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.delivery-meta {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.delivery-price {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.step-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+
+  .btn {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    .material-icons { font-size: 1.1rem; }
+  }
+}

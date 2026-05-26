@@ -1,0 +1,120 @@
+<div class="auth-page page-enter">
+  <div class="auth-container">
+
+    <!-- Left Panel -->
+    <div class="auth-visual">
+      <div class="auth-visual-content">
+        <div class="auth-logo">
+          <span class="material-icons">bolt</span>
+          <span>E-Shop</span>
+        </div>
+        <h2>Join thousands of happy customers today</h2>
+        <p>Create your account and unlock exclusive member deals, order tracking, and wishlist features.</p>
+        <div class="auth-features">
+          <div class="auth-feature">
+            <span class="material-icons">inventory_2</span>
+            <span>Track your orders in real-time</span>
+          </div>
+          <div class="auth-feature">
+            <span class="material-icons">favorite</span>
+            <span>Save products to your wishlist</span>
+          </div>
+          <div class="auth-feature">
+            <span class="material-icons">local_offer</span>
+            <span>Get member-exclusive discounts</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="auth-form-panel">
+      <div class="auth-form-inner">
+
+        <div class="auth-form-header">
+          <h1>Create Account</h1>
+          <p>Already registered? <a routerLink="/Account/Login">Sign in here</a></p>
+        </div>
+
+        <form [formGroup]="fromGroup" (ngSubmit)="Submit()">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Username</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="UserName"
+                [class.is-invalid]="_username.invalid && _username.touched"
+                [class.is-valid]="_username.valid && _username.touched"
+                placeholder="johndoe"
+              />
+              <span class="form-error" *ngIf="_username.invalid && _username.touched">Username is required</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Display Name</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="DisplayName"
+                [class.is-invalid]="_DisplayName.invalid && _DisplayName.touched"
+                [class.is-valid]="_DisplayName.valid && _DisplayName.touched"
+                placeholder="John Doe"
+              />
+              <span class="form-error" *ngIf="_DisplayName.invalid && _DisplayName.touched">Display name is required</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Email address</label>
+            <input
+              type="email"
+              class="form-control"
+              formControlName="email"
+              [class.is-invalid]="_email.invalid && _email.touched"
+              [class.is-valid]="_email.valid && _email.touched"
+              placeholder="you@example.com"
+            />
+            <span class="form-error" *ngIf="_email.hasError('required') && _email.touched">Email is required</span>
+            <span class="form-error" *ngIf="_email.hasError('email') && _email.touched">Invalid email format</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <div class="password-wrap">
+              <input
+                [type]="showPass ? 'text' : 'password'"
+                class="form-control"
+                formControlName="password"
+                [class.is-invalid]="_password.invalid && _password.touched"
+                [class.is-valid]="_password.valid && _password.touched"
+                placeholder="Minimum 8 characters"
+              />
+              <button type="button" class="pass-toggle" (click)="showPass = !showPass">
+                <span class="material-icons">{{ showPass ? 'visibility_off' : 'visibility' }}</span>
+              </button>
+            </div>
+            <span class="form-error" *ngIf="_password.hasError('required') && _password.touched">Password is required</span>
+            <span class="form-error" *ngIf="_password.hasError('pattern') && _password.touched">
+              Minimum 8 characters with a number and special character (#$&#64;!.)
+            </span>
+          </div>
+
+          <button class="btn btn-primary btn-full btn-lg" [disabled]="fromGroup.invalid" type="submit">
+            Create Account
+            <span class="material-icons">arrow_forward</span>
+          </button>
+
+        </form>
+
+        <div class="auth-divider"><span>or</span></div>
+
+        <a routerLink="/Account/Login" class="btn btn-outline btn-full">
+          Already have an account? Sign in
+        </a>
+
+      </div>
+    </div>
+  </div>
+</div>

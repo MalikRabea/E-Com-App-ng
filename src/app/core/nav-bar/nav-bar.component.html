@@ -1,0 +1,119 @@
+<header class="navbar-wrapper">
+  <nav class="navbar-inner">
+
+    <!-- Logo -->
+    <a routerLink="/" class="navbar-logo">
+      <span class="logo-icon">
+        <span class="material-icons">bolt</span>
+      </span>
+      <span class="logo-text">E<span class="logo-accent">-Shop</span></span>
+    </a>
+
+    <!-- Desktop Links -->
+    <ul class="navbar-links">
+      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-link">Home</a></li>
+      <li><a routerLink="/shop" routerLinkActive="active" class="nav-link">Shop</a></li>
+      <li><a routerLink="/best-sellers" routerLinkActive="active" class="nav-link">Best Sellers</a></li>
+      <li><a routerLink="/about" routerLinkActive="active" class="nav-link">About</a></li>
+    </ul>
+
+    <!-- Search Bar -->
+    <div class="navbar-search">
+      <span class="material-icons search-icon">search</span>
+      <input
+        #navSearch
+        type="text"
+        class="search-input"
+        placeholder="Search products..."
+        (keyup.enter)="onSearchNav(navSearch.value)"
+      />
+      <button class="search-btn" (click)="onSearchNav(navSearch.value)">
+        <span class="material-icons" style="font-size:18px">arrow_forward</span>
+      </button>
+    </div>
+
+    <!-- Right Actions -->
+    <div class="navbar-actions">
+
+      <!-- Dark Mode Toggle -->
+      <button class="action-btn theme-btn" (click)="toggleTheme()" [attr.aria-label]="isDark ? 'Switch to light mode' : 'Switch to dark mode'">
+        <span class="material-icons">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>
+      </button>
+
+      <!-- Favorites -->
+      <a routerLink="/favorite" class="action-btn" aria-label="Favorites">
+        <span class="material-icons">favorite_border</span>
+        <span class="action-badge" *ngIf="favoriteCount > 0">{{ favoriteCount }}</span>
+      </a>
+
+      <!-- Cart -->
+      <a routerLink="/basket" class="action-btn" aria-label="Cart">
+        <span class="material-icons">shopping_bag</span>
+        <span class="action-badge" *ngIf="(count | async)?.basketItems?.length">
+          {{ (count | async)?.basketItems?.length }}
+        </span>
+      </a>
+
+      <!-- Account Dropdown -->
+      <div class="account-dropdown" #dropdown>
+        <button class="action-btn account-btn" (click)="ToggleDropDown()">
+          <span class="material-icons">account_circle</span>
+          <span class="account-name" *ngIf="userName">{{ userName }}</span>
+          <span class="material-icons chevron">expand_more</span>
+        </button>
+
+        <div class="dropdown-menu" [class.open]="visibale">
+          <div class="dropdown-header" *ngIf="!userName">
+            <p>Welcome to E-Shop</p>
+          </div>
+          <div class="dropdown-header" *ngIf="userName">
+            <p>Hello, <strong>{{ userName }}</strong></p>
+          </div>
+
+          <div class="dropdown-divider"></div>
+
+          <ng-container *ngIf="!userName">
+            <a routerLink="/Account/Login" class="dropdown-item" (click)="closeDropdown()">
+              <span class="material-icons">login</span> Sign In
+            </a>
+            <a routerLink="/Account/Register" class="dropdown-item" (click)="closeDropdown()">
+              <span class="material-icons">person_add</span> Create Account
+            </a>
+          </ng-container>
+
+          <ng-container *ngIf="userName">
+            <a routerLink="/orders" class="dropdown-item" (click)="closeDropdown()">
+              <span class="material-icons">inventory_2</span> My Orders
+            </a>
+            <a routerLink="/favorite" class="dropdown-item" (click)="closeDropdown()">
+              <span class="material-icons">favorite</span> Wishlist
+            </a>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item danger" (click)="logout(); closeDropdown()">
+              <span class="material-icons">logout</span> Sign Out
+            </button>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Toggle -->
+      <button class="action-btn mobile-menu-btn" (click)="toggleMobileMenu()">
+        <span class="material-icons">{{ mobileOpen ? 'close' : 'menu' }}</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" [class.open]="mobileOpen">
+    <ul class="mobile-links">
+      <li><a routerLink="/" (click)="closeMobileMenu()">Home</a></li>
+      <li><a routerLink="/shop" (click)="closeMobileMenu()">Shop</a></li>
+      <li><a routerLink="/best-sellers" (click)="closeMobileMenu()">Best Sellers</a></li>
+      <li><a routerLink="/about" (click)="closeMobileMenu()">About</a></li>
+    </ul>
+    <div class="mobile-search">
+      <input #mobileSearch type="text" placeholder="Search products..." (keyup.enter)="onSearchNav(mobileSearch.value); closeMobileMenu()">
+      <button (click)="onSearchNav(mobileSearch.value); closeMobileMenu()">Search</button>
+    </div>
+  </div>
+</header>

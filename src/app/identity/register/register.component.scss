@@ -1,0 +1,31 @@
+/* Shared with login — all auth styles in login.component.scss via global styles */
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+
+  @media (max-width: 500px) { grid-template-columns: 1fr; }
+}
+
+/* password-wrap and pass-toggle already defined in login.component.scss
+   but since Angular scopes per component, repeat here */
+.password-wrap {
+  position: relative;
+  .form-control { padding-right: 44px; }
+}
+
+.pass-toggle {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  .material-icons { font-size: 19px; }
+  &:hover { color: var(--color-text); }
+}
