@@ -54,41 +54,35 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
       'pk_test_51RxEIVDvC6EKzEmV1feScZWUPexKRzuZiwaqWiA4i79Y9SuSamynaWlbEHGUGjkuJf5imhyjbmGMrOlXEa93Hy9000jKAOE6ov'
     );
 
-    const isDark = document.documentElement.classList.contains('dark');
-    const bg          = isDark ? '#0a0f1e' : '#ffffff';
-    const text        = isDark ? '#f1f5f9' : '#1e293b';
-    const placeholder = isDark ? '#64748b' : '#94a3b8';
+    const computed     = getComputedStyle(document.documentElement);
+    const colorText    = computed.getPropertyValue('--color-text').trim()      || '#1e293b';
+    const colorBg      = computed.getPropertyValue('--color-bg').trim()        || '#ffffff';
+    const colorMuted   = computed.getPropertyValue('--color-text-muted').trim()|| '#94a3b8';
+    const isDark       = document.documentElement.classList.contains('dark');
 
     const elements = this.stripe.elements({
       appearance: {
         theme: isDark ? 'night' : 'stripe',
         variables: {
-          colorText:            text,
-          colorBackground:      bg,
+          colorText,
+          colorBackground:      colorBg,
+          colorTextPlaceholder: colorMuted,
           colorPrimary:         '#2563eb',
           colorDanger:          '#ef4444',
           fontFamily:           "'Inter', -apple-system, sans-serif",
-          borderRadius:         '12px',
-          colorTextPlaceholder: placeholder,
           fontSizeBase:         '15px',
         },
         rules: {
           '.Input': {
-            color:           text,
-            border:          'none',
-            boxShadow:       'none',
-            padding:         '0 16px',
-            fontSize:        '15px',
-            lineHeight:      '1.5',
-          },
-          '.Input::placeholder': {
-            color: placeholder,
+            color:     colorText,
+            border:    'none',
+            boxShadow: 'none',
+            padding:   '0 16px',
           },
           '.Input:focus': {
             border:    'none',
             boxShadow: 'none',
             outline:   'none',
-            color:     text,
           },
           '.Input--invalid': {
             color: '#ef4444',
