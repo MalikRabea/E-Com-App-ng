@@ -48,16 +48,20 @@
 .stripe-field-group { display: flex; flex-direction: column; gap: 0.4rem; }
 
 .stripe-element {
+  height: 44px;
   background: var(--color-bg);
   border: 1.5px solid var(--color-border);
   border-radius: var(--radius-md);
-  padding: 0;
+  display: flex;
+  align-items: center;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
   &:focus-within {
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px rgba(37,99,235,.12);
   }
+
+  > * { width: 100%; }
 }
 
 .card-error {
