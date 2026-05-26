@@ -30,10 +30,9 @@ export class ProductDetailsComponent implements OnInit {
     oldPrice: 0,
     newPrice: 0,
     categoryName: '',
-      soldCount: 0  , 
-
+    soldCount: 0,
+    stockQuantity: 0,
     photos: []
-
   };
   loading: boolean = false;
   MainImage: string = 'assets/default.jpg';
