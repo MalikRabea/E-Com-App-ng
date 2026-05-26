@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminLayoutComponent } from './layout/admin-layout.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { AdminDashboardComponent } from './dashboard/dashboard.component';
 import { AdminProductsComponent } from './products/products.component';
 import { AdminCategoriesComponent } from './categories/categories.component';
 import { AdminOrdersComponent } from './orders/admin-orders.component';
@@ -12,7 +12,7 @@ const routes: Routes = [
     component: AdminLayoutComponent,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardComponent },
+      { path: 'dashboard', component: AdminDashboardComponent },
       { path: 'products', component: AdminProductsComponent },
       { path: 'categories', component: AdminCategoriesComponent },
       { path: 'orders', component: AdminOrdersComponent },
