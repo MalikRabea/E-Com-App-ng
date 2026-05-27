@@ -56,7 +56,6 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const isDark     = document.documentElement.classList.contains('dark');
     const colorText  = isDark ? '#f1f5f9' : '#1e293b';
-    const colorBg    = isDark ? '#0a0f1e'  : '#ffffff';
     const colorMuted = isDark ? '#94a3b8'  : '#64748b';
 
     const elements = this.stripe.elements();
@@ -64,7 +63,7 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
     const style = {
       base: {
         color:           colorText,
-        backgroundColor: colorBg,
+        backgroundColor: 'transparent',
         fontFamily:      "'Inter', -apple-system, sans-serif",
         fontSize:        '15px',
         lineHeight:      '1.5',
