@@ -74,7 +74,8 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
             color:     colorText,
             border:    'none',
             boxShadow: 'none',
-            padding:   '0 16px',
+            padding:   '11px 16px',
+            fontSize:  '15px',
           },
           '.Input:focus': {
             border:    'none',
