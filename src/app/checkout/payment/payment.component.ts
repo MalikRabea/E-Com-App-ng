@@ -35,7 +35,8 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
   cardErrors: any;
   orderId: number;
   cardHandler = this.onChange.bind(this);
-  loader:boolean=false;
+  loader: boolean = false;
+  private themeObserver: MutationObserver;
   constructor(
     private _service: CheckoutService,
     private toast: ToastrService,
@@ -49,31 +50,29 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
       this.cardErrors = null;
     }
   }
+
+  private buildStyle() {
+    const isDark = document.documentElement.classList.contains('dark');
+    return {
+      base: {
+        color:           isDark ? '#f1f5f9' : '#1e293b',
+        backgroundColor: 'transparent',
+        fontFamily:      "'Inter', -apple-system, sans-serif",
+        fontSize:        '15px',
+        lineHeight:      '1.5',
+        '::placeholder': { color: isDark ? '#94a3b8' : '#64748b' },
+      },
+      invalid: { color: '#ef4444', iconColor: '#ef4444' },
+    };
+  }
+
   ngAfterViewInit(): void {
     this.stripe = Stripe(
       'pk_test_51RxEIVDvC6EKzEmV1feScZWUPexKRzuZiwaqWiA4i79Y9SuSamynaWlbEHGUGjkuJf5imhyjbmGMrOlXEa93Hy9000jKAOE6ov'
     );
 
-    const isDark     = document.documentElement.classList.contains('dark');
-    const colorText  = isDark ? '#f1f5f9' : '#1e293b';
-    const colorMuted = isDark ? '#94a3b8'  : '#64748b';
-
     const elements = this.stripe.elements();
-
-    const style = {
-      base: {
-        color:           colorText,
-        backgroundColor: 'transparent',
-        fontFamily:      "'Inter', -apple-system, sans-serif",
-        fontSize:        '15px',
-        lineHeight:      '1.5',
-        '::placeholder': { color: colorMuted },
-      },
-      invalid: {
-        color:     '#ef4444',
-        iconColor: '#ef4444',
-      },
-    };
+    const style    = this.buildStyle();
 
     this.cardNumber = elements.create('cardNumber', { style });
     this.cardNumber.mount(this.cardNumberElement.nativeElement);
@@ -86,11 +85,24 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
     this.cardCvc = elements.create('cardCvc', { style });
     this.cardCvc.mount(this.cardCvcElement.nativeElement);
     this.cardCvc.addEventListener('change', this.cardHandler);
+
+    this.themeObserver = new MutationObserver(() => {
+      const updated = this.buildStyle();
+      this.cardNumber?.update({ style: updated });
+      this.cardExpiry?.update({ style: updated });
+      this.cardCvc?.update({ style: updated });
+    });
+    this.themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
   }
+
   ngOnDestroy(): void {
-    this.cardCvc.destroy();
-    this.cardNumber.destroy();
-    this.cardExpiry.destroy();
+    this.themeObserver?.disconnect();
+    this.cardNumber?.destroy();
+    this.cardExpiry?.destroy();
+    this.cardCvc?.destroy();
   }
   ngOnInit(): void {}
 
