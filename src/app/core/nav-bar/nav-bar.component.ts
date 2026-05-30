@@ -22,10 +22,13 @@ export class NavBarComponent implements OnInit {
   mobileOpen = false;
   isDark = false;
   notifOpen = false;
+  searchFocused = false;
   count: Observable<IBasket>;
   favoriteCount = 0;
   notifications: INotification[] = [];
   unreadCount = 0;
+  recentSearches: string[] = [];
+  private readonly RS_KEY = 'recentSearches';
 
   @ViewChild('dropdown') dropdown!: ElementRef;
   @ViewChild('notifDropdown') notifDropdown!: ElementRef;
@@ -69,6 +72,7 @@ export class NavBarComponent implements OnInit {
 
     this.notifService.notifications$.subscribe(n => (this.notifications = n));
     this.notifService.unreadCount$.subscribe(c => (this.unreadCount = c));
+    this.recentSearches = JSON.parse(localStorage.getItem(this.RS_KEY) || '[]');
   }
 
   toggleTheme() { this.themeService.toggle(); }
@@ -105,8 +109,30 @@ export class NavBarComponent implements OnInit {
   onSearchNav(value: string) {
     const q = value.trim();
     if (q) {
+      this.saveRecentSearch(q);
+      this.searchFocused = false;
       this.router.navigate(['/shop'], { queryParams: { search: q } });
     }
+  }
+
+  saveRecentSearch(term: string) {
+    const list: string[] = JSON.parse(localStorage.getItem(this.RS_KEY) || '[]');
+    const filtered = list.filter(s => s !== term);
+    filtered.unshift(term);
+    const updated = filtered.slice(0, 6);
+    localStorage.setItem(this.RS_KEY, JSON.stringify(updated));
+    this.recentSearches = updated;
+  }
+
+  removeRecentSearch(term: string, e: Event) {
+    e.stopPropagation();
+    this.recentSearches = this.recentSearches.filter(s => s !== term);
+    localStorage.setItem(this.RS_KEY, JSON.stringify(this.recentSearches));
+  }
+
+  clearRecentSearches() {
+    this.recentSearches = [];
+    localStorage.removeItem(this.RS_KEY);
   }
 
   @HostListener('document:click', ['$event'])

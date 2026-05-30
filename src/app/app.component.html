@@ -1,2 +1,11 @@
 <app-nav-bar></app-nav-bar>
 <router-outlet />
+
+<button
+  class="scroll-top-btn"
+  [class.visible]="showScrollTop"
+  (click)="scrollToTop()"
+  aria-label="Scroll to top"
+>
+  <span class="material-icons">keyboard_arrow_up</span>
+</button>

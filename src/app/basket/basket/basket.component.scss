@@ -312,3 +312,21 @@
   text-align: center;
   margin: 0;
 }
+
+.shipping-estimate-box {
+  padding: 14px 16px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.shipping-estimate-result {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--color-text);
+  .material-icons { font-size: 16px; }
+  strong { color: var(--color-success); }
+}

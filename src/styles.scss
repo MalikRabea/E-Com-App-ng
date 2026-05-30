@@ -497,6 +497,15 @@ body {
 /* Sticky top spacing for page content */
 .page-content { padding-top: calc(var(--navbar-h) + 24px); min-height: 100vh; }
 
+/* Print Invoice styles */
+@media print {
+  app-nav-bar, .step-footer, .return-btn, .btn, .tracking-timeline,
+  .scroll-top-btn, .sticky-cart-bar, .modal-overlay { display: none !important; }
+  .page-content { padding-top: 0 !important; }
+  body { background: #fff !important; color: #000 !important; }
+  .card { border: 1px solid #ddd !important; box-shadow: none !important; }
+}
+
 /* Stripe injected wrapper — must be global (outside Angular encapsulation) */
 .StripeElement {
   padding: 11px 16px;

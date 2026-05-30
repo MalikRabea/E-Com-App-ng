@@ -23,10 +23,16 @@
       </h1>
       <p class="section-sub">{{ order.orderDate | date:'longDate' }}</p>
     </div>
-    <a routerLink="/orders" class="btn btn-outline">
-      <span class="material-icons">arrow_back</span>
-      All Orders
-    </a>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost btn-sm" (click)="printInvoice()">
+        <span class="material-icons">print</span>
+        Print Invoice
+      </button>
+      <a routerLink="/orders" class="btn btn-outline">
+        <span class="material-icons">arrow_back</span>
+        All Orders
+      </a>
+    </div>
   </div>
 
   <!-- Tracking Timeline -->

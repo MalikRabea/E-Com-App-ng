@@ -15,6 +15,12 @@ export class BasketComponent implements OnInit {
   couponCode = '';
   appliedCoupon: ICoupon | null = null;
   couponLoading = false;
+  shippingRegion = '';
+  shippingEstimate: number | null = null;
+
+  private readonly shippingRates: Record<string, number> = {
+    local: 2.99, domestic: 5.99, regional: 12.99, international: 24.99
+  };
   ngOnInit(): void {
     this.basketService.basket$.subscribe({
       next: (value) => { this.basket = value; },
@@ -52,5 +58,9 @@ export class BasketComponent implements OnInit {
     this.basketService.removeCoupon();
     this.couponCode = '';
     this.toast.info('Coupon removed', 'Cart');
+  }
+
+  calcShipping() {
+    this.shippingEstimate = this.shippingRegion ? this.shippingRates[this.shippingRegion] : null;
   }
 }

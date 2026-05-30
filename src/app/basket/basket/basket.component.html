@@ -129,6 +129,27 @@
             }
           </div>
 
+          <!-- Shipping Estimate -->
+          <div class="shipping-estimate-box">
+            <h4 class="coupon-title">
+              <span class="material-icons">local_shipping</span>
+              Estimate Shipping
+            </h4>
+            <select class="coupon-input" [(ngModel)]="shippingRegion" (change)="calcShipping()">
+              <option value="">Select region...</option>
+              <option value="local">Local (Same City)</option>
+              <option value="domestic">Domestic</option>
+              <option value="regional">Regional</option>
+              <option value="international">International</option>
+            </select>
+            @if (shippingEstimate !== null) {
+              <div class="shipping-estimate-result">
+                <span class="material-icons" style="color:var(--color-success)">check_circle</span>
+                <span>Estimated shipping: <strong>{{ shippingEstimate | currency }}</strong></span>
+              </div>
+            }
+          </div>
+
           <app-order-total></app-order-total>
           <a routerLink="/checkout" class="btn btn-primary btn-full btn-lg checkout-btn">
             <span class="material-icons">lock</span>

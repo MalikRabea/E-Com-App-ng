@@ -91,6 +91,9 @@
                 style="font-size:0.85rem;font-weight:600">
             {{ product.stockQuantity > 0 ? product.stockQuantity + ' in stock' : 'Out of stock' }}
           </span>
+          <button class="stock-refresh-btn" (click)="refreshStock()" [disabled]="stockRefreshing" title="Refresh stock">
+            <span class="material-icons" [class.spin]="stockRefreshing">refresh</span>
+          </button>
         </div>
 
         <!-- Description -->
@@ -121,6 +124,23 @@
           <button class="btn btn-outline btn-lg pd-wish-btn" (click)="addToFavorites(product?.id)">
             <span class="material-icons">favorite_border</span>
           </button>
+          <!-- Share -->
+          <div class="share-wrapper" style="position:relative">
+            <button class="btn btn-outline btn-lg pd-wish-btn" (click)="shareOpen = !shareOpen" title="Share">
+              <span class="material-icons">share</span>
+            </button>
+            <div class="share-dropdown" *ngIf="shareOpen" (clickOutside)="shareOpen=false">
+              <button class="share-item" (click)="shareProduct('copy')">
+                <span class="material-icons">link</span> Copy Link
+              </button>
+              <button class="share-item" (click)="shareProduct('whatsapp')">
+                <span class="material-icons">chat</span> WhatsApp
+              </button>
+              <button class="share-item" (click)="shareProduct('native')" *ngIf="true">
+                <span class="material-icons">open_in_new</span> More...
+              </button>
+            </div>
+          </div>
         </div>
 
         <!-- Trust badges -->
@@ -242,5 +262,33 @@
       </section>
     }
 
+  </div>
+</div>
+
+<!-- Sticky Add to Cart Bar -->
+<div class="sticky-cart-bar" [class.visible]="showSticky && product?.id" *ngIf="product?.id">
+  <div class="sticky-cart-inner container">
+    <div class="sticky-product-info">
+      <img [src]="MainImage" [alt]="product?.name" class="sticky-thumb" onerror="this.src='assets/no-image.png'"/>
+      <div>
+        <p class="sticky-name">{{ product?.name }}</p>
+        <p class="sticky-price">{{ product?.newPrice | currency }}</p>
+      </div>
+    </div>
+    <div class="sticky-actions">
+      <div class="qty-control sticky-qty">
+        <button class="qty-btn" (click)="DecrementBasket()" [disabled]="qunatity <= 1">
+          <span class="material-icons">remove</span>
+        </button>
+        <span class="qty-value">{{ qunatity }}</span>
+        <button class="qty-btn" (click)="incrementBasket()" [disabled]="qunatity >= 10">
+          <span class="material-icons">add</span>
+        </button>
+      </div>
+      <button class="btn btn-primary" (click)="AddToBasket()" [disabled]="product?.stockQuantity === 0">
+        <span class="material-icons">shopping_bag</span>
+        Add to Cart
+      </button>
+    </div>
   </div>
 </div>

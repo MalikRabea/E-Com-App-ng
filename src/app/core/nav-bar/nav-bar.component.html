@@ -24,18 +24,39 @@
     </ul>
 
     <!-- Search Bar -->
-    <div class="navbar-search">
+    <div class="navbar-search" style="position:relative">
       <span class="material-icons search-icon">search</span>
       <input
         #navSearch
         type="text"
         class="search-input"
         placeholder="Search products..."
+        (focus)="searchFocused = true"
+        (blur)="searchFocused = false"
         (keyup.enter)="onSearchNav(navSearch.value)"
       />
       <button class="search-btn" (click)="onSearchNav(navSearch.value)">
         <span class="material-icons" style="font-size:18px">arrow_forward</span>
       </button>
+
+      <!-- Recent Searches Dropdown -->
+      <div class="recent-searches" *ngIf="searchFocused && recentSearches.length > 0">
+        <div class="rs-header">
+          <span>Recent</span>
+          <button class="rs-clear" (mousedown)="clearRecentSearches()">Clear all</button>
+        </div>
+        <div
+          class="rs-item"
+          *ngFor="let s of recentSearches"
+          (mousedown)="navSearch.value = s; onSearchNav(s)"
+        >
+          <span class="material-icons">history</span>
+          <span class="rs-text">{{ s }}</span>
+          <button class="rs-remove" (mousedown)="removeRecentSearch(s, $event)">
+            <span class="material-icons">close</span>
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Right Actions -->

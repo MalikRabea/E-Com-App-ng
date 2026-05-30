@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ShopService } from '../shop.service';
 import { IProduct } from '../../shared/Models/Product';
 import { ActivatedRoute } from '@angular/router';
@@ -24,20 +24,16 @@ export class ProductDetailsComponent implements OnInit {
   reviews: IReview[] = [];
   qunatity: number = 1;
   product: IProduct = {
-    id: 0,
-    name: '',
-    description: '',
-    oldPrice: 0,
-    newPrice: 0,
-    categoryName: '',
-    soldCount: 0,
-    stockQuantity: 0,
-    photos: []
+    id: 0, name: '', description: '', oldPrice: 0,
+    newPrice: 0, categoryName: '', soldCount: 0, stockQuantity: 0, photos: []
   };
   loading: boolean = false;
+  stockRefreshing = false;
   MainImage: string = 'assets/default.jpg';
   recentlyViewed: IProduct[] = [];
   relatedProducts: IProduct[] = [];
+  showSticky = false;
+  shareOpen = false;
 
   private readonly RV_KEY = 'recentlyViewed';
   private readonly RV_MAX = 6;
@@ -142,5 +138,38 @@ export class ProductDetailsComponent implements OnInit {
 
   getStars(rating: number | undefined): number[] {
     return Array.from({ length: Math.max(0, Math.floor(rating || 0)) });
+  }
+
+  @HostListener('window:scroll')
+  onScroll() {
+    this.showSticky = window.scrollY > 450;
+  }
+
+  refreshStock() {
+    if (!this.product.id || this.stockRefreshing) return;
+    this.stockRefreshing = true;
+    this.shopService.getProductDetails(this.product.id).subscribe({
+      next: (p) => {
+        this.product.stockQuantity = p.stockQuantity;
+        this.stockRefreshing = false;
+        this.toast.info(`Stock updated: ${p.stockQuantity} available`, 'Stock');
+      },
+      error: () => { this.stockRefreshing = false; }
+    });
+  }
+
+  shareProduct(via: 'copy' | 'whatsapp' | 'native') {
+    const url  = window.location.href;
+    const text = `Check out ${this.product.name} — ${url}`;
+    if (via === 'native' && navigator.share) {
+      navigator.share({ title: this.product.name, url }).catch(() => {});
+    } else if (via === 'whatsapp') {
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    } else {
+      navigator.clipboard.writeText(url).then(() =>
+        this.toast.success('Link copied to clipboard!', 'Copied')
+      );
+    }
+    this.shareOpen = false;
   }
 }

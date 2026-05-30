@@ -101,6 +101,10 @@ export class OrderItemComponent implements OnInit {
     });
   }
 
+  printInvoice() {
+    window.print();
+  }
+
   openReturnModal() {
     this.returnForm = { reason: '', description: '' };
     this.returnOpen = true;
