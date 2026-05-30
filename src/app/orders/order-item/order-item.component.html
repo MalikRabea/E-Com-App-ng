@@ -124,6 +124,15 @@
           {{ order.shippingAddress?.state }} {{ order.shippingAddress?.zipCode }}
         </p>
       </div>
+
+      <button
+        class="btn btn-outline btn-sm return-btn"
+        (click)="openReturnModal()"
+        *ngIf="order.status === 'PaymentReceived'"
+      >
+        <span class="material-icons">assignment_return</span>
+        Request Return / Refund
+      </button>
     </div>
 
   </div>
@@ -137,6 +146,45 @@
     <a routerLink="/Account/Login" class="btn btn-primary">Sign In</a>
   </div>
 </ng-template>
+
+<!-- Return / Refund Modal -->
+<div class="modal-overlay" *ngIf="returnOpen" (click)="closeReturnModal()">
+  <div class="modal-box rating-modal" (click)="$event.stopPropagation()">
+    <button class="modal-close-btn" (click)="closeReturnModal()">
+      <span class="material-icons">close</span>
+    </button>
+    <h3 class="modal-title">
+      <span class="material-icons" style="color:var(--color-warning);vertical-align:-4px;margin-right:6px">assignment_return</span>
+      Return / Refund Request
+    </h3>
+
+    <div class="form-group" style="margin-top:0.5rem">
+      <label class="form-label">Reason <span style="color:var(--color-danger)">*</span></label>
+      <select [(ngModel)]="returnForm.reason" class="form-control">
+        <option value="">Select a reason...</option>
+        <option *ngFor="let r of returnReasons" [value]="r">{{ r }}</option>
+      </select>
+    </div>
+
+    <div class="form-group" style="margin-top:1rem">
+      <label class="form-label">Additional Details <span style="color:var(--color-text-muted);font-weight:400">(optional)</span></label>
+      <textarea
+        [(ngModel)]="returnForm.description"
+        placeholder="Describe the issue..."
+        class="form-control"
+        rows="3"
+      ></textarea>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" (click)="closeReturnModal()">Cancel</button>
+      <button class="btn btn-primary" (click)="submitReturn()" [disabled]="!returnForm.reason">
+        <span class="material-icons">send</span>
+        Submit Request
+      </button>
+    </div>
+  </div>
+</div>
 
 <!-- Rating Modal (Angular, no Bootstrap) -->
 <div class="modal-overlay" *ngIf="ratingOpen" (click)="closeRatingModal()">

@@ -16,9 +16,20 @@ export class OrderItemComponent implements OnInit {
   id: number = 0;
   loading = true;
   ratingOpen = false;
+  returnOpen = false;
   imgUrl = environment.imageUrl;
 
   rating: IRating = { productId: 0, content: '', stars: 0 };
+
+  returnForm = { reason: '', description: '' };
+  returnReasons = [
+    'Wrong item received',
+    'Defective / damaged item',
+    'Changed my mind',
+    'Item not as described',
+    'Late delivery',
+    'Other',
+  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -88,5 +99,34 @@ export class OrderItemComponent implements OnInit {
         this.toast.error('You already reviewed this product', 'Notice');
       },
     });
+  }
+
+  openReturnModal() {
+    this.returnForm = { reason: '', description: '' };
+    this.returnOpen = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeReturnModal() {
+    this.returnOpen = false;
+    document.body.style.overflow = '';
+  }
+
+  submitReturn() {
+    if (!this.returnForm.reason) {
+      this.toast.warning('Please select a reason', 'Required');
+      return;
+    }
+    const returns: any[] = JSON.parse(localStorage.getItem('returnRequests') || '[]');
+    returns.push({
+      orderId:     this.order?.id,
+      reason:      this.returnForm.reason,
+      description: this.returnForm.description,
+      date:        new Date().toISOString(),
+      status:      'Pending Review',
+    });
+    localStorage.setItem('returnRequests', JSON.stringify(returns));
+    this.closeReturnModal();
+    this.toast.success('Return request submitted. We\'ll contact you within 24h.', 'Request Received');
   }
 }

@@ -6,6 +6,7 @@ import { BasketService } from '../../basket/basket.service';
 import { FavoriteService } from '../../favorite/favorite.service';
 import { CoreService } from '../core.service';
 import { ThemeService } from '../Services/theme.service';
+import { NotificationService, INotification } from '../Services/notification.service';
 import { IBasket } from '../../shared/Models/Basket';
 import { environment } from '../../../environments/environment';
 
@@ -20,10 +21,14 @@ export class NavBarComponent implements OnInit {
   visibale = false;
   mobileOpen = false;
   isDark = false;
+  notifOpen = false;
   count: Observable<IBasket>;
   favoriteCount = 0;
+  notifications: INotification[] = [];
+  unreadCount = 0;
 
   @ViewChild('dropdown') dropdown!: ElementRef;
+  @ViewChild('notifDropdown') notifDropdown!: ElementRef;
 
   constructor(
     private basketService: BasketService,
@@ -31,7 +36,8 @@ export class NavBarComponent implements OnInit {
     private router: Router,
     private favoriteService: FavoriteService,
     private themeService: ThemeService,
-    private http: HttpClient
+    private http: HttpClient,
+    public notifService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -60,9 +66,29 @@ export class NavBarComponent implements OnInit {
     });
 
     this.themeService.isDark.subscribe(dark => (this.isDark = dark));
+
+    this.notifService.notifications$.subscribe(n => (this.notifications = n));
+    this.notifService.unreadCount$.subscribe(c => (this.unreadCount = c));
   }
 
   toggleTheme() { this.themeService.toggle(); }
+
+  toggleNotif() { this.notifOpen = !this.notifOpen; }
+  closeNotif()  { this.notifOpen = false; }
+
+  onNotifClick(n: INotification) {
+    this.notifService.markRead(n.id);
+    if (n.link) this.router.navigateByUrl(n.link);
+    this.notifOpen = false;
+  }
+
+  timeAgo(iso: string): string {
+    const diff = (Date.now() - new Date(iso).getTime()) / 1000;
+    if (diff < 60)   return 'Just now';
+    if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+    if (diff < 86400)return Math.floor(diff / 3600) + 'h ago';
+    return Math.floor(diff / 86400) + 'd ago';
+  }
 
   logout() {
     this.coreService.logout().subscribe({
@@ -87,6 +113,9 @@ export class NavBarComponent implements OnInit {
   clickOutside(event: Event) {
     if (this.visibale && this.dropdown && !this.dropdown.nativeElement.contains(event.target)) {
       this.visibale = false;
+    }
+    if (this.notifOpen && this.notifDropdown && !this.notifDropdown.nativeElement.contains(event.target)) {
+      this.notifOpen = false;
     }
   }
 }

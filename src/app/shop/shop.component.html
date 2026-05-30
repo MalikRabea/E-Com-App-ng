@@ -90,6 +90,53 @@
             }
           </ul>
         </div>
+
+        <!-- Price Range Filter -->
+        <div class="sidebar-card sidebar-filter-card">
+          <h3 class="sidebar-title">
+            <span class="material-icons">attach_money</span>
+            Price Range
+          </h3>
+          <div class="price-display">
+            <span>${{ priceMin }}</span>
+            <div class="price-track">
+              <div class="price-fill"
+                [style.left.%]="(priceMin / priceRangeMax) * 100"
+                [style.right.%]="100 - (priceMax / priceRangeMax) * 100">
+              </div>
+            </div>
+            <span>${{ priceMax }}</span>
+          </div>
+          <div class="price-sliders">
+            <input type="range" class="price-slider" [(ngModel)]="priceMin"
+              min="0" [max]="priceMax - 1" step="1" (input)="applyLocalFilters()"/>
+            <input type="range" class="price-slider" [(ngModel)]="priceMax"
+              [min]="priceMin + 1" [max]="priceRangeMax" step="1" (input)="applyLocalFilters()"/>
+          </div>
+          <div class="price-inputs">
+            <input type="number" [(ngModel)]="priceMin" min="0" [max]="priceMax - 1"
+              (change)="applyLocalFilters()" class="price-input" placeholder="Min"/>
+            <span class="price-sep">—</span>
+            <input type="number" [(ngModel)]="priceMax" [min]="priceMin + 1" [max]="priceRangeMax"
+              (change)="applyLocalFilters()" class="price-input" placeholder="Max"/>
+          </div>
+        </div>
+
+        <!-- Extra Filters -->
+        <div class="sidebar-card sidebar-filter-card">
+          <h3 class="sidebar-title">
+            <span class="material-icons">tune</span>
+            Filters
+          </h3>
+          <label class="filter-toggle">
+            <input type="checkbox" [(ngModel)]="inStockOnly" (change)="applyLocalFilters()"/>
+            <span class="toggle-label">In Stock Only</span>
+          </label>
+          <button class="btn btn-ghost btn-sm reset-filters-btn" (click)="resetPriceFilter()" *ngIf="priceFilterActive">
+            <span class="material-icons">restart_alt</span>
+            Reset Filters
+          </button>
+        </div>
       </aside>
 
       <!-- ── Products Grid ── -->
@@ -117,7 +164,7 @@
 
         <!-- Actual Products -->
         @if (!loading) {
-          @if (product.length === 0) {
+          @if (displayProducts.length === 0) {
             <div class="empty-state">
               <span class="material-icons empty-icon">search_off</span>
               <h3>No products found</h3>
@@ -126,9 +173,9 @@
             </div>
           }
 
-          @if (product.length > 0) {
+          @if (displayProducts.length > 0) {
             <div class="products-grid">
-              @for (item of product; track $index) {
+              @for (item of displayProducts; track $index) {
                 <app-shop-item
                   [Product]="item"
                   (quickView)="openQuickView($event)">

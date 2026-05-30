@@ -26,6 +26,23 @@ export class ShopComponent implements OnInit {
   showCompareModal = false;
   private searchTerm$ = new Subject<string>();
 
+  priceMin = 0;
+  priceMax = 9999;
+  priceRangeMax = 9999;
+  inStockOnly = false;
+
+  get displayProducts(): IProduct[] {
+    return this.product.filter(p =>
+      p.newPrice >= this.priceMin &&
+      p.newPrice <= this.priceMax &&
+      (!this.inStockOnly || p.stockQuantity > 0)
+    );
+  }
+
+  get priceFilterActive(): boolean {
+    return this.priceMin > 0 || this.priceMax < this.priceRangeMax || this.inStockOnly;
+  }
+
   SortingOption = [
     { name: 'Default',       value: 'Name'     },
     { name: 'Price: Low → High', value: 'PriceAce' },
@@ -73,6 +90,11 @@ export class ShopComponent implements OnInit {
         this.ProductParam.pageNumber = value.pageNumber;
         this.ProductParam.pageSize = value.pageSize;
         this.loading = false;
+        if (value.data.length > 0) {
+          const maxP = Math.max(...value.data.map(p => p.newPrice));
+          this.priceRangeMax = Math.ceil(maxP / 10) * 10 || 9999;
+          if (!this.priceFilterActive) this.priceMax = this.priceRangeMax;
+        }
       },
       error: () => { this.loading = false; },
     });
@@ -165,12 +187,24 @@ export class ShopComponent implements OnInit {
   @ViewChild('search') searchInput!: ElementRef;
   @ViewChild('SortSelected') selected!: ElementRef;
 
+  applyLocalFilters() {
+    if (this.priceMin < 0) this.priceMin = 0;
+    if (this.priceMax < this.priceMin) this.priceMax = this.priceMin;
+  }
+
+  resetPriceFilter() {
+    this.priceMin = 0;
+    this.priceMax = this.priceRangeMax;
+    this.inStockOnly = false;
+  }
+
   ResetValue() {
     this.ProductParam.search = '';
     this.ProductParam.SortSelected = this.SortingOption[0].value;
     this.ProductParam.CategoryId = 0;
     if (this.searchInput) this.searchInput.nativeElement.value = '';
     if (this.selected) this.selected.nativeElement.selectedIndex = 0;
+    this.resetPriceFilter();
     this.getAllProduct();
   }
 }

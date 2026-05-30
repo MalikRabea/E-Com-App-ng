@@ -10,6 +10,7 @@ import {
 import { CheckoutService } from '../checkout.service';
 import { ToastrService } from 'ngx-toastr';
 import { BasketService } from '../../basket/basket.service';
+import { NotificationService } from '../../core/Services/notification.service';
 import { IBasket } from '../../shared/Models/Basket';
 import { ICreateOrder } from '../../shared/Models/Order';
 import { FormGroup } from '@angular/forms';
@@ -41,7 +42,8 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
     private _service: CheckoutService,
     private toast: ToastrService,
     private basketService: BasketService,
-    private router: Router
+    private router: Router,
+    private notifService: NotificationService
   ) {}
   onChange({ error }) {
     if (error) {
@@ -116,6 +118,13 @@ export class PaymentComponent implements OnInit, AfterViewInit, OnDestroy {
     const PaymentDetials = await this.confirmPaymentWithStripe(basket);
     if (PaymentDetials.paymentIntent) {
       this.loader=false
+      this.notifService.add({
+        type:    'order',
+        icon:    'check_circle',
+        title:   `Order #${this.orderId} Confirmed`,
+        message: 'Your payment was successful. Your order is being processed.',
+        link:    `/orders?id=${this.orderId}`,
+      });
       this.toast.success('Order Created Successfuly', 'SUCCESS');
       this.router.navigate(['/checkout/success'], {
         queryParams: { orderId: this.orderId },
