@@ -1,0 +1,85 @@
+.loyalty-page { background: var(--color-bg-soft); }
+
+.loyalty-header {
+  padding: 32px 0 24px;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 28px;
+}
+
+.loyalty-title {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 1.8rem; font-weight: 800; color: var(--color-text); margin: 0 0 6px;
+  .material-icons { color: #f59e0b; font-size: 2rem; }
+}
+
+.loyalty-sub { color: var(--color-text-muted); margin: 0; }
+
+.points-card {
+  padding: 32px; margin-bottom: 20px; position: relative; text-align: center;
+  background: linear-gradient(135deg, var(--color-surface), var(--color-bg-muted));
+}
+
+.tier-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 18px; border-radius: 999px; color: #fff;
+  font-size: 0.85rem; font-weight: 700; margin-bottom: 16px;
+  .material-icons { font-size: 18px; }
+}
+
+.points-main { display: flex; align-items: baseline; justify-content: center; gap: 8px; }
+.points-number { font-size: 3.5rem; font-weight: 900; color: var(--color-text); line-height: 1; }
+.points-label { font-size: 1rem; color: var(--color-text-muted); font-weight: 600; }
+.points-value { font-size: 1rem; color: var(--color-success); font-weight: 600; margin: 8px 0 20px; }
+
+.tier-progress { max-width: 400px; margin: 0 auto; }
+.tier-progress-bar {
+  height: 8px; background: var(--color-border); border-radius: 4px; overflow: hidden; margin-bottom: 8px;
+}
+.tier-progress-fill { height: 100%; background: var(--color-primary); border-radius: 4px; transition: width 0.5s ease; }
+.tier-progress-label { font-size: 0.85rem; color: var(--color-text-muted); margin: 0; }
+.tier-max { font-size: 1rem; color: var(--color-accent); font-weight: 700; margin: 0; }
+
+.how-it-works { padding: 24px; margin-bottom: 20px; }
+.section-heading {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 1rem; font-weight: 700; color: var(--color-text); margin: 0 0 20px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--color-border);
+  .material-icons { color: var(--color-primary); }
+}
+
+.how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; @media(max-width:600px){grid-template-columns:1fr} }
+.how-item {
+  text-align: center; padding: 16px; background: var(--color-bg-muted); border-radius: var(--radius-md);
+  .how-icon { font-size: 2rem; color: var(--color-primary); display: block; margin-bottom: 8px; }
+  p { font-size: 0.85rem; color: var(--color-text-muted); margin: 0; strong { color: var(--color-text); display: block; } }
+}
+
+.redeem-card { padding: 24px; margin-bottom: 20px; }
+.redeem-row { display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+.redeem-input-group { flex: 1; min-width: 200px; }
+.redeem-equiv { font-size: 0.85rem; color: var(--color-success); font-weight: 600; margin-top: 6px; display: block; }
+
+.history-card { padding: 24px; margin-bottom: 20px; }
+.history-list { display: flex; flex-direction: column; gap: 0; }
+.history-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 0; border-bottom: 1px solid var(--color-border);
+  &:last-child { border-bottom: none; }
+}
+.history-icon {
+  width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  &.earned   { background: rgba(16,185,129,.12); .material-icons { color: var(--color-success); } }
+  &.redeemed { background: rgba(245,158,11,.12);  .material-icons { color: var(--color-accent);  } }
+  .material-icons { font-size: 20px; }
+}
+.history-info { flex: 1; }
+.history-desc { font-size: 0.875rem; font-weight: 600; color: var(--color-text); margin: 0 0 2px; }
+.history-date { font-size: 0.75rem; color: var(--color-text-muted); }
+.history-points { font-size: 0.95rem; font-weight: 700; flex-shrink: 0; &.positive { color: var(--color-success); } &.negative { color: var(--color-accent); } }
+
+.empty-loyalty {
+  padding: 48px 24px; text-align: center;
+  .material-icons { font-size: 4rem; color: var(--color-border); display: block; margin-bottom: 12px; }
+  h3 { color: var(--color-text); margin-bottom: 8px; }
+  p { color: var(--color-text-muted); margin-bottom: 20px; }
+}

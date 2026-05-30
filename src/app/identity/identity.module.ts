@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { IdentityRoutingModule } from './identity-routing.module';
 import { RegisterComponent } from './register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -11,24 +10,14 @@ import { LogoutComponent } from './logout/logout.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AddressBookComponent } from './address-book/address-book.component';
-
+import { LoyaltyComponent } from './loyalty/loyalty.component';
 
 @NgModule({
   declarations: [
-    RegisterComponent,
-    ActiveComponent,
-    LoginComponent,
-    ResetPasswordComponent,
-    LogoutComponent,
-    ChangePasswordComponent,
-    ProfileComponent,
-    AddressBookComponent,
+    RegisterComponent, ActiveComponent, LoginComponent, ResetPasswordComponent,
+    LogoutComponent, ChangePasswordComponent, ProfileComponent, AddressBookComponent,
+    LoyaltyComponent,
   ],
-  imports: [
-    CommonModule,
-    IdentityRoutingModule,
-    ReactiveFormsModule,
-    FormsModule
-  ]
+  imports: [CommonModule, IdentityRoutingModule, ReactiveFormsModule, FormsModule]
 })
 export class IdentityModule { }

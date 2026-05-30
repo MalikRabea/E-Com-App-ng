@@ -54,4 +54,8 @@ export class ShopService {
       params: { Search: term, pageNumber: 1, pageSize: 5 }
     });
   }
+
+  getProductVariants(productId: number) {
+    return this.http.get<any[]>(this.baseURL + `ProductVariants/${productId}`);
+  }
 }

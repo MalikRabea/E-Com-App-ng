@@ -166,6 +166,9 @@
             <a routerLink="/Account/addresses" class="dropdown-item" (click)="closeDropdown()">
               <span class="material-icons">location_on</span> My Addresses
             </a>
+            <a routerLink="/Account/loyalty" class="dropdown-item" (click)="closeDropdown()">
+              <span class="material-icons">workspace_premium</span> Loyalty Points
+            </a>
             <ng-container *ngIf="isAdmin">
               <div class="dropdown-divider"></div>
               <a routerLink="/admin" class="dropdown-item admin-dropdown-item" (click)="closeDropdown()">

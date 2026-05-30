@@ -34,6 +34,8 @@ export class ProductDetailsComponent implements OnInit {
   relatedProducts: IProduct[] = [];
   showSticky = false;
   shareOpen = false;
+  variants: any[] = [];
+  selectedVariants: Record<number, string> = {};
 
   private readonly RV_KEY = 'recentlyViewed';
   private readonly RV_MAX = 6;
@@ -55,6 +57,7 @@ export class ProductDetailsComponent implements OnInit {
         this.saveRecentlyViewed(value);
         this.loadRecentlyViewed(value.id);
         this.loadRelatedProducts(productId);
+        this.loadVariants(productId);
       },
       error: (err) => {
         console.error(err);
@@ -80,6 +83,17 @@ export class ProductDetailsComponent implements OnInit {
       next: (products) => { this.relatedProducts = products; },
       error: () => {}
     });
+  }
+
+  private loadVariants(productId: number) {
+    this.shopService.getProductVariants(productId).subscribe({
+      next: (v) => { this.variants = v; },
+      error: () => { this.variants = []; }
+    });
+  }
+
+  selectVariant(variantId: number, value: string) {
+    this.selectedVariants = { ...this.selectedVariants, [variantId]: value };
   }
 
   ReplaceImage(src: string) {

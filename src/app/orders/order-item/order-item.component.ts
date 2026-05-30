@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IOrder } from '../../shared/Models/Order';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrdersService } from '../orders.service';
 import { IRating } from '../../shared/Models/rating';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment';
+import { SignalRService } from '../../core/Services/signalr.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-order-item',
   templateUrl: './order-item.component.html',
   styleUrl: './order-item.component.scss',
 })
-export class OrderItemComponent implements OnInit {
+export class OrderItemComponent implements OnInit, OnDestroy {
   order: IOrder | null = null;
   id: number = 0;
   loading = true;
@@ -31,11 +33,14 @@ export class OrderItemComponent implements OnInit {
     'Other',
   ];
 
+  private signalRSub: Subscription;
+
   constructor(
     private route: ActivatedRoute,
     private _service: OrdersService,
     private toast: ToastrService,
-    private router: Router
+    private router: Router,
+    private signalR: SignalRService
   ) {}
 
   ngOnInit(): void {
@@ -48,6 +53,13 @@ export class OrderItemComponent implements OnInit {
         next: (response) => {
           this.order = response;
           this.loading = false;
+          this.signalR.startConnection(this.id);
+          this.signalRSub = this.signalR.orderStatusUpdated$.subscribe(update => {
+            if (update && this.order && update.orderId === this.order.id) {
+              this.order.status = update.status;
+              this.toast.info(`Order status updated: ${update.status}`, 'Live Update');
+            }
+          });
         },
         error: (err) => {
           this.loading = false;
@@ -99,6 +111,11 @@ export class OrderItemComponent implements OnInit {
         this.toast.error('You already reviewed this product', 'Notice');
       },
     });
+  }
+
+  ngOnDestroy() {
+    this.signalRSub?.unsubscribe();
+    this.signalR.stopConnection();
   }
 
   printInvoice() {

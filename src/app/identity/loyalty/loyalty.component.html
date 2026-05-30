@@ -1,0 +1,118 @@
+<div class="page-content page-enter loyalty-page">
+  <div class="container">
+
+    <div class="loyalty-header">
+      <h1 class="loyalty-title">
+        <span class="material-icons">workspace_premium</span>
+        Loyalty Program
+      </h1>
+      <p class="loyalty-sub">Earn points with every purchase and unlock exclusive rewards</p>
+    </div>
+
+    @if (loading) {
+      <div class="skeleton" style="height:200px;border-radius:16px;margin-bottom:24px"></div>
+      <div class="skeleton" style="height:120px;border-radius:16px"></div>
+    }
+
+    @if (!loading && data) {
+      <!-- Points Card -->
+      <div class="points-card card">
+        <div class="tier-badge" [style.background]="tierColor">
+          <span class="material-icons">{{ tierIcon }}</span>
+          {{ data.tier }}
+        </div>
+        <div class="points-main">
+          <span class="points-number">{{ data.points | number }}</span>
+          <span class="points-label">points</span>
+        </div>
+        <div class="points-value">≈ ${{ (data.points / 100).toFixed(2) }} value</div>
+
+        <!-- Progress to next tier -->
+        @if (data.pointsToNext > 0) {
+          <div class="tier-progress">
+            <div class="tier-progress-bar">
+              <div class="tier-progress-fill" [style.width.%]="progressPercent"></div>
+            </div>
+            <p class="tier-progress-label">
+              <strong>{{ data.pointsToNext }}</strong> points to <strong>{{ data.nextTier }}</strong>
+            </p>
+          </div>
+        } @else {
+          <p class="tier-max">🏆 You've reached the highest tier!</p>
+        }
+      </div>
+
+      <!-- How it works -->
+      <div class="how-it-works card">
+        <h3 class="section-heading"><span class="material-icons">info</span> How it works</h3>
+        <div class="how-grid">
+          <div class="how-item">
+            <span class="material-icons how-icon">shopping_bag</span>
+            <p><strong>Earn</strong><br/>1 point per $1 spent</p>
+          </div>
+          <div class="how-item">
+            <span class="material-icons how-icon">redeem</span>
+            <p><strong>Redeem</strong><br/>100 points = $1 discount</p>
+          </div>
+          <div class="how-item">
+            <span class="material-icons how-icon">trending_up</span>
+            <p><strong>Tier up</strong><br/>Silver → Gold → Platinum</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Redeem -->
+      @if (data.points >= 100) {
+        <div class="redeem-card card">
+          <h3 class="section-heading"><span class="material-icons">redeem</span> Redeem Points</h3>
+          <div class="redeem-row">
+            <div class="redeem-input-group">
+              <label class="form-label">Points to redeem (min 100)</label>
+              <input type="number" class="form-control" [(ngModel)]="redeemAmount"
+                [min]="100" [max]="data.points" step="100"/>
+              <span class="redeem-equiv">= ${{ (redeemAmount / 100).toFixed(2) }} discount</span>
+            </div>
+            <button class="btn btn-primary" (click)="redeem()"
+              [disabled]="redeemAmount < 100 || redeemAmount > data.points || redeeming">
+              <span class="material-icons">{{ redeeming ? 'hourglass_empty' : 'redeem' }}</span>
+              {{ redeeming ? 'Processing...' : 'Redeem' }}
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- History -->
+      @if (data.history?.length > 0) {
+        <div class="history-card card">
+          <h3 class="section-heading"><span class="material-icons">history</span> Points History</h3>
+          <div class="history-list">
+            @for (t of data.history; track $index) {
+              <div class="history-item">
+                <div class="history-icon" [ngClass]="t.type === 'Earned' ? 'earned' : 'redeemed'">
+                  <span class="material-icons">{{ t.type === 'Earned' ? 'add_circle' : 'remove_circle' }}</span>
+                </div>
+                <div class="history-info">
+                  <p class="history-desc">{{ t.description }}</p>
+                  <span class="history-date">{{ t.createdAt | date:'mediumDate' }}</span>
+                </div>
+                <span class="history-points" [class.positive]="t.points > 0" [class.negative]="t.points < 0">
+                  {{ t.points > 0 ? '+' : '' }}{{ t.points }} pts
+                </span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    }
+
+    @if (!loading && !data) {
+      <div class="empty-loyalty card">
+        <span class="material-icons">workspace_premium</span>
+        <h3>No loyalty account yet</h3>
+        <p>Place your first order to start earning points!</p>
+        <a routerLink="/shop" class="btn btn-primary">Start Shopping</a>
+      </div>
+    }
+
+  </div>
+</div>

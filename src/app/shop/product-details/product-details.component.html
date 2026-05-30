@@ -101,6 +101,31 @@
 
         <div class="divider"></div>
 
+        <!-- Variants -->
+        @if (variants.length > 0) {
+          <div class="pd-variants">
+            @for (variant of variants; track variant.id) {
+              <div class="variant-group">
+                <span class="variant-label">{{ variant.type }}:</span>
+                <div class="variant-options">
+                  @for (opt of variant.options; track opt.id) {
+                    <button
+                      class="variant-btn"
+                      [class.selected]="selectedVariants[variant.id] === opt.value"
+                      [class.out-of-stock]="opt.stock === 0"
+                      (click)="opt.stock > 0 && selectVariant(variant.id, opt.value)"
+                      [title]="opt.stock === 0 ? 'Out of stock' : opt.value"
+                    >
+                      {{ opt.value }}
+                      @if (opt.priceAdjustment > 0) { <span class="variant-adj">+{{ opt.priceAdjustment | currency }}</span> }
+                    </button>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        }
+
         <!-- Quantity -->
         <div class="pd-qty-row">
           <span class="qty-label">Quantity</span>
