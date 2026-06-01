@@ -114,4 +114,57 @@ export class AdminProductsComponent implements OnInit {
   onPageChange(p: number) { this.page = p; this.load(); }
   get totalPages() { return Math.ceil(this.totalCount / this.pageSize); }
   get pages() { return Array.from({ length: this.totalPages }, (_, i) => i + 1); }
+
+  // ── Variants ──
+  variantProduct: any = null;
+  variants: any[] = [];
+  variantLoading = false;
+  newVariant = { type: 'Color', options: [{ value: '', stock: 0, priceAdjustment: 0 }] };
+
+  openVariants(p: any) {
+    this.variantProduct = p;
+    this.variantLoading = true;
+    this.variants = [];
+    this.adminService.getProductVariants(p.id).subscribe({
+      next: (v) => { this.variants = v; this.variantLoading = false; },
+      error: () => { this.variantLoading = false; },
+    });
+  }
+
+  closeVariants() { this.variantProduct = null; this.variants = []; }
+
+  addOptionRow() {
+    this.newVariant.options.push({ value: '', stock: 0, priceAdjustment: 0 });
+  }
+
+  removeOptionRow(i: number) {
+    if (this.newVariant.options.length > 1) this.newVariant.options.splice(i, 1);
+  }
+
+  saveVariant() {
+    if (!this.variantProduct || !this.newVariant.type) return;
+    const payload = {
+      productId: this.variantProduct.id,
+      type:      this.newVariant.type,
+      options:   this.newVariant.options.filter(o => o.value.trim()),
+    };
+    this.adminService.addVariant(payload).subscribe({
+      next: () => {
+        this.toast.success('Variant added!');
+        this.newVariant = { type: 'Color', options: [{ value: '', stock: 0, priceAdjustment: 0 }] };
+        this.adminService.getProductVariants(this.variantProduct.id).subscribe(v => this.variants = v);
+      },
+      error: () => this.toast.error('Failed to add variant'),
+    });
+  }
+
+  deleteVariant(id: number) {
+    this.adminService.deleteVariant(id).subscribe({
+      next: () => {
+        this.variants = this.variants.filter(v => v.id !== id);
+        this.toast.success('Variant removed');
+      },
+      error: () => this.toast.error('Delete failed'),
+    });
+  }
 }

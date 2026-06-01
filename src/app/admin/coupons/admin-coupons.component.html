@@ -1,0 +1,149 @@
+<div class="admin-section page-enter">
+
+  <div class="section-top">
+    <div>
+      <h1>Coupons</h1>
+      <p class="section-sub" *ngIf="!loading">{{ coupons.length }} coupon{{ coupons.length !== 1 ? 's' : '' }}</p>
+    </div>
+    <button class="btn btn-primary" (click)="openAdd()">
+      <span class="material-icons">add</span> New Coupon
+    </button>
+  </div>
+
+  <!-- Skeleton -->
+  @if (loading) {
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr><th>Code</th><th>Discount</th><th>Usage</th><th>Expiry</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+          @for (s of [1,2,3,4]; track $index) {
+            <tr>
+              <td><div class="skeleton sk-line w60"></div></td>
+              <td><div class="skeleton sk-line w30"></div></td>
+              <td><div class="skeleton sk-line w50"></div></td>
+              <td><div class="skeleton sk-line w40"></div></td>
+              <td><div class="skeleton sk-line w30"></div></td>
+              <td><div class="skeleton sk-line w20"></div></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (!loading) {
+    <div class="table-wrap">
+      <table class="data-table" *ngIf="coupons.length > 0">
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Discount</th>
+            <th>Usage</th>
+            <th>Expiry</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (c of coupons; track c.id) {
+            <tr>
+              <td>
+                <code class="coupon-code">{{ c.code }}</code>
+              </td>
+              <td><strong class="discount-val">{{ c.discountPercent }}% off</strong></td>
+              <td>
+                <div class="usage-wrap">
+                  <span class="usage-txt">{{ c.currentUses }} / {{ c.maxUses }}</span>
+                  <div class="usage-bar">
+                    <div class="usage-fill" [style.width.%]="usagePercent(c)"></div>
+                  </div>
+                </div>
+              </td>
+              <td class="expiry-cell">
+                <span [class.expired]="isExpired(c.expiryDate)">
+                  {{ c.expiryDate ? (c.expiryDate | date:'MMM d, y') : '—' }}
+                </span>
+              </td>
+              <td>
+                <span class="status-chip" [ngClass]="c.isActive && !isExpired(c.expiryDate) ? 'status-success' : 'status-failed'">
+                  {{ c.isActive && !isExpired(c.expiryDate) ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+              <td>
+                <button class="btn btn-danger btn-sm" (click)="confirmDelete(c.id)" title="Delete">
+                  <span class="material-icons">delete</span>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <div class="empty-state" *ngIf="coupons.length === 0">
+        <span class="material-icons">local_offer</span>
+        <p>No coupons yet. Create your first one!</p>
+      </div>
+    </div>
+  }
+
+</div>
+
+<!-- Add Modal -->
+<div class="modal-overlay" *ngIf="modalOpen" (click)="modalOpen = false">
+  <div class="modal-box admin-modal" (click)="$event.stopPropagation()">
+    <div class="modal-head">
+      <h3>New Coupon</h3>
+      <button class="modal-close" (click)="modalOpen = false"><span class="material-icons">close</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row-2">
+        <div class="form-group">
+          <label class="form-label">Coupon Code *</label>
+          <input type="text" class="form-control" [(ngModel)]="form.code"
+            placeholder="e.g. SAVE20" style="text-transform:uppercase" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Discount % *</label>
+          <input type="number" class="form-control" [(ngModel)]="form.discountPercent" min="1" max="100" />
+        </div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-group">
+          <label class="form-label">Max Uses</label>
+          <input type="number" class="form-control" [(ngModel)]="form.maxUses" min="1" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Expiry Date (optional)</label>
+          <input type="date" class="form-control" [(ngModel)]="form.expiryDate" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="filter-toggle" style="display:flex;align-items:center;gap:8px;cursor:pointer">
+          <input type="checkbox" [(ngModel)]="form.isActive" />
+          <span class="form-label" style="margin:0">Active immediately</span>
+        </label>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" (click)="modalOpen = false">Cancel</button>
+      <button class="btn btn-primary" (click)="save()" [disabled]="!form.code || form.discountPercent <= 0">
+        <span class="material-icons">save</span> Create Coupon
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirm -->
+<div class="modal-overlay" *ngIf="deleteId !== null" (click)="cancelDelete()">
+  <div class="modal-box confirm-modal" (click)="$event.stopPropagation()">
+    <span class="material-icons confirm-icon">warning</span>
+    <h3>Delete Coupon?</h3>
+    <p>This cannot be undone.</p>
+    <div class="confirm-actions">
+      <button class="btn btn-ghost" (click)="cancelDelete()">Cancel</button>
+      <button class="btn btn-danger" (click)="doDelete()">
+        <span class="material-icons">delete</span> Delete
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+@use '../admin-shared' as *;
+
+.coupon-code {
+  font-family: monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  background: var(--color-bg-muted);
+  padding: 3px 8px;
+  border-radius: 6px;
+  color: var(--color-primary);
+  letter-spacing: 1px;
+}
+
+.discount-val {
+  color: var(--color-success);
+  font-size: 0.9rem;
+}
+
+.usage-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 100px;
+}
+
+.usage-txt {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+.usage-bar {
+  height: 6px;
+  background: var(--color-border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.usage-fill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+.expiry-cell .expired { color: var(--color-danger); font-weight: 600; }

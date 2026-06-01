@@ -43,6 +43,9 @@
         <button class="btn btn-outline btn-sm" (click)="openEdit(p)">
           <span class="material-icons">edit</span> Edit
         </button>
+        <button class="btn btn-outline btn-sm" (click)="openVariants(p)" title="Manage Variants" style="color:var(--color-primary)">
+          <span class="material-icons">tune</span>
+        </button>
         <button class="btn btn-danger btn-sm" (click)="confirmDelete(p.id)">
           <span class="material-icons">delete</span>
         </button>
@@ -151,6 +154,86 @@
               [disabled]="!form.name || form.newPrice <= 0 || form.categoryId === 0">
         <span class="material-icons">save</span>
         {{ editMode ? 'Update Product' : 'Add Product' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Variants Modal -->
+<div class="modal-overlay" *ngIf="variantProduct" (click)="closeVariants()">
+  <div class="modal-box admin-modal variant-modal" (click)="$event.stopPropagation()">
+    <div class="modal-head">
+      <h3><span class="material-icons">tune</span> Variants — {{ variantProduct?.name }}</h3>
+      <button class="modal-close" (click)="closeVariants()"><span class="material-icons">close</span></button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Existing variants -->
+      @if (variantLoading) {
+        <div class="skeleton" style="height:60px;border-radius:8px;margin-bottom:12px"></div>
+      }
+      @if (!variantLoading && variants.length > 0) {
+        <div class="existing-variants">
+          @for (v of variants; track v.id) {
+            <div class="variant-group-row">
+              <div class="variant-group-header">
+                <span class="variant-type-badge">{{ v.type }}</span>
+                <button class="btn btn-danger btn-sm" (click)="deleteVariant(v.id)">
+                  <span class="material-icons">delete</span>
+                </button>
+              </div>
+              <div class="variant-chips">
+                @for (o of v.options; track o.id) {
+                  <span class="variant-chip">
+                    {{ o.value }}
+                    @if (o.priceAdjustment > 0) { <em>+{{ o.priceAdjustment | currency }}</em> }
+                    <span class="chip-stock">{{ o.stock }} in stock</span>
+                  </span>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+      @if (!variantLoading && variants.length === 0) {
+        <p class="no-variants">No variants yet for this product.</p>
+      }
+
+      <div class="divider" style="margin:16px 0"></div>
+
+      <!-- Add new variant -->
+      <h4 class="add-variant-title">Add Variant Group</h4>
+      <div class="form-row-2">
+        <div class="form-group">
+          <label class="form-label">Type</label>
+          <select class="form-select" [(ngModel)]="newVariant.type">
+            <option value="Color">Color</option>
+            <option value="Size">Size</option>
+            <option value="Material">Material</option>
+            <option value="Style">Style</option>
+          </select>
+        </div>
+      </div>
+      <div class="variant-options-list">
+        @for (opt of newVariant.options; track $index; let i = $index) {
+          <div class="variant-option-row">
+            <input type="text" class="form-control" [(ngModel)]="opt.value" placeholder="e.g. Red / XL" style="flex:2"/>
+            <input type="number" class="form-control" [(ngModel)]="opt.stock" placeholder="Stock" min="0" style="flex:1"/>
+            <input type="number" class="form-control" [(ngModel)]="opt.priceAdjustment" placeholder="+Price" step="0.01" min="0" style="flex:1"/>
+            <button class="btn btn-ghost btn-sm" (click)="removeOptionRow(i)" [disabled]="newVariant.options.length === 1">
+              <span class="material-icons">remove</span>
+            </button>
+          </div>
+        }
+      </div>
+      <button class="btn btn-outline btn-sm" (click)="addOptionRow()" style="margin-top:8px">
+        <span class="material-icons">add</span> Add Option
+      </button>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" (click)="closeVariants()">Close</button>
+      <button class="btn btn-primary" (click)="saveVariant()" [disabled]="!newVariant.type">
+        <span class="material-icons">save</span> Save Variant
       </button>
     </div>
   </div>

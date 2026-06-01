@@ -3,12 +3,18 @@
   <div class="section-top">
     <div>
       <h1>Orders</h1>
-      <p class="section-sub" *ngIf="!loading">{{ totalCount }} total orders</p>
+      <p class="section-sub" *ngIf="!loading">{{ filteredOrders.length }} of {{ totalCount }} orders</p>
     </div>
-    <button class="btn btn-outline btn-sm" (click)="exportCsv()" style="display:flex;align-items:center;gap:6px">
-      <span class="material-icons" style="font-size:1rem">download</span>
-      Export CSV
-    </button>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <select class="form-select" [(ngModel)]="statusFilter" style="min-width:160px;padding:8px 12px;font-size:0.85rem">
+        <option value="">All Statuses</option>
+        <option *ngFor="let s of allStatuses" [value]="s">{{ statusLabel(s) }}</option>
+      </select>
+      <button class="btn btn-outline btn-sm" (click)="exportCsv()" style="display:flex;align-items:center;gap:6px">
+        <span class="material-icons" style="font-size:1rem">download</span>
+        Export CSV
+      </button>
+    </div>
   </div>
 
   <!-- Skeleton -->
@@ -47,7 +53,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let order of orders">
+        <tr *ngFor="let order of filteredOrders">
           <td class="td-id">#{{ order.id }}</td>
           <td>
             <div class="customer-cell">

@@ -15,8 +15,14 @@ export class AdminOrdersComponent implements OnInit {
   pageSize = 10;
   detailOrder: any = null;
   updatingStatus = false;
+  statusFilter = '';
 
   readonly allStatuses = ['Pending', 'PaymentReceived', 'PaymentFailed', 'Shipped', 'Delivered'];
+
+  get filteredOrders(): any[] {
+    if (!this.statusFilter) return this.orders;
+    return this.orders.filter(o => o.status === this.statusFilter);
+  }
 
   constructor(private adminService: AdminService, private toast: ToastrService) {}
 

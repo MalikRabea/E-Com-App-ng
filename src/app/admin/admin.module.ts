@@ -4,13 +4,15 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AdminRoutingModule } from './admin-routing.module';
 
-import { AdminLayoutComponent } from './layout/admin-layout.component';
-import { AdminDashboardComponent } from './dashboard/dashboard.component';
-import { AdminProductsComponent } from './products/products.component';
+import { AdminLayoutComponent }     from './layout/admin-layout.component';
+import { AdminDashboardComponent }  from './dashboard/dashboard.component';
+import { AdminProductsComponent }   from './products/products.component';
 import { AdminCategoriesComponent } from './categories/categories.component';
-import { AdminOrdersComponent } from './orders/admin-orders.component';
-import { AdminUsersComponent } from './users/admin-users.component';
-import { AdminReviewsComponent } from './reviews/admin-reviews.component';
+import { AdminOrdersComponent }     from './orders/admin-orders.component';
+import { AdminUsersComponent }      from './users/admin-users.component';
+import { AdminReviewsComponent }    from './reviews/admin-reviews.component';
+import { AdminAnalyticsComponent }  from './analytics/analytics.component';
+import { AdminCouponsComponent }    from './coupons/admin-coupons.component';
 
 @NgModule({
   declarations: [
@@ -21,12 +23,9 @@ import { AdminReviewsComponent } from './reviews/admin-reviews.component';
     AdminOrdersComponent,
     AdminUsersComponent,
     AdminReviewsComponent,
+    AdminAnalyticsComponent,
+    AdminCouponsComponent,
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    RouterModule,
-    AdminRoutingModule,
-  ],
+  imports: [CommonModule, FormsModule, RouterModule, AdminRoutingModule],
 })
 export class AdminModule {}
