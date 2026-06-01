@@ -448,6 +448,40 @@
   color: var(--color-primary);
 }
 
+/* Subscribe & Save */
+.subscribe-btn {
+  margin-top: 12px;
+  justify-content: center;
+  color: #10b981;
+  border-color: #10b981;
+  .material-icons { font-size: 18px; }
+  &:hover { background: rgba(16,185,129,.08); }
+}
+
+.subscribe-modal {
+  max-width: 440px; width: 90%;
+  padding: 1.75rem 2rem; position: relative;
+}
+.subscribe-product { color: var(--color-text-muted); font-size: 0.9rem; margin: 0; }
+
+.interval-options { display: flex; gap: 8px; }
+.interval-btn {
+  flex: 1; padding: 10px; border: 1.5px solid var(--color-border);
+  background: var(--color-bg); border-radius: 8px; cursor: pointer;
+  font-weight: 600; font-size: 0.85rem; color: var(--color-text);
+  transition: var(--transition); font-family: 'Inter', sans-serif;
+  &.active { border-color: #10b981; background: rgba(16,185,129,.1); color: #059669; }
+}
+
+.subscribe-summary {
+  margin-top: 1.25rem; padding: 14px 16px;
+  background: var(--color-bg-muted); border-radius: 10px;
+}
+.sub-sum-row { display: flex; justify-content: space-between; font-size: 0.875rem; color: var(--color-text-muted); margin-bottom: 6px; }
+.sub-strike { text-decoration: line-through; }
+.sub-sum-total { color: var(--color-text); font-size: 1rem; strong { color: #10b981; } }
+.sub-sum-note { font-size: 0.75rem; color: var(--color-text-muted); margin: 6px 0 0; text-align: center; }
+
 /* Variants */
 .pd-variants {
   display: flex;

@@ -1,0 +1,117 @@
+<div class="page-content page-enter gc-page">
+  <div class="container">
+
+    <div class="gc-header">
+      <h1 class="gc-title"><span class="material-icons">card_giftcard</span> Gift Cards</h1>
+      <p class="gc-sub">Give the gift of choice — perfect for any occasion</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="gc-tabs">
+      <button class="gc-tab" [class.active]="tab==='buy'"   (click)="setTab('buy')">Buy a Gift Card</button>
+      <button class="gc-tab" [class.active]="tab==='check'" (click)="setTab('check')">Check Balance</button>
+      <button class="gc-tab" [class.active]="tab==='mine'"  (click)="setTab('mine')">My Gift Cards</button>
+    </div>
+
+    <!-- BUY -->
+    @if (tab === 'buy') {
+      <div class="gc-grid">
+        <div class="gc-form card">
+          <div class="gc-preview" [style.--amt]="amount">
+            <div class="gc-preview-top">
+              <span class="material-icons">bolt</span>
+              <span>E-Shop</span>
+            </div>
+            <div class="gc-preview-amount">${{ amount }}</div>
+            <div class="gc-preview-label">GIFT CARD</div>
+          </div>
+
+          <label class="form-label">Amount</label>
+          <div class="gc-presets">
+            @for (p of presets; track p) {
+              <button class="gc-preset" [class.active]="amount===p" (click)="amount=p">${{ p }}</button>
+            }
+          </div>
+          <input type="number" class="form-control" [(ngModel)]="amount" min="5" max="1000" placeholder="Custom amount" />
+
+          <label class="form-label" style="margin-top:14px">Recipient Email (optional)</label>
+          <input type="email" class="form-control" [(ngModel)]="recipientEmail" placeholder="friend@email.com" />
+
+          <label class="form-label" style="margin-top:14px">Personal Message (optional)</label>
+          <textarea class="form-control" [(ngModel)]="message" rows="2" placeholder="Happy birthday! 🎉"></textarea>
+
+          <button class="btn btn-primary btn-full btn-lg" style="margin-top:16px" (click)="purchase()" [disabled]="purchasing || amount < 5">
+            <span class="material-icons">{{ purchasing ? 'hourglass_empty' : 'shopping_cart' }}</span>
+            {{ purchasing ? 'Processing...' : 'Purchase Gift Card' }}
+          </button>
+        </div>
+
+        @if (lastPurchased) {
+          <div class="gc-success card">
+            <span class="material-icons gc-success-icon">check_circle</span>
+            <h3>Gift Card Created!</h3>
+            <div class="gc-code-box">
+              <span class="gc-code">{{ lastPurchased.code }}</span>
+              <button class="btn btn-ghost btn-sm" (click)="copyCode(lastPurchased.code)">
+                <span class="material-icons">content_copy</span>
+              </button>
+            </div>
+            <p>Balance: <strong>{{ lastPurchased.currentBalance | currency }}</strong></p>
+            <p class="gc-expiry">Valid until {{ lastPurchased.expiryDate | date:'mediumDate' }}</p>
+            @if (recipientEmail) { <p class="gc-sent">📧 Sent to {{ recipientEmail }}</p> }
+          </div>
+        }
+      </div>
+    }
+
+    <!-- CHECK -->
+    @if (tab === 'check') {
+      <div class="gc-check card">
+        <label class="form-label">Enter Gift Card Code</label>
+        <div class="gc-check-row">
+          <input type="text" class="form-control" [(ngModel)]="checkCode" placeholder="GIFT-XXXX-XXXX" style="text-transform:uppercase" (keyup.enter)="check()"/>
+          <button class="btn btn-primary" (click)="check()" [disabled]="checking">Check</button>
+        </div>
+
+        @if (checkResult) {
+          <div class="gc-balance" [class.invalid]="!checkResult.isValid">
+            <div class="gc-balance-amount">{{ checkResult.currentBalance | currency }}</div>
+            <p class="gc-balance-label">{{ checkResult.isValid ? 'Available balance' : 'Card inactive or expired' }}</p>
+            <p class="gc-balance-meta">Originally {{ checkResult.initialBalance | currency }} · Expires {{ checkResult.expiryDate | date:'mediumDate' }}</p>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- MINE -->
+    @if (tab === 'mine') {
+      @if (loadingMine) {
+        <div class="skeleton" style="height:120px;border-radius:16px"></div>
+      }
+      @if (!loadingMine && myCards.length > 0) {
+        <div class="gc-cards-list">
+          @for (c of myCards; track c.code) {
+            <div class="gc-mini-card" [class.depleted]="!c.isActive">
+              <div class="gc-mini-top">
+                <span class="gc-mini-code">{{ c.code }}</span>
+                <button class="btn btn-ghost btn-sm" (click)="copyCode(c.code)"><span class="material-icons">content_copy</span></button>
+              </div>
+              <div class="gc-mini-balance">{{ c.currentBalance | currency }} <span>/ {{ c.initialBalance | currency }}</span></div>
+              <div class="gc-mini-meta">
+                <span>{{ c.issuedToEmail || 'For yourself' }}</span>
+                <span class="gc-mini-status" [class.active]="c.isActive">{{ c.isActive ? 'Active' : 'Used' }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      }
+      @if (!loadingMine && myCards.length === 0) {
+        <div class="gc-empty card">
+          <span class="material-icons">card_giftcard</span>
+          <p>You haven't purchased any gift cards yet.</p>
+        </div>
+      }
+    }
+
+  </div>
+</div>

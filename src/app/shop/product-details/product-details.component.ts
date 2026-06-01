@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { BasketService } from '../../basket/basket.service';
 import { IReview } from '../../shared/Models/review';
 import { FavoriteService } from '../../favorite/favorite.service';
+import { CommerceService } from '../../core/Services/commerce.service';
 
 @Component({
   selector: 'app-product-details',
@@ -18,7 +19,8 @@ export class ProductDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private toast: ToastrService,
     private basketService: BasketService,
-    private favoriteService: FavoriteService
+    private favoriteService: FavoriteService,
+    private commerce: CommerceService
   ) {}
 
   reviews: IReview[] = [];
@@ -32,10 +34,17 @@ export class ProductDetailsComponent implements OnInit {
   MainImage: string = 'assets/default.jpg';
   recentlyViewed: IProduct[] = [];
   relatedProducts: IProduct[] = [];
+  frequentlyBought: IProduct[] = [];
   showSticky = false;
   shareOpen = false;
   variants: any[] = [];
   selectedVariants: Record<number, string> = {};
+
+  // Subscribe & Save
+  subOpen = false;
+  subInterval = 'Monthly';
+  subQuantity = 1;
+  subscribing = false;
 
   private readonly RV_KEY = 'recentlyViewed';
   private readonly RV_MAX = 6;
@@ -58,6 +67,7 @@ export class ProductDetailsComponent implements OnInit {
         this.loadRecentlyViewed(value.id);
         this.loadRelatedProducts(productId);
         this.loadVariants(productId);
+        this.loadFrequentlyBought(productId);
       },
       error: (err) => {
         console.error(err);
@@ -94,6 +104,35 @@ export class ProductDetailsComponent implements OnInit {
 
   selectVariant(variantId: number, value: string) {
     this.selectedVariants = { ...this.selectedVariants, [variantId]: value };
+  }
+
+  private loadFrequentlyBought(productId: number) {
+    this.commerce.frequentlyBought(productId, 4).subscribe({
+      next: (products) => { this.frequentlyBought = products; },
+      error: () => { this.frequentlyBought = []; }
+    });
+  }
+
+  get subDiscountedPrice(): number {
+    return this.product.newPrice * 0.9 * this.subQuantity;
+  }
+
+  openSubscribe() { this.subOpen = true; }
+  closeSubscribe() { this.subOpen = false; }
+
+  confirmSubscribe() {
+    this.subscribing = true;
+    this.commerce.createSubscription(this.product.id, this.subQuantity, this.subInterval).subscribe({
+      next: () => {
+        this.subscribing = false;
+        this.subOpen = false;
+        this.toast.success('Subscription created! Save 10% on every delivery.', 'Subscribed');
+      },
+      error: () => {
+        this.subscribing = false;
+        this.toast.error('Please sign in to subscribe', 'Login Required');
+      }
+    });
   }
 
   ReplaceImage(src: string) {

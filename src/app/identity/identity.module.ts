@@ -11,12 +11,14 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { ProfileComponent } from './profile/profile.component';
 import { AddressBookComponent } from './address-book/address-book.component';
 import { LoyaltyComponent } from './loyalty/loyalty.component';
+import { GiftCardsComponent } from './gift-cards/gift-cards.component';
+import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
 
 @NgModule({
   declarations: [
     RegisterComponent, ActiveComponent, LoginComponent, ResetPasswordComponent,
     LogoutComponent, ChangePasswordComponent, ProfileComponent, AddressBookComponent,
-    LoyaltyComponent,
+    LoyaltyComponent, GiftCardsComponent, SubscriptionsComponent,
   ],
   imports: [CommonModule, IdentityRoutingModule, ReactiveFormsModule, FormsModule]
 })

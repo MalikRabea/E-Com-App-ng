@@ -1,0 +1,86 @@
+.gc-page { background: var(--color-bg-soft); }
+
+.gc-header { padding: 32px 0 20px; }
+.gc-title {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 1.8rem; font-weight: 800; color: var(--color-text); margin: 0 0 6px;
+  .material-icons { color: #7c3aed; font-size: 2rem; }
+}
+.gc-sub { color: var(--color-text-muted); margin: 0; }
+
+.gc-tabs {
+  display: flex; gap: 4px; margin-bottom: 24px;
+  background: var(--color-bg-muted); padding: 4px; border-radius: 12px; width: fit-content;
+  flex-wrap: wrap;
+}
+.gc-tab {
+  padding: 8px 18px; border: none; background: none; cursor: pointer;
+  font-size: 0.875rem; font-weight: 600; color: var(--color-text-muted);
+  border-radius: 8px; transition: var(--transition); font-family: 'Inter', sans-serif;
+  &.active { background: var(--color-surface); color: var(--color-primary); box-shadow: var(--shadow-sm); }
+}
+
+.gc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; @media(max-width:768px){grid-template-columns:1fr} }
+
+.gc-form { padding: 24px; }
+
+.gc-preview {
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  border-radius: 16px; padding: 24px; color: #fff; margin-bottom: 20px;
+  box-shadow: 0 8px 24px rgba(124,58,237,.3);
+}
+.gc-preview-top { display: flex; align-items: center; gap: 6px; font-weight: 700; opacity: .9; }
+.gc-preview-amount { font-size: 2.5rem; font-weight: 900; margin: 12px 0 4px; }
+.gc-preview-label { font-size: 0.75rem; letter-spacing: 3px; opacity: .8; }
+
+.gc-presets { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.gc-preset {
+  flex: 1; min-width: 60px; padding: 10px; border: 1.5px solid var(--color-border);
+  background: var(--color-bg); border-radius: 8px; cursor: pointer; font-weight: 700;
+  color: var(--color-text); transition: var(--transition); font-family: 'Inter', sans-serif;
+  &.active { border-color: var(--color-primary); background: rgba(37,99,235,.1); color: var(--color-primary); }
+}
+
+.gc-success {
+  padding: 32px 24px; text-align: center; align-self: start;
+  .gc-success-icon { font-size: 3rem; color: var(--color-success); }
+  h3 { margin: 8px 0 16px; color: var(--color-text); }
+}
+.gc-code-box {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--color-bg-muted); border: 2px dashed var(--color-primary);
+  border-radius: 8px; padding: 12px; margin-bottom: 12px;
+}
+.gc-code { font-family: monospace; font-size: 1.2rem; font-weight: 800; letter-spacing: 1px; color: var(--color-primary); }
+.gc-expiry { color: var(--color-text-muted); font-size: 0.8rem; }
+.gc-sent { color: var(--color-success); font-size: 0.85rem; font-weight: 600; }
+
+.gc-check { padding: 24px; max-width: 500px; }
+.gc-check-row { display: flex; gap: 8px; }
+
+.gc-balance {
+  margin-top: 20px; text-align: center; padding: 24px;
+  background: rgba(16,185,129,.08); border-radius: 12px;
+  &.invalid { background: rgba(239,68,68,.08); }
+}
+.gc-balance-amount { font-size: 2.5rem; font-weight: 900; color: var(--color-success); }
+.gc-balance.invalid .gc-balance-amount { color: var(--color-danger); }
+.gc-balance-label { font-weight: 600; color: var(--color-text); margin: 4px 0; }
+.gc-balance-meta { font-size: 0.8rem; color: var(--color-text-muted); margin: 0; }
+
+.gc-cards-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.gc-mini-card {
+  background: linear-gradient(135deg, #2563eb, #7c3aed); border-radius: 14px; padding: 18px; color: #fff;
+  &.depleted { background: var(--color-bg-muted); color: var(--color-text-muted); }
+}
+.gc-mini-top { display: flex; align-items: center; justify-content: space-between; }
+.gc-mini-code { font-family: monospace; font-weight: 700; letter-spacing: 1px; }
+.gc-mini-top .btn-ghost { color: inherit; }
+.gc-mini-balance { font-size: 1.8rem; font-weight: 900; margin: 8px 0; span { font-size: 0.9rem; opacity: .7; font-weight: 600; } }
+.gc-mini-meta { display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; opacity: .9; }
+.gc-mini-status { padding: 2px 10px; border-radius: 999px; background: rgba(255,255,255,.25); font-weight: 700;
+  &.active { background: rgba(16,185,129,.3); } }
+
+.gc-empty { padding: 48px; text-align: center;
+  .material-icons { font-size: 3rem; color: var(--color-border); display: block; margin-bottom: 12px; }
+  p { color: var(--color-text-muted); margin: 0; } }

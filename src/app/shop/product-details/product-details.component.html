@@ -168,6 +168,12 @@
           </div>
         </div>
 
+        <!-- Subscribe & Save -->
+        <button class="btn btn-outline btn-full subscribe-btn" (click)="openSubscribe()" *ngIf="product?.stockQuantity > 0">
+          <span class="material-icons">autorenew</span>
+          Subscribe & Save 10%
+        </button>
+
         <!-- Trust badges -->
         <div class="pd-trust">
           <div class="trust-badge">
@@ -233,6 +239,33 @@
       </div>
     }
 
+    <!-- Frequently Bought Together -->
+    @if (frequentlyBought.length > 0) {
+      <section class="rv-section">
+        <h2 class="rv-title">
+          <span class="material-icons">insights</span>
+          Frequently Bought Together
+        </h2>
+        <div class="rv-strip">
+          @for (item of frequentlyBought; track item.id) {
+            <a class="rv-card" [routerLink]="['/shop/product-details', item.id]">
+              <div class="rv-img-wrap">
+                <img
+                  [src]="item.photos?.[0]?.imageName || 'assets/no-image.png'"
+                  [alt]="item.name"
+                  onerror="this.src='assets/no-image.png'"
+                />
+              </div>
+              <div class="rv-info">
+                <span class="rv-name">{{ item.name }}</span>
+                <span class="rv-price">{{ item.newPrice | currency }}</span>
+              </div>
+            </a>
+          }
+        </div>
+      </section>
+    }
+
     <!-- Related Products -->
     @if (relatedProducts.length > 0) {
       <section class="rv-section">
@@ -287,6 +320,62 @@
       </section>
     }
 
+  </div>
+</div>
+
+<!-- Subscribe & Save Modal -->
+<div class="modal-overlay" *ngIf="subOpen" (click)="closeSubscribe()">
+  <div class="modal-box subscribe-modal" (click)="$event.stopPropagation()">
+    <button class="modal-close-btn" (click)="closeSubscribe()">
+      <span class="material-icons">close</span>
+    </button>
+    <h3 class="modal-title">
+      <span class="material-icons" style="color:#10b981;vertical-align:-4px">autorenew</span>
+      Subscribe & Save
+    </h3>
+    <p class="subscribe-product">{{ product?.name }}</p>
+
+    <div class="form-group" style="margin-top:1rem">
+      <label class="form-label">Delivery Frequency</label>
+      <div class="interval-options">
+        <button class="interval-btn" [class.active]="subInterval==='Weekly'"    (click)="subInterval='Weekly'">Weekly</button>
+        <button class="interval-btn" [class.active]="subInterval==='Monthly'"   (click)="subInterval='Monthly'">Monthly</button>
+        <button class="interval-btn" [class.active]="subInterval==='Quarterly'" (click)="subInterval='Quarterly'">Quarterly</button>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-top:1rem">
+      <label class="form-label">Quantity per delivery</label>
+      <div class="qty-control" style="width:fit-content">
+        <button class="qty-btn" (click)="subQuantity = subQuantity > 1 ? subQuantity - 1 : 1">
+          <span class="material-icons">remove</span>
+        </button>
+        <span class="qty-value">{{ subQuantity }}</span>
+        <button class="qty-btn" (click)="subQuantity = subQuantity < 10 ? subQuantity + 1 : 10">
+          <span class="material-icons">add</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="subscribe-summary">
+      <div class="sub-sum-row">
+        <span>Regular price</span>
+        <span class="sub-strike">{{ product?.newPrice * subQuantity | currency }}</span>
+      </div>
+      <div class="sub-sum-row sub-sum-total">
+        <span>Subscriber price (10% off)</span>
+        <strong>{{ subDiscountedPrice | currency }}</strong>
+      </div>
+      <p class="sub-sum-note">Billed {{ subInterval | lowercase }} · cancel anytime</p>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" (click)="closeSubscribe()">Cancel</button>
+      <button class="btn btn-primary" (click)="confirmSubscribe()" [disabled]="subscribing">
+        <span class="material-icons">autorenew</span>
+        {{ subscribing ? 'Subscribing...' : 'Start Subscription' }}
+      </button>
+    </div>
   </div>
 </div>
 

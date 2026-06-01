@@ -9,6 +9,8 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { ProfileComponent } from './profile/profile.component';
 import { AddressBookComponent } from './address-book/address-book.component';
 import { LoyaltyComponent } from './loyalty/loyalty.component';
+import { GiftCardsComponent } from './gift-cards/gift-cards.component';
+import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
 
 const routes: Routes = [
   { path: 'Register',       component: RegisterComponent },
@@ -20,6 +22,8 @@ const routes: Routes = [
   { path: 'profile',        component: ProfileComponent },
   { path: 'addresses',      component: AddressBookComponent },
   { path: 'loyalty',        component: LoyaltyComponent },
+  { path: 'gift-cards',     component: GiftCardsComponent },
+  { path: 'subscriptions',  component: SubscriptionsComponent },
 ];
 
 @NgModule({

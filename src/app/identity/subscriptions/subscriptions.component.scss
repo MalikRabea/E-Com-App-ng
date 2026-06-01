@@ -1,0 +1,47 @@
+.sub-page { background: var(--color-bg-soft); }
+
+.sub-header { padding: 32px 0 20px; }
+.sub-title {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 1.8rem; font-weight: 800; color: var(--color-text); margin: 0 0 6px;
+  .material-icons { color: #10b981; font-size: 2rem; }
+}
+.sub-sub { color: var(--color-text-muted); margin: 0; }
+
+.sub-list { display: flex; flex-direction: column; gap: 16px; }
+
+.sub-card {
+  display: flex; align-items: center; gap: 16px; padding: 16px;
+  &.paused { opacity: 0.65; }
+  @media (max-width: 600px) { flex-wrap: wrap; }
+}
+
+.sub-img {
+  width: 72px; height: 72px; border-radius: 12px; object-fit: contain;
+  background: var(--color-bg-muted); border: 1px solid var(--color-border); flex-shrink: 0; padding: 4px;
+}
+
+.sub-info { flex: 1; min-width: 0; }
+.sub-name { font-size: 1rem; font-weight: 700; color: var(--color-text); margin: 0 0 8px; }
+.sub-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 0.82rem; color: var(--color-text-muted); margin-bottom: 6px; }
+.sub-badge { background: rgba(16,185,129,.12); color: #059669; font-weight: 700; padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; }
+.sub-discount { color: var(--color-success); font-weight: 700; }
+.sub-next {
+  display: flex; align-items: center; gap: 4px; font-size: 0.82rem; color: var(--color-text-muted); margin: 0;
+  .material-icons { font-size: 16px; }
+}
+.sub-paused-label { color: var(--color-warning); font-weight: 700; }
+
+.sub-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.sub-price {
+  font-size: 1.3rem; font-weight: 800; color: var(--color-primary);
+  span { font-size: 0.75rem; color: var(--color-text-muted); font-weight: 600; }
+}
+.sub-actions { display: flex; gap: 6px; }
+
+.sub-empty {
+  padding: 48px 24px; text-align: center;
+  .material-icons { font-size: 3rem; color: var(--color-border); display: block; margin-bottom: 12px; }
+  h3 { color: var(--color-text); margin-bottom: 8px; }
+  p { color: var(--color-text-muted); margin-bottom: 20px; max-width: 400px; margin-left: auto; margin-right: auto; }
+}

@@ -50,6 +50,27 @@
     }
   </div>
 
+  <!-- Live Tracking Map -->
+  <div class="tracking-map-card card" *ngIf="trackingPoints.length > 0">
+    <h2 class="card-heading">
+      <span class="material-icons">map</span>
+      Shipment Tracking
+    </h2>
+    <div id="tracking-map" class="tracking-map"></div>
+    <div class="tracking-points-list">
+      @for (p of trackingPoints; track $index) {
+        <div class="tp-item" [class.tp-latest]="$index === trackingPoints.length - 1">
+          <span class="material-icons tp-icon">{{ $index === trackingPoints.length - 1 ? 'local_shipping' : 'check_circle' }}</span>
+          <div class="tp-info">
+            <strong>{{ p.status }}</strong>
+            <span>{{ p.location }}</span>
+          </div>
+          <span class="tp-time">{{ p.timestamp | date:'MMM d, h:mm a' }}</span>
+        </div>
+      }
+    </div>
+  </div>
+
   <!-- Layout -->
   <div class="order-detail-layout">
 
