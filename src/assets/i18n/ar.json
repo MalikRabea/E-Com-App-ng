@@ -1,0 +1,93 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "shop": "المتجر",
+    "bestSellers": "الأكثر مبيعاً",
+    "about": "عن المتجر",
+    "search": "ابحث عن منتجات...",
+    "signIn": "تسجيل الدخول",
+    "createAccount": "إنشاء حساب",
+    "myProfile": "ملفي الشخصي",
+    "myOrders": "طلباتي",
+    "wishlist": "المفضلة",
+    "changePassword": "تغيير كلمة المرور",
+    "myAddresses": "عناويني",
+    "loyaltyPoints": "نقاط الولاء",
+    "signOut": "تسجيل الخروج"
+  },
+  "shop": {
+    "title": "منتجاتنا",
+    "showing": "عرض",
+    "of": "من",
+    "results": "نتيجة",
+    "categories": "الفئات",
+    "allProducts": "جميع المنتجات",
+    "priceRange": "نطاق السعر",
+    "filters": "الفلاتر",
+    "inStockOnly": "المتوفرة فقط",
+    "resetFilters": "إعادة ضبط",
+    "noProducts": "لا توجد منتجات",
+    "searchPlaceholder": "ابحث عن منتجات...",
+    "sortDefault": "الافتراضي",
+    "sortLowHigh": "السعر: من الأقل للأعلى",
+    "sortHighLow": "السعر: من الأعلى للأقل"
+  },
+  "product": {
+    "addToCart": "أضف للسلة",
+    "outOfStock": "نفذ من المخزون",
+    "inStock": "متوفر",
+    "reviews": "عرض التقييمات",
+    "share": "مشاركة",
+    "copyLink": "نسخ الرابط",
+    "freeDelivery": "توصيل مجاني خلال 3 أيام",
+    "warranty": "ضمان سنتان",
+    "returns": "إرجاع خلال 30 يوم",
+    "recentlyViewed": "شاهدته مؤخراً",
+    "youMayLike": "قد يعجبك أيضاً"
+  },
+  "basket": {
+    "title": "سلة التسوق",
+    "continueShopping": "مواصلة التسوق",
+    "empty": "سلتك فارغة",
+    "emptyDesc": "لم تضف أي منتجات بعد.",
+    "startShopping": "ابدأ التسوق",
+    "checkout": "الدفع الآمن",
+    "couponCode": "كود الخصم",
+    "estimateShipping": "تقدير الشحن"
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "register": "إنشاء حساب",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "continueWithGoogle": "الدخول بـ Google",
+    "orContinueWith": "أو الدخول بـ"
+  },
+  "orders": {
+    "title": "طلباتي",
+    "orderNumber": "طلب",
+    "status": "الحالة",
+    "total": "الإجمالي",
+    "date": "التاريخ",
+    "requestReturn": "طلب إرجاع / استرداد",
+    "printInvoice": "طباعة الفاتورة"
+  },
+  "loyalty": {
+    "title": "برنامج الولاء",
+    "points": "نقطة",
+    "redeem": "استبدال النقاط",
+    "history": "سجل النقاط"
+  },
+  "common": {
+    "loading": "جاري التحميل...",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "close": "إغلاق",
+    "apply": "تطبيق",
+    "submit": "إرسال",
+    "back": "رجوع",
+    "next": "التالي"
+  }
+}

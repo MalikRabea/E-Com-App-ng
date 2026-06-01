@@ -62,6 +62,11 @@
     <!-- Right Actions -->
     <div class="navbar-actions">
 
+      <!-- Language Toggle -->
+      <button class="action-btn lang-btn" (click)="toggleLang()" [attr.aria-label]="'Switch language'">
+        <span class="lang-label">{{ currentLang === 'en' ? 'AR' : 'EN' }}</span>
+      </button>
+
       <!-- Dark Mode Toggle -->
       <button class="action-btn theme-btn" (click)="toggleTheme()" [attr.aria-label]="isDark ? 'Switch to light mode' : 'Switch to dark mode'">
         <span class="material-icons">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>

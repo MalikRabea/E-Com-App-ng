@@ -32,11 +32,8 @@ export class ShopComponent implements OnInit {
   inStockOnly = false;
 
   get displayProducts(): IProduct[] {
-    return this.product.filter(p =>
-      p.newPrice >= this.priceMin &&
-      p.newPrice <= this.priceMax &&
-      (!this.inStockOnly || p.stockQuantity > 0)
-    );
+    if (!this.inStockOnly) return this.product;
+    return this.product.filter(p => p.stockQuantity > 0);
   }
 
   get priceFilterActive(): boolean {
@@ -190,12 +187,20 @@ export class ShopComponent implements OnInit {
   applyLocalFilters() {
     if (this.priceMin < 0) this.priceMin = 0;
     if (this.priceMax < this.priceMin) this.priceMax = this.priceMin;
+    // Send price filter to API
+    this.ProductParam.minPrice = this.priceMin > 0 ? this.priceMin : undefined;
+    this.ProductParam.maxPrice = this.priceMax < this.priceRangeMax ? this.priceMax : undefined;
+    this.ProductParam.pageNumber = 1;
+    this.getAllProduct();
   }
 
   resetPriceFilter() {
     this.priceMin = 0;
     this.priceMax = this.priceRangeMax;
     this.inStockOnly = false;
+    this.ProductParam.minPrice = undefined;
+    this.ProductParam.maxPrice = undefined;
+    this.getAllProduct();
   }
 
   ResetValue() {

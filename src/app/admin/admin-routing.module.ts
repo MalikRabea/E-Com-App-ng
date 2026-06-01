@@ -9,6 +9,7 @@ import { AdminUsersComponent }      from './users/admin-users.component';
 import { AdminReviewsComponent }    from './reviews/admin-reviews.component';
 import { AdminAnalyticsComponent }  from './analytics/analytics.component';
 import { AdminCouponsComponent }    from './coupons/admin-coupons.component';
+import { AdminReturnsComponent }    from './returns/admin-returns.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,7 @@ const routes: Routes = [
       { path: 'reviews',    component: AdminReviewsComponent    },
       { path: 'analytics',  component: AdminAnalyticsComponent  },
       { path: 'coupons',    component: AdminCouponsComponent    },
+      { path: 'returns',    component: AdminReturnsComponent    },
     ],
   },
 ];

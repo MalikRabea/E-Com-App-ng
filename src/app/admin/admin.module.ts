@@ -13,6 +13,7 @@ import { AdminUsersComponent }      from './users/admin-users.component';
 import { AdminReviewsComponent }    from './reviews/admin-reviews.component';
 import { AdminAnalyticsComponent }  from './analytics/analytics.component';
 import { AdminCouponsComponent }    from './coupons/admin-coupons.component';
+import { AdminReturnsComponent }    from './returns/admin-returns.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { AdminCouponsComponent }    from './coupons/admin-coupons.component';
     AdminReviewsComponent,
     AdminAnalyticsComponent,
     AdminCouponsComponent,
+    AdminReturnsComponent,
   ],
   imports: [CommonModule, FormsModule, RouterModule, AdminRoutingModule],
 })

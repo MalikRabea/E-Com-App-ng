@@ -1,0 +1,89 @@
+<div class="admin-section page-enter">
+
+  <div class="section-top">
+    <div>
+      <h1>Return Requests</h1>
+      <p class="section-sub" *ngIf="!loading">{{ returns.length }} requests</p>
+    </div>
+    <select class="form-select" [(ngModel)]="statusFilter" (change)="load()" style="min-width:150px;padding:8px 12px;font-size:0.85rem">
+      <option value="">All</option>
+      <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+    </select>
+  </div>
+
+  @if (loading) {
+    <div class="skeleton" style="height:200px;border-radius:16px"></div>
+  }
+
+  @if (!loading) {
+    <div class="table-wrap">
+      <table class="data-table" *ngIf="returns.length > 0">
+        <thead>
+          <tr>
+            <th>#</th><th>Customer</th><th>Order</th><th>Reason</th><th>Date</th><th>Status</th><th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (r of returns; track r.id) {
+            <tr>
+              <td class="td-id">#{{ r.id }}</td>
+              <td>{{ r.userEmail }}</td>
+              <td><a [routerLink]="['/orders']" [queryParams]="{id: r.orderId}" class="order-link">#{{ r.orderId }}</a></td>
+              <td>{{ r.reason }}</td>
+              <td class="date-cell">{{ r.createdAt | date:'MMM d, y' }}</td>
+              <td><span class="status-chip" [ngClass]="statusClass(r.status)">{{ r.status }}</span></td>
+              <td>
+                <button class="btn btn-outline btn-sm" (click)="openDetail(r)">
+                  <span class="material-icons">visibility</span>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <div class="empty-state" *ngIf="returns.length === 0">
+        <span class="material-icons">assignment_return</span>
+        <p>No return requests {{ statusFilter ? 'with status ' + statusFilter : '' }}</p>
+      </div>
+    </div>
+  }
+
+</div>
+
+<!-- Detail Modal -->
+<div class="modal-overlay" *ngIf="detailReturn" (click)="closeDetail()">
+  <div class="modal-box admin-modal" (click)="$event.stopPropagation()">
+    <div class="modal-head">
+      <h3>Return Request #{{ detailReturn.id }}</h3>
+      <button class="modal-close" (click)="closeDetail()"><span class="material-icons">close</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-grid">
+        <div class="detail-item"><span class="detail-label">Customer</span><span>{{ detailReturn.userEmail }}</span></div>
+        <div class="detail-item"><span class="detail-label">Order</span><span>#{{ detailReturn.orderId }}</span></div>
+        <div class="detail-item"><span class="detail-label">Reason</span><span>{{ detailReturn.reason }}</span></div>
+        <div class="detail-item"><span class="detail-label">Status</span>
+          <span class="status-chip" [ngClass]="statusClass(detailReturn.status)">{{ detailReturn.status }}</span>
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:16px" *ngIf="detailReturn.description">
+        <label class="form-label">Customer Note</label>
+        <p class="detail-note">{{ detailReturn.description }}</p>
+      </div>
+      <div class="form-group" style="margin-top:16px">
+        <label class="form-label">Admin Note</label>
+        <textarea class="form-control" [(ngModel)]="adminNote" rows="3" placeholder="Add a note..."></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" (click)="closeDetail()">Close</button>
+      <button class="btn btn-danger" (click)="updateStatus('Rejected')" [disabled]="updating || detailReturn.status === 'Rejected'">
+        <span class="material-icons">cancel</span> Reject
+      </button>
+      <button class="btn btn-primary" (click)="updateStatus('Approved')" [disabled]="updating || detailReturn.status === 'Approved'">
+        <span class="material-icons">check_circle</span> Approve
+      </button>
+    </div>
+  </div>
+</div>

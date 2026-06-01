@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment';
 import { SignalRService } from '../../core/Services/signalr.service';
 import { Subscription } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-order-item',
@@ -40,7 +41,8 @@ export class OrderItemComponent implements OnInit, OnDestroy {
     private _service: OrdersService,
     private toast: ToastrService,
     private router: Router,
-    private signalR: SignalRService
+    private signalR: SignalRService,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -138,16 +140,20 @@ export class OrderItemComponent implements OnInit, OnDestroy {
       this.toast.warning('Please select a reason', 'Required');
       return;
     }
-    const returns: any[] = JSON.parse(localStorage.getItem('returnRequests') || '[]');
-    returns.push({
+    const payload = {
       orderId:     this.order?.id,
       reason:      this.returnForm.reason,
       description: this.returnForm.description,
-      date:        new Date().toISOString(),
-      status:      'Pending Review',
+    };
+    this.http.post(`${environment.baseURL}ReturnRequest`, payload, { withCredentials: true }).subscribe({
+      next: () => {
+        this.closeReturnModal();
+        this.toast.success("Return request submitted. We'll contact you within 24h.", 'Request Received');
+      },
+      error: () => {
+        this.closeReturnModal();
+        this.toast.error('Failed to submit return request. Please try again.', 'Error');
+      }
     });
-    localStorage.setItem('returnRequests', JSON.stringify(returns));
-    this.closeReturnModal();
-    this.toast.success('Return request submitted. We\'ll contact you within 24h.', 'Request Received');
   }
 }

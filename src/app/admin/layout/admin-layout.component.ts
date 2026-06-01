@@ -18,6 +18,7 @@ export class AdminLayoutComponent {
     { label: 'Coupons',    icon: 'local_offer',      route: '/admin/coupons'     },
     { label: 'Users',      icon: 'people',           route: '/admin/users'       },
     { label: 'Reviews',    icon: 'rate_review',      route: '/admin/reviews'     },
+    { label: 'Returns',    icon: 'assignment_return', route: '/admin/returns'     },
   ];
 
   constructor(private router: Router) {}

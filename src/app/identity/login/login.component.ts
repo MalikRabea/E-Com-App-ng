@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IdentityService } from '../identity.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoreService } from '../../core/core.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +23,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
     private _service: IdentityService,
     private route: Router,
     private router: ActivatedRoute,
-    private coreService: CoreService
+    private coreService: CoreService,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -75,6 +78,33 @@ export class LoginComponent implements OnInit, AfterViewInit {
         },
       });
     }
+  }
+
+  googleSignIn() {
+    // Uses Google Identity Services (GIS) — requires the script in index.html
+    const google = (window as any).google;
+    if (!google?.accounts) {
+      alert('Google Sign-In is not configured. Please add your Google Client ID to index.html.');
+      return;
+    }
+    google.accounts.oauth2.initTokenClient({
+      client_id: 'YOUR_GOOGLE_CLIENT_ID', // Replace with actual client ID
+      scope: 'email profile openid',
+      callback: (tokenResponse: any) => {
+        if (tokenResponse.access_token) {
+          this.http.post<any>(`${environment.baseURL}SocialAuth/google`,
+            { accessToken: tokenResponse.access_token },
+            { withCredentials: true }
+          ).subscribe({
+            next: () => {
+              this.coreService.getUserName().subscribe();
+              this.route.navigateByUrl(this.retrunUrl);
+            },
+            error: (err) => console.error('Google login failed', err)
+          });
+        }
+      }
+    }).requestAccessToken();
   }
 
   SendEmailForgetpassword() {

@@ -506,6 +506,32 @@ body {
   .card { border: 1px solid #ddd !important; box-shadow: none !important; }
 }
 
+/* Google Sign-In Button */
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 11px 16px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: 'Inter', sans-serif;
+  &:hover { border-color: #4285F4; box-shadow: 0 0 0 3px rgba(66,133,244,.12); }
+}
+
+/* RTL Support */
+[dir="rtl"] {
+  .navbar-links { flex-direction: row-reverse; }
+  .dropdown-item { flex-direction: row-reverse; text-align: right; }
+  .rs-item { flex-direction: row-reverse; }
+}
+
 /* Stripe injected wrapper — must be global (outside Angular encapsulation) */
 .StripeElement {
   padding: 11px 16px;

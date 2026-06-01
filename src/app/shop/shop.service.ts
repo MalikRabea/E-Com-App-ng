@@ -17,20 +17,14 @@ export class ShopService {
 
   getProduct(productParam: ProductParam) {
     let param = new HttpParams();
-    if (productParam.CategoryId) {
-      param = param.append('categoryId', productParam.CategoryId);
-    }
-    if (productParam.SortSelected) {
-      param = param.append('Sort', productParam.SortSelected);
-    }
-    if (productParam.search) {
-      param = param.append('Search', productParam.search);
-    }
+    if (productParam.CategoryId)   param = param.append('categoryId', productParam.CategoryId);
+    if (productParam.SortSelected) param = param.append('Sort', productParam.SortSelected);
+    if (productParam.search)       param = param.append('Search', productParam.search);
+    if (productParam.minPrice != null) param = param.append('MinPrice', productParam.minPrice);
+    if (productParam.maxPrice != null) param = param.append('MaxPrice', productParam.maxPrice);
     param = param.append('pageNumber', productParam.pageNumber);
     param = param.append('pageSize', productParam.pageSize);
-    return this.http.get<IPagnation>(this.baseURL + 'Products/get-all', {
-      params: param,
-    });
+    return this.http.get<IPagnation>(this.baseURL + 'Products/get-all', { params: param });
   }
   getCategory() {
     return this.http.get<ICategory[]>(this.baseURL + 'Category/get-all');

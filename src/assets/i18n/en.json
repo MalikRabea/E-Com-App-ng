@@ -1,0 +1,93 @@
+{
+  "nav": {
+    "home": "Home",
+    "shop": "Shop",
+    "bestSellers": "Best Sellers",
+    "about": "About",
+    "search": "Search products...",
+    "signIn": "Sign In",
+    "createAccount": "Create Account",
+    "myProfile": "My Profile",
+    "myOrders": "My Orders",
+    "wishlist": "Wishlist",
+    "changePassword": "Change Password",
+    "myAddresses": "My Addresses",
+    "loyaltyPoints": "Loyalty Points",
+    "signOut": "Sign Out"
+  },
+  "shop": {
+    "title": "Our Products",
+    "showing": "Showing",
+    "of": "of",
+    "results": "results",
+    "categories": "Categories",
+    "allProducts": "All Products",
+    "priceRange": "Price Range",
+    "filters": "Filters",
+    "inStockOnly": "In Stock Only",
+    "resetFilters": "Reset Filters",
+    "noProducts": "No products found",
+    "searchPlaceholder": "Search products...",
+    "sortDefault": "Default",
+    "sortLowHigh": "Price: Low → High",
+    "sortHighLow": "Price: High → Low"
+  },
+  "product": {
+    "addToCart": "Add to Cart",
+    "outOfStock": "Out of stock",
+    "inStock": "in stock",
+    "reviews": "See reviews",
+    "share": "Share",
+    "copyLink": "Copy Link",
+    "freeDelivery": "Free delivery in 3 days",
+    "warranty": "2-Year warranty",
+    "returns": "30-day returns",
+    "recentlyViewed": "Recently Viewed",
+    "youMayLike": "You May Also Like"
+  },
+  "basket": {
+    "title": "Shopping Cart",
+    "continueShopping": "Continue Shopping",
+    "empty": "Your cart is empty",
+    "emptyDesc": "Looks like you haven't added anything to your cart yet.",
+    "startShopping": "Start Shopping",
+    "checkout": "Secure Checkout",
+    "couponCode": "Coupon Code",
+    "estimateShipping": "Estimate Shipping"
+  },
+  "auth": {
+    "login": "Sign In",
+    "register": "Create Account",
+    "email": "Email Address",
+    "password": "Password",
+    "continueWithGoogle": "Continue with Google",
+    "orContinueWith": "or continue with"
+  },
+  "orders": {
+    "title": "My Orders",
+    "orderNumber": "Order",
+    "status": "Status",
+    "total": "Total",
+    "date": "Date",
+    "requestReturn": "Request Return / Refund",
+    "printInvoice": "Print Invoice"
+  },
+  "loyalty": {
+    "title": "Loyalty Program",
+    "points": "points",
+    "redeem": "Redeem Points",
+    "history": "Points History"
+  },
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "apply": "Apply",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next"
+  }
+}

@@ -1,0 +1,38 @@
+@use '../admin-shared' as *;
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-muted);
+}
+
+.detail-note {
+  font-size: 0.875rem;
+  color: var(--color-text);
+  background: var(--color-bg-muted);
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin: 0;
+  border-left: 3px solid var(--color-border);
+}
+
+.order-link {
+  color: var(--color-primary);
+  font-weight: 700;
+  text-decoration: none;
+  &:hover { text-decoration: underline; }
+}

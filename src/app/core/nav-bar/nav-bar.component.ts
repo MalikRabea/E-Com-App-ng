@@ -9,6 +9,7 @@ import { ThemeService } from '../Services/theme.service';
 import { NotificationService, INotification } from '../Services/notification.service';
 import { IBasket } from '../../shared/Models/Basket';
 import { environment } from '../../../environments/environment';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-nav-bar',
@@ -23,6 +24,7 @@ export class NavBarComponent implements OnInit {
   isDark = false;
   notifOpen = false;
   searchFocused = false;
+  currentLang = 'en';
   count: Observable<IBasket>;
   favoriteCount = 0;
   notifications: INotification[] = [];
@@ -40,8 +42,15 @@ export class NavBarComponent implements OnInit {
     private favoriteService: FavoriteService,
     private themeService: ThemeService,
     private http: HttpClient,
-    public notifService: NotificationService
-  ) {}
+    public notifService: NotificationService,
+    private translate: TranslateService
+  ) {
+    const saved = localStorage.getItem('lang') || 'en';
+    this.currentLang = saved;
+    this.translate.use(saved);
+    document.documentElement.dir  = saved === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = saved;
+  }
 
   ngOnInit(): void {
     const basketId = localStorage.getItem('basketId');
@@ -76,6 +85,14 @@ export class NavBarComponent implements OnInit {
   }
 
   toggleTheme() { this.themeService.toggle(); }
+
+  toggleLang() {
+    this.currentLang = this.currentLang === 'en' ? 'ar' : 'en';
+    this.translate.use(this.currentLang);
+    localStorage.setItem('lang', this.currentLang);
+    document.documentElement.dir  = this.currentLang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = this.currentLang;
+  }
 
   toggleNotif() { this.notifOpen = !this.notifOpen; }
   closeNotif()  { this.notifOpen = false; }

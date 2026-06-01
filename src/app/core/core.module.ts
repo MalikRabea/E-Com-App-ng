@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [NavBarComponent],
@@ -10,7 +12,9 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
     CommonModule,
     RouterModule,
     BrowserAnimationsModule,
+    TranslateModule,
+    FormsModule,
   ],
-  exports: [NavBarComponent],
+  exports: [NavBarComponent, TranslateModule],
 })
 export class CoreModule {}

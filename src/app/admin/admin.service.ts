@@ -60,6 +60,15 @@ export class AdminService {
   getAllReviews()           { return this.http.get<any[]>(`${this.base}Admin/reviews`,    { withCredentials: true }); }
   deleteReview(id: number) { return this.http.delete(`${this.base}Admin/reviews/${id}`,  { withCredentials: true }); }
 
+  // ── Returns ──
+  getReturnRequests(status = '') {
+    const params = status ? { status } : {};
+    return this.http.get<any[]>(`${this.base}Admin/returns`, { params, withCredentials: true });
+  }
+  updateReturnStatus(id: number, status: string, adminNote: string) {
+    return this.http.patch(`${this.base}Admin/returns/${id}`, { status, adminNote }, { withCredentials: true });
+  }
+
   // ── Coupons ──
   getCoupons()             { return this.http.get<any[]>(`${this.base}Coupons`,          { withCredentials: true }); }
   addCoupon(data: any)     { return this.http.post(`${this.base}Coupons`,       data,    { withCredentials: true }); }
