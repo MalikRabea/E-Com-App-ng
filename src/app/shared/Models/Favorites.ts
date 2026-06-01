@@ -13,6 +13,7 @@ export interface Product {
   oldPrice: number;
   rating: number;
   soldCount: number;
+  stockQuantity?: number;
   categoryId: number;
   category?: any; // optional
   photos: Photo[];

@@ -1,17 +1,64 @@
-<div class="page-content page-enter">
+<div class="page-content page-enter wishlist-page">
+  <div class="container">
 
+  <!-- Header -->
   <div class="section-header">
     <div>
       <h1 class="section-title">
         <span class="material-icons">favorite</span>
         My Wishlist
       </h1>
-      <p class="section-sub" *ngIf="favorites.length > 0">{{ favorites.length }} saved item{{ favorites.length > 1 ? 's' : '' }}</p>
+      <p class="section-sub" *ngIf="favorites.length > 0">
+        {{ favorites.length }} saved item{{ favorites.length > 1 ? 's' : '' }} · {{ inStockCount }} in stock
+      </p>
     </div>
-    <a routerLink="/shop" class="btn btn-outline">
-      <span class="material-icons">storefront</span>
-      Continue Shopping
-    </a>
+    <div class="header-actions">
+      <button class="btn btn-outline btn-sm" *ngIf="favorites.length > 0" (click)="shareWishlist()">
+        <span class="material-icons">share</span> Share
+      </button>
+      <a routerLink="/shop" class="btn btn-outline btn-sm">
+        <span class="material-icons">storefront</span> Continue Shopping
+      </a>
+    </div>
+  </div>
+
+  <!-- Summary + Toolbar -->
+  <div class="wishlist-toolbar" *ngIf="!loading && favorites.length > 0">
+    <div class="summary-stats">
+      <div class="stat">
+        <span class="stat-label">Total Value</span>
+        <span class="stat-value">{{ totalValue | currency }}</span>
+      </div>
+      <div class="stat" *ngIf="totalSavings > 0">
+        <span class="stat-label">You Save</span>
+        <span class="stat-value savings">{{ totalSavings | currency }}</span>
+      </div>
+    </div>
+
+    <div class="toolbar-controls">
+      <!-- Filters -->
+      <label class="chip-toggle" [class.active]="inStockOnly">
+        <input type="checkbox" [(ngModel)]="inStockOnly" hidden />
+        <span class="material-icons">inventory_2</span> In Stock
+      </label>
+      <label class="chip-toggle" [class.active]="onSaleOnly">
+        <input type="checkbox" [(ngModel)]="onSaleOnly" hidden />
+        <span class="material-icons">sell</span> On Sale
+      </label>
+
+      <!-- Sort -->
+      <select class="sort-select" [ngModel]="sortKey" (ngModelChange)="setSort($event)">
+        <option value="newest">Newest</option>
+        <option value="priceLow">Price: Low → High</option>
+        <option value="priceHigh">Price: High → Low</option>
+        <option value="discount">Biggest Discount</option>
+      </select>
+
+      <!-- Add all -->
+      <button class="btn btn-primary btn-sm add-all-btn" (click)="addAllToCart()">
+        <span class="material-icons">add_shopping_cart</span> Add All to Cart
+      </button>
+    </div>
   </div>
 
   <!-- Empty State -->
@@ -23,6 +70,13 @@
       <span class="material-icons">storefront</span>
       Browse Products
     </a>
+  </div>
+
+  <!-- Filtered-empty -->
+  <div class="empty-state" *ngIf="!loading && favorites.length > 0 && displayFavorites.length === 0">
+    <span class="material-icons empty-icon">filter_alt_off</span>
+    <h2>No items match your filters</h2>
+    <button class="btn btn-outline" (click)="inStockOnly=false; onSaleOnly=false">Clear Filters</button>
   </div>
 
   <!-- Skeleton -->
@@ -39,8 +93,8 @@
   </div>
 
   <!-- Products Grid -->
-  <div class="fav-grid" *ngIf="!loading && favorites.length > 0">
-    <div class="fav-card" *ngFor="let product of favorites">
+  <div class="fav-grid" *ngIf="!loading && displayFavorites.length > 0">
+    <div class="fav-card" *ngFor="let product of displayFavorites" [class.is-out]="isOutOfStock(product)">
 
       <!-- Image -->
       <div class="fav-image" [routerLink]="'/shop/product-details/' + product.id">
@@ -50,7 +104,19 @@
           [alt]="product.name"
         />
         <img *ngIf="!product.photos?.length" src="/assets/no-image.png" alt="No image" />
-        <div class="fav-remove" (click)="removeFavorite(product.id); $event.stopPropagation()">
+
+        <!-- Badges -->
+        <div class="badge-stack">
+          <span class="badge-discount" *ngIf="getDiscount(product) > 0">-{{ getDiscount(product) }}%</span>
+          <span class="badge-drop" *ngIf="getPriceDrop(product) > 0">↓ Price Drop</span>
+          <span class="badge-low" *ngIf="isLowStock(product)">Only {{ product.stockQuantity }} left!</span>
+        </div>
+
+        <div class="out-overlay" *ngIf="isOutOfStock(product)">
+          <span>Out of Stock</span>
+        </div>
+
+        <div class="fav-remove" (click)="removeFavorite(product.id); $event.stopPropagation()" title="Remove">
           <span class="material-icons">close</span>
         </div>
       </div>
@@ -69,21 +135,24 @@
         <div class="fav-price">
           <span class="price-new">{{ product.newPrice | currency }}</span>
           <span class="price-old" *ngIf="product.oldPrice > product.newPrice">{{ product.oldPrice | currency }}</span>
-          <span class="discount-badge" *ngIf="product.oldPrice > product.newPrice">
-            -{{ getDiscount(product) }}%
-          </span>
-          <span class="price-drop-badge" *ngIf="getPriceDrop(product) > 0">
-            ↓ ${{ getPriceDrop(product).toFixed(2) }} drop!
-          </span>
         </div>
 
-        <div class="fav-actions">
-          <button class="btn btn-primary" style="flex:1" (click)="addToBasket(product)">
+        <!-- Actions -->
+        <div class="fav-actions" *ngIf="!isOutOfStock(product)">
+          <button class="btn btn-primary" style="flex:1" (click)="moveToBasket(product)">
             <span class="material-icons">shopping_cart</span>
-            Add to Cart
+            Move to Cart
           </button>
-          <button class="btn btn-ghost icon-only" (click)="removeFavorite(product.id)" title="Remove">
-            <span class="material-icons">delete_outline</span>
+          <button class="btn btn-outline icon-only" (click)="openSubscribe(product)" title="Subscribe & Save 10%">
+            <span class="material-icons">autorenew</span>
+          </button>
+        </div>
+
+        <!-- Out of stock action -->
+        <div class="fav-actions" *ngIf="isOutOfStock(product)">
+          <button class="btn btn-outline" style="flex:1" (click)="notifyMe(product)">
+            <span class="material-icons">notifications_active</span>
+            Notify Me
           </button>
         </div>
       </div>
@@ -91,4 +160,40 @@
     </div>
   </div>
 
+  </div>
+</div>
+
+<!-- Subscribe Modal -->
+<div class="modal-overlay" *ngIf="subProduct" (click)="closeSubscribe()">
+  <div class="modal-box wl-sub-modal" (click)="$event.stopPropagation()">
+    <button class="modal-close-btn" (click)="closeSubscribe()">
+      <span class="material-icons">close</span>
+    </button>
+    <h3 class="modal-title">
+      <span class="material-icons" style="color:#10b981;vertical-align:-4px">autorenew</span>
+      Subscribe & Save 10%
+    </h3>
+    <p class="wl-sub-product">{{ subProduct.name }}</p>
+
+    <label class="form-label" style="margin-top:1rem">Delivery Frequency</label>
+    <div class="wl-interval-options">
+      <button class="wl-interval-btn" [class.active]="subInterval==='Weekly'"    (click)="subInterval='Weekly'">Weekly</button>
+      <button class="wl-interval-btn" [class.active]="subInterval==='Monthly'"   (click)="subInterval='Monthly'">Monthly</button>
+      <button class="wl-interval-btn" [class.active]="subInterval==='Quarterly'" (click)="subInterval='Quarterly'">Quarterly</button>
+    </div>
+
+    <div class="wl-sub-price">
+      <span class="wl-strike">{{ subProduct.newPrice | currency }}</span>
+      <strong>{{ subProduct.newPrice * 0.9 | currency }}</strong>
+      <span class="wl-save-tag">Save 10%</span>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" (click)="closeSubscribe()">Cancel</button>
+      <button class="btn btn-primary" (click)="confirmSubscribe()" [disabled]="subscribing">
+        <span class="material-icons">autorenew</span>
+        {{ subscribing ? 'Subscribing...' : 'Start Subscription' }}
+      </button>
+    </div>
+  </div>
 </div>
