@@ -1,4 +1,4 @@
-<div class="page-content page-enter">
+<div class="page-content page-enter bs-page">
   <div class="container">
 
     <!-- Page Header -->
@@ -30,59 +30,123 @@
       </div>
     </div>
 
-    <!-- Products Grid -->
-    <div class="bs-grid" *ngIf="!loading && bestSellers.length > 0">
-      <div class="bs-card"
-           *ngFor="let product of bestSellers; let i = index"
-           [style.animation-delay]="(i * 50) + 'ms'">
+    <ng-container *ngIf="!loading && bestSellers.length > 0">
 
-        <div class="bs-image" [routerLink]="'/shop/product-details/' + product.id">
-          <img *ngIf="product.photos?.length > 0"
-               [src]="imgUrl + product.photos[0].imageName"
-               [alt]="product.name" />
-          <img *ngIf="!product.photos?.length"
-               src="assets/no-image.png" alt="No image" />
+      <!-- Category Tabs -->
+      <div class="bs-tabs">
+        <button class="bs-tab" *ngFor="let c of categories"
+                [class.active]="activeCategory === c"
+                (click)="setCategory(c)">
+          {{ c }}
+        </button>
+      </div>
 
-          <div class="sold-chip">
-            <span class="material-icons">local_fire_department</span>
-            {{ product.soldCount }} sold
+      <!-- ── Podium (Top 3) ── -->
+      <div class="podium" *ngIf="activeCategory === 'All' && podium.length === 3">
+        <div class="podium-card"
+             *ngFor="let product of podium"
+             [class.gold]="product.rank === 1"
+             [class.silver]="product.rank === 2"
+             [class.bronze]="product.rank === 3"
+             [attr.data-rank]="product.rank">
+          <div class="podium-medal">{{ medalIcon(product.rank) }}</div>
+          <div class="podium-img" [routerLink]="'/shop/product-details/' + product.id">
+            <img [src]="product.photos?.length ? imgUrl + product.photos[0].imageName : 'assets/no-image.png'"
+                 [alt]="product.name" onerror="this.src='assets/no-image.png'" />
           </div>
-
-          <div class="bs-overlay">
-            <button class="btn btn-primary btn-sm" (click)="addToBasket(product); $event.stopPropagation()">
-              <span class="material-icons">shopping_cart</span>
-              Add to Cart
+          <div class="podium-info">
+            <span class="podium-rank-label">#{{ product.rank }} Best Seller</span>
+            <h3 class="podium-name" [routerLink]="'/shop/product-details/' + product.id">{{ product.name }}</h3>
+            <div class="podium-sold">
+              <span class="material-icons">local_fire_department</span>
+              {{ product.soldCount }} sold
+            </div>
+            <div class="podium-price">
+              <span class="price-new">{{ product.newPrice | currency }}</span>
+              <span class="price-old" *ngIf="product.oldPrice > product.newPrice">{{ product.oldPrice | currency }}</span>
+            </div>
+            <button class="btn btn-primary podium-cart" (click)="addToBasket(product)">
+              <span class="material-icons">shopping_cart</span> Add to Cart
             </button>
           </div>
         </div>
-
-        <div class="bs-body">
-          <p class="bs-category">{{ product.categoryName || 'Electronics' }}</p>
-          <h3 class="bs-name" [routerLink]="'/shop/product-details/' + product.id">
-            {{ product.name }}
-          </h3>
-
-          <div class="bs-stars" *ngIf="product.rating">
-            <span class="material-icons star" *ngFor="let s of getStars(product.rating)">star</span>
-            <span class="material-icons star empty" *ngFor="let s of getEmptyStars(product.rating)">star_border</span>
-            <span class="bs-rating-val">{{ product.rating | number:'1.1-1' }}</span>
-          </div>
-
-          <div class="bs-price">
-            <span class="price-new">{{ product.newPrice | currency }}</span>
-            <span class="price-old" *ngIf="product.oldPrice > product.newPrice">
-              {{ product.oldPrice | currency }}
-            </span>
-          </div>
-
-          <button class="btn btn-primary bs-cart-btn" (click)="addToBasket(product)">
-            <span class="material-icons">shopping_cart</span>
-            Add to Cart
-          </button>
-        </div>
-
       </div>
-    </div>
+
+      <!-- ── Ranked Grid ── -->
+      <h2 class="bs-section-heading" *ngIf="activeCategory === 'All' && rest.length > 0">
+        <span class="material-icons">format_list_numbered</span> More Top Sellers
+      </h2>
+
+      <div class="bs-grid">
+        <div class="bs-card"
+             *ngFor="let product of (activeCategory === 'All' ? rest : rankedProducts); let i = index"
+             [style.animation-delay]="(i * 50) + 'ms'">
+
+          <div class="bs-rank-badge">#{{ product.rank }}</div>
+
+          <div class="bs-image" [routerLink]="'/shop/product-details/' + product.id">
+            <img *ngIf="product.photos?.length > 0"
+                 [src]="imgUrl + product.photos[0].imageName"
+                 [alt]="product.name" />
+            <img *ngIf="!product.photos?.length" src="assets/no-image.png" alt="No image" />
+
+            <!-- Badges -->
+            <div class="bs-badge-stack">
+              <span class="bs-badge hot" *ngIf="isHot(product)">
+                <span class="material-icons">local_fire_department</span> HOT
+              </span>
+              <span class="bs-badge fast" *ngIf="isSellingFast(product)">
+                Selling Fast
+              </span>
+              <span class="bs-badge disc" *ngIf="getDiscount(product) > 0">-{{ getDiscount(product) }}%</span>
+            </div>
+
+            <!-- Hover overlay -->
+            <div class="bs-overlay">
+              <button class="ov-btn" (click)="openQuickView(product, $event)" title="Quick view">
+                <span class="material-icons">visibility</span>
+              </button>
+              <button class="ov-btn" (click)="addToWishlist(product, $event)" title="Add to wishlist">
+                <span class="material-icons">favorite_border</span>
+              </button>
+              <button class="ov-btn cart" (click)="addToBasket(product); $event.stopPropagation()" title="Add to cart">
+                <span class="material-icons">shopping_cart</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="bs-body">
+            <p class="bs-category">{{ product.categoryName || 'Electronics' }}</p>
+            <h3 class="bs-name" [routerLink]="'/shop/product-details/' + product.id">{{ product.name }}</h3>
+
+            <div class="bs-stars" *ngIf="product.rating">
+              <span class="material-icons star" *ngFor="let s of getStars(product.rating)">star</span>
+              <span class="material-icons star empty" *ngFor="let s of getEmptyStars(product.rating)">star_border</span>
+              <span class="bs-rating-val">{{ product.rating | number:'1.1-1' }}</span>
+            </div>
+
+            <!-- Sales velocity bar -->
+            <div class="velocity-wrap">
+              <div class="velocity-bar"><div class="velocity-fill" [style.width.%]="velocity(product)"></div></div>
+              <span class="velocity-label">
+                <span class="material-icons">local_fire_department</span>
+                {{ weeklySold(product) }} sold this week
+              </span>
+            </div>
+
+            <div class="bs-price">
+              <span class="price-new">{{ product.newPrice | currency }}</span>
+              <span class="price-old" *ngIf="product.oldPrice > product.newPrice">{{ product.oldPrice | currency }}</span>
+            </div>
+
+            <button class="btn btn-primary bs-cart-btn" (click)="addToBasket(product)">
+              <span class="material-icons">shopping_cart</span> Add to Cart
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </ng-container>
 
     <!-- Empty State -->
     <div class="bs-empty" *ngIf="!loading && bestSellers.length === 0">
@@ -91,5 +155,43 @@
       <a routerLink="/shop" class="btn btn-primary">Browse Shop</a>
     </div>
 
+  </div>
+</div>
+
+<!-- Quick View Modal -->
+<div class="modal-overlay" *ngIf="quickViewProduct" (click)="closeQuickView()">
+  <div class="modal-box bs-qv-box" (click)="$event.stopPropagation()">
+    <button class="qv-close" (click)="closeQuickView()"><span class="material-icons">close</span></button>
+    <div class="qv-content">
+      <div class="qv-image">
+        <img [src]="quickViewProduct.photos?.length ? imgUrl + quickViewProduct.photos[0].imageName : 'assets/no-image.png'"
+             [alt]="quickViewProduct.name" onerror="this.src='assets/no-image.png'" />
+      </div>
+      <div class="qv-info">
+        <span class="qv-category">{{ quickViewProduct.categoryName }}</span>
+        <h2 class="qv-name">{{ quickViewProduct.name }}</h2>
+        <div class="bs-stars" *ngIf="quickViewProduct.rating">
+          <span class="material-icons star" *ngFor="let s of getStars(quickViewProduct.rating)">star</span>
+          <span class="material-icons star empty" *ngFor="let s of getEmptyStars(quickViewProduct.rating)">star_border</span>
+        </div>
+        <div class="qv-sold">
+          <span class="material-icons">local_fire_department</span>
+          {{ quickViewProduct.soldCount }} sold all-time
+        </div>
+        <div class="qv-price">
+          <span class="price-new">{{ quickViewProduct.newPrice | currency }}</span>
+          <span class="price-old" *ngIf="quickViewProduct.oldPrice > quickViewProduct.newPrice">{{ quickViewProduct.oldPrice | currency }}</span>
+        </div>
+        <p class="qv-desc">{{ quickViewProduct.description }}</p>
+        <div class="qv-actions">
+          <button class="btn btn-primary btn-full" (click)="addToBasket(quickViewProduct); closeQuickView()">
+            <span class="material-icons">shopping_cart</span> Add to Cart
+          </button>
+          <a [routerLink]="'/shop/product-details/' + quickViewProduct.id" class="btn btn-outline btn-full" (click)="closeQuickView()">
+            View Full Details
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
