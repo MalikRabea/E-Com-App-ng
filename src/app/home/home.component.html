@@ -1,6 +1,51 @@
 <div class="home-page page-enter">
 
   <!-- ══════════════════════════════════════════
+       HERO SLIDER (animated tech showcase)
+  ══════════════════════════════════════════ -->
+  <section class="hero-slider">
+    @for (slide of heroSlides; track $index; let i = $index) {
+      <div class="hs-slide" [class.active]="i === activeSlide" [style.--accent]="slide.accent">
+        <div class="hs-image" [style.background-image]="'url(' + slide.image + ')'"></div>
+        <div class="hs-overlay"></div>
+        <div class="hs-grid-lines"></div>
+
+        <div class="container hs-content">
+          <span class="hs-eyebrow">
+            <span class="hs-dot"></span>
+            {{ slide.eyebrow }}
+          </span>
+          <h1 class="hs-title">
+            {{ slide.title }} <span class="hs-highlight">{{ slide.highlight }}</span>
+          </h1>
+          <p class="hs-subtitle">{{ slide.subtitle }}</p>
+          <a [routerLink]="slide.link" class="hs-cta">
+            {{ slide.cta }}
+            <span class="material-icons">arrow_forward</span>
+          </a>
+        </div>
+      </div>
+    }
+
+    <!-- Arrows -->
+    <button class="hs-arrow hs-prev" (click)="prevSlide()" aria-label="Previous">
+      <span class="material-icons">chevron_left</span>
+    </button>
+    <button class="hs-arrow hs-next" (click)="nextSlide()" aria-label="Next">
+      <span class="material-icons">chevron_right</span>
+    </button>
+
+    <!-- Dots -->
+    <div class="hs-dots">
+      @for (slide of heroSlides; track $index; let i = $index) {
+        <button class="hs-dot-btn" [class.active]="i === activeSlide" (click)="goToSlide(i)">
+          <span class="hs-dot-fill"></span>
+        </button>
+      }
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
        HERO SECTION
   ══════════════════════════════════════════ -->
   <section class="hero">

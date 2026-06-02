@@ -31,6 +31,52 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   countdown = { h: '00', m: '00', s: '00' };
   private timer: any;
 
+  // ── Hero Slider ──
+  heroSlides = [
+    {
+      image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1600&q=80',
+      eyebrow: 'Next-Gen Laptops',
+      title: 'Power Meets',
+      highlight: 'Performance',
+      subtitle: 'Experience blazing-fast laptops built for work, gaming, and everything between.',
+      cta: 'Shop Laptops',
+      link: '/shop',
+      accent: '#2563eb'
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=1600&q=80',
+      eyebrow: 'Smartphones 2026',
+      title: 'Hold the',
+      highlight: 'Future',
+      subtitle: 'Flagship phones with stunning displays, pro cameras, and all-day battery life.',
+      cta: 'Explore Phones',
+      link: '/shop',
+      accent: '#f59e0b'
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1600&q=80',
+      eyebrow: 'Immersive Audio',
+      title: 'Hear Every',
+      highlight: 'Detail',
+      subtitle: 'Premium headphones & earbuds with active noise cancellation and rich sound.',
+      cta: 'Shop Audio',
+      link: '/shop',
+      accent: '#10b981'
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=1600&q=80',
+      eyebrow: 'Smart Wearables',
+      title: 'Tech on Your',
+      highlight: 'Wrist',
+      subtitle: 'Smart watches that track your health, fitness, and keep you connected.',
+      cta: 'Discover Watches',
+      link: '/shop',
+      accent: '#ec4899'
+    },
+  ];
+  activeSlide = 0;
+  private slideTimer: any;
+
   // Scroll reveal
   private observer?: IntersectionObserver;
 
@@ -80,6 +126,20 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.timer = setInterval(() => this.tickCountdown(), 1000);
     this.tickCountdown();
+
+    this.startSlider();
+  }
+
+  // ── Hero slider controls ──
+  private startSlider() {
+    this.slideTimer = setInterval(() => this.nextSlide(), 6000);
+  }
+  nextSlide() { this.activeSlide = (this.activeSlide + 1) % this.heroSlides.length; }
+  prevSlide() { this.activeSlide = (this.activeSlide - 1 + this.heroSlides.length) % this.heroSlides.length; }
+  goToSlide(i: number) {
+    this.activeSlide = i;
+    clearInterval(this.slideTimer);
+    this.startSlider();
   }
 
   ngAfterViewInit() {
@@ -103,6 +163,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     clearInterval(this.timer);
+    clearInterval(this.slideTimer);
     this.observer?.disconnect();
   }
 
