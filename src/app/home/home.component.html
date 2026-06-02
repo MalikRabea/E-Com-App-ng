@@ -30,19 +30,19 @@
             Best Sellers
           </a>
         </div>
-        <div class="hero-stats">
+        <div class="hero-stats reveal">
           <div class="stat">
-            <span class="stat-num">10K+</span>
+            <span class="stat-num">{{ statProducts | number }}+</span>
             <span class="stat-label">Products</span>
           </div>
           <div class="stat-divider"></div>
           <div class="stat">
-            <span class="stat-num">50K+</span>
+            <span class="stat-num">{{ statCustomers | number }}+</span>
             <span class="stat-label">Customers</span>
           </div>
           <div class="stat-divider"></div>
           <div class="stat">
-            <span class="stat-num">4.9★</span>
+            <span class="stat-num">{{ statRating | number:'1.1-1' }}★</span>
             <span class="stat-label">Rating</span>
           </div>
         </div>
@@ -107,9 +107,52 @@
   </section>
 
   <!-- ══════════════════════════════════════════
+       FLASH SALE
+  ══════════════════════════════════════════ -->
+  <section class="flash-section reveal" *ngIf="!featuredLoading && flashSaleProducts.length > 0">
+    <div class="container">
+      <div class="flash-header">
+        <div class="flash-title-wrap">
+          <span class="material-icons flash-icon">bolt</span>
+          <div>
+            <h2 class="flash-title">Flash Sale</h2>
+            <p class="flash-sub">Ends in — hurry up!</p>
+          </div>
+        </div>
+        <div class="flash-timer">
+          <div class="timer-box"><span>{{ countdown.h }}</span><small>Hrs</small></div>
+          <span class="timer-colon">:</span>
+          <div class="timer-box"><span>{{ countdown.m }}</span><small>Min</small></div>
+          <span class="timer-colon">:</span>
+          <div class="timer-box"><span>{{ countdown.s }}</span><small>Sec</small></div>
+        </div>
+      </div>
+
+      <div class="flash-grid">
+        <a *ngFor="let product of flashSaleProducts"
+           [routerLink]="'/shop/product-details/' + product.id" class="flash-card">
+          <div class="flash-img-wrap">
+            <img [src]="product.photos?.length ? imgUrl + product.photos[0].imageName : 'assets/no-image.png'"
+                 [alt]="product.name" onerror="this.src='assets/no-image.png'"/>
+            <span class="flash-badge" *ngIf="getDiscount(product) > 0">-{{ getDiscount(product) }}%</span>
+          </div>
+          <div class="flash-body">
+            <p class="flash-cat">{{ product.categoryName }}</p>
+            <h3 class="flash-name">{{ product.name }}</h3>
+            <div class="flash-price">
+              <span class="flash-new">{{ product.newPrice | currency }}</span>
+              <span class="flash-old" *ngIf="product.oldPrice > product.newPrice">{{ product.oldPrice | currency }}</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
        CATEGORIES
   ══════════════════════════════════════════ -->
-  <section class="categories-section">
+  <section class="categories-section reveal">
     <div class="container">
       <div class="section-header">
         <div>
@@ -133,9 +176,43 @@
   </section>
 
   <!-- ══════════════════════════════════════════
+       BEST SELLERS CAROUSEL
+  ══════════════════════════════════════════ -->
+  <section class="bs-carousel-section reveal" *ngIf="bestSellers.length > 0">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <p class="section-eyebrow">Customer Favorites</p>
+          <h2 class="section-title">Best Sellers</h2>
+        </div>
+        <div class="carousel-nav">
+          <button class="carousel-btn" (click)="scrollCarousel(-1)"><span class="material-icons">chevron_left</span></button>
+          <button class="carousel-btn" (click)="scrollCarousel(1)"><span class="material-icons">chevron_right</span></button>
+        </div>
+      </div>
+
+      <div class="bs-carousel-track">
+        <a *ngFor="let product of bestSellers"
+           [routerLink]="'/shop/product-details/' + product.id" class="bs-slide">
+          <div class="bs-slide-img">
+            <img [src]="product.photos?.length ? imgUrl + product.photos[0].imageName : 'assets/no-image.png'"
+                 [alt]="product.name" onerror="this.src='assets/no-image.png'"/>
+            <span class="bs-fire"><span class="material-icons">local_fire_department</span> {{ product.soldCount }} sold</span>
+          </div>
+          <div class="bs-slide-body">
+            <p class="bs-slide-cat">{{ product.categoryName }}</p>
+            <h3 class="bs-slide-name">{{ product.name }}</h3>
+            <span class="bs-slide-price">{{ product.newPrice | currency }}</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
        FEATURED PRODUCTS
   ══════════════════════════════════════════ -->
-  <section class="featured-section">
+  <section class="featured-section reveal">
     <div class="container">
       <div class="section-header">
         <div>
@@ -205,7 +282,7 @@
   <!-- ══════════════════════════════════════════
        BANNER / PROMO
   ══════════════════════════════════════════ -->
-  <section class="promo-section">
+  <section class="promo-section reveal">
     <div class="container promo-grid">
       <div class="promo-card promo-blue">
         <div class="promo-content">
@@ -227,9 +304,54 @@
   </section>
 
   <!-- ══════════════════════════════════════════
+       BRANDS MARQUEE
+  ══════════════════════════════════════════ -->
+  <section class="brands-section reveal">
+    <div class="container">
+      <p class="brands-label">Trusted by top brands</p>
+    </div>
+    <div class="brands-marquee">
+      <div class="brands-track">
+        <span class="brand-item" *ngFor="let b of brands">{{ b }}</span>
+        <span class="brand-item" *ngFor="let b of brands">{{ b }}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       TESTIMONIALS
+  ══════════════════════════════════════════ -->
+  <section class="testimonials-section reveal">
+    <div class="container">
+      <div class="section-header" style="justify-content:center;text-align:center">
+        <div>
+          <p class="section-eyebrow">What Customers Say</p>
+          <h2 class="section-title">Loved by Thousands</h2>
+        </div>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card" *ngFor="let t of testimonials; let i = index" [style.animation-delay]="(i*80)+'ms'">
+          <div class="testimonial-stars">
+            <span class="material-icons star" *ngFor="let s of getStars(t.stars)">star</span>
+            <span class="material-icons star empty" *ngFor="let s of getEmptyStars(t.stars)">star_border</span>
+          </div>
+          <p class="testimonial-text">"{{ t.text }}"</p>
+          <div class="testimonial-author">
+            <span class="testimonial-avatar">{{ t.avatar }}</span>
+            <div>
+              <strong>{{ t.name }}</strong>
+              <span class="testimonial-role">{{ t.role }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
        NEWSLETTER
   ══════════════════════════════════════════ -->
-  <section class="newsletter-section">
+  <section class="newsletter-section reveal">
     <div class="container newsletter-inner">
       <div class="newsletter-text">
         <h2>Stay in the loop</h2>
