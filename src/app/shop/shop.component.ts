@@ -30,14 +30,27 @@ export class ShopComponent implements OnInit {
   priceMax = 9999;
   priceRangeMax = 9999;
   inStockOnly = false;
+  minRating = 0;
+  onSaleOnly = false;
+
+  viewMode: 'grid' | 'list' = 'grid';
+  recentlyViewed: IProduct[] = [];
 
   get displayProducts(): IProduct[] {
-    if (!this.inStockOnly) return this.product;
-    return this.product.filter(p => p.stockQuantity > 0);
+    let list = this.product;
+    if (this.inStockOnly) list = list.filter(p => p.stockQuantity > 0);
+    if (this.onSaleOnly)  list = list.filter(p => p.oldPrice > p.newPrice);
+    if (this.minRating > 0) list = list.filter(p => (p.rating ?? 0) >= this.minRating);
+    return list;
   }
 
   get priceFilterActive(): boolean {
-    return this.priceMin > 0 || this.priceMax < this.priceRangeMax || this.inStockOnly;
+    return this.priceMin > 0 || this.priceMax < this.priceRangeMax || this.inStockOnly
+        || this.onSaleOnly || this.minRating > 0;
+  }
+
+  get selectedCategoryName(): string {
+    return this.Cateogry.find(c => c.id === this.ProductParam.CategoryId)?.name ?? '';
   }
 
   SortingOption = [
@@ -57,12 +70,15 @@ export class ShopComponent implements OnInit {
   ngOnInit(): void {
     this.ProductParam.SortSelected = this.SortingOption[0].value;
     this.ProductParam.pageSize = 9;
+    this.viewMode = (localStorage.getItem('shopView') as 'grid' | 'list') || 'grid';
+    this.loadRecentlyViewed();
 
     this.route.queryParams.subscribe(params => {
       if (params['search']) {
         this.ProductParam.search = params['search'];
         if (this.searchInput) this.searchInput.nativeElement.value = params['search'];
       }
+      if (params['category']) this.ProductParam.CategoryId = +params['category'];
       this.getAllProduct();
     });
 
@@ -106,7 +122,49 @@ export class ShopComponent implements OnInit {
   SelectedId(categoryid: number) {
     this.ProductParam.CategoryId = categoryid;
     this.ProductParam.pageNumber = 1;
+    this.syncUrl();
     this.getAllProduct();
+  }
+
+  private syncUrl() {
+    const queryParams: any = {};
+    if (this.ProductParam.search)     queryParams.search = this.ProductParam.search;
+    if (this.ProductParam.CategoryId) queryParams.category = this.ProductParam.CategoryId;
+    this.router.navigate([], { relativeTo: this.route, queryParams, replaceUrl: true });
+  }
+
+  setView(mode: 'grid' | 'list') {
+    this.viewMode = mode;
+    localStorage.setItem('shopView', mode);
+  }
+
+  setRating(stars: number) {
+    this.minRating = this.minRating === stars ? 0 : stars;
+  }
+
+  private loadRecentlyViewed() {
+    try {
+      const stored: IProduct[] = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+      this.recentlyViewed = stored.slice(0, 6);
+    } catch { this.recentlyViewed = []; }
+  }
+
+  // Active filter chips
+  get activeChips(): { label: string; clear: () => void }[] {
+    const chips: { label: string; clear: () => void }[] = [];
+    if (this.ProductParam.search)
+      chips.push({ label: `"${this.ProductParam.search}"`, clear: () => this.OnSearch('') });
+    if (this.ProductParam.CategoryId)
+      chips.push({ label: this.selectedCategoryName, clear: () => this.SelectedId(0) });
+    if (this.priceMin > 0 || this.priceMax < this.priceRangeMax)
+      chips.push({ label: `$${this.priceMin} - $${this.priceMax}`, clear: () => { this.priceMin = 0; this.priceMax = this.priceRangeMax; this.applyLocalFilters(); } });
+    if (this.inStockOnly)
+      chips.push({ label: 'In Stock', clear: () => { this.inStockOnly = false; } });
+    if (this.onSaleOnly)
+      chips.push({ label: 'On Sale', clear: () => { this.onSaleOnly = false; } });
+    if (this.minRating > 0)
+      chips.push({ label: `${this.minRating}★ & up`, clear: () => { this.minRating = 0; } });
+    return chips;
   }
 
   SortingByPrice(sort: Event) {
@@ -118,7 +176,19 @@ export class ShopComponent implements OnInit {
     this.showSuggestions = false;
     this.ProductParam.search = Search;
     this.ProductParam.pageNumber = 1;
+    this.syncUrl();
     this.getAllProduct();
+  }
+
+  getStars(rating: number | undefined): number[] {
+    return Array(Math.min(Math.max(Math.round(rating || 0), 0), 5)).fill(0);
+  }
+  getEmptyStars(rating: number | undefined): number[] {
+    return Array(5 - Math.min(Math.max(Math.round(rating || 0), 0), 5)).fill(0);
+  }
+  getDiscount(p: IProduct): number {
+    if (!p.oldPrice || p.oldPrice <= p.newPrice) return 0;
+    return Math.round(((p.oldPrice - p.newPrice) / p.oldPrice) * 100);
   }
 
   onSearchInput(value: string) {
@@ -198,6 +268,8 @@ export class ShopComponent implements OnInit {
     this.priceMin = 0;
     this.priceMax = this.priceRangeMax;
     this.inStockOnly = false;
+    this.onSaleOnly = false;
+    this.minRating = 0;
     this.ProductParam.minPrice = undefined;
     this.ProductParam.maxPrice = undefined;
     this.getAllProduct();
