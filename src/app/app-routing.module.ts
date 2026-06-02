@@ -12,6 +12,7 @@ import { DeliveryComponent } from './checkout/delivery/delivery.component';
 import { PrivacyPolicyComponent } from './home/privacy-policy/privacy-policy.component';
 import { TermsConditionComponent } from './home/terms-condition/terms-condition.component';
 import { DeliveryInfoComponent } from './home/delivery-info/delivery-info.component';
+import { HelpCenterComponent } from './help-center/help-center.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -50,6 +51,8 @@ const routes: Routes = [
   { path: 'about', component: AboutComponent },
 
   { path: 'best-sellers', component: BestSellersComponent },
+
+  { path: 'help', component: HelpCenterComponent },
 
   { path: 'favorite', component: FavoriteComponent, canActivate:[authGuard] },
 

@@ -11,6 +11,7 @@ import { AddressBookComponent } from './address-book/address-book.component';
 import { LoyaltyComponent } from './loyalty/loyalty.component';
 import { GiftCardsComponent } from './gift-cards/gift-cards.component';
 import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
+import { ReferralComponent } from './referral/referral.component';
 
 const routes: Routes = [
   { path: 'Register',       component: RegisterComponent },
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'loyalty',        component: LoyaltyComponent },
   { path: 'gift-cards',     component: GiftCardsComponent },
   { path: 'subscriptions',  component: SubscriptionsComponent },
+  { path: 'referral',       component: ReferralComponent },
 ];
 
 @NgModule({

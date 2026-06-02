@@ -180,6 +180,12 @@
             <a routerLink="/Account/gift-cards" class="dropdown-item" (click)="closeDropdown()">
               <span class="material-icons">card_giftcard</span> Gift Cards
             </a>
+            <a routerLink="/Account/referral" class="dropdown-item" (click)="closeDropdown()">
+              <span class="material-icons">group_add</span> Refer a Friend
+            </a>
+            <a routerLink="/help" class="dropdown-item" (click)="closeDropdown()">
+              <span class="material-icons">support_agent</span> Help Center
+            </a>
             <ng-container *ngIf="isAdmin">
               <div class="dropdown-divider"></div>
               <a routerLink="/admin" class="dropdown-item admin-dropdown-item" (click)="closeDropdown()">

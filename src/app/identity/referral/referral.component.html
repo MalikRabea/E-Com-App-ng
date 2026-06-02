@@ -1,0 +1,89 @@
+<div class="page-content page-enter ref-page">
+  <div class="container">
+
+    <div class="ref-header">
+      <h1 class="ref-title"><span class="material-icons">group_add</span> Refer a Friend</h1>
+      <p class="ref-sub">Share your code — you both earn loyalty points!</p>
+    </div>
+
+    @if (loading) {
+      <div class="skeleton" style="height:200px;border-radius:16px"></div>
+    }
+
+    @if (!loading && data) {
+      <!-- Hero card -->
+      <div class="ref-hero card">
+        <div class="ref-reward-row">
+          <div class="ref-reward">
+            <span class="ref-reward-num">{{ data.referredReward }}</span>
+            <span class="ref-reward-label">points for your friend</span>
+          </div>
+          <span class="material-icons ref-plus">add</span>
+          <div class="ref-reward">
+            <span class="ref-reward-num">{{ data.referrerReward }}</span>
+            <span class="ref-reward-label">points for you</span>
+          </div>
+        </div>
+        <p class="ref-howto">When your friend signs up with your code and places their first order, you both get rewarded.</p>
+
+        <!-- Code box -->
+        <div class="ref-code-box">
+          <div class="ref-code-display">
+            <span class="ref-code-label">Your Code</span>
+            <span class="ref-code">{{ data.code }}</span>
+          </div>
+          <button class="btn btn-outline btn-sm" (click)="copyCode()">
+            <span class="material-icons">content_copy</span> Copy
+          </button>
+        </div>
+
+        <!-- Share buttons -->
+        <div class="ref-share-row">
+          <button class="btn btn-primary" (click)="copyLink()">
+            <span class="material-icons">link</span> Copy Invite Link
+          </button>
+          <button class="btn btn-outline ref-wa" (click)="shareVia('whatsapp')">
+            <span class="material-icons">chat</span> WhatsApp
+          </button>
+          <button class="btn btn-outline" (click)="shareVia('native')">
+            <span class="material-icons">share</span> More
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="ref-stats">
+        <div class="ref-stat card">
+          <span class="material-icons">people</span>
+          <span class="ref-stat-num">{{ data.totalReferred }}</span>
+          <span class="ref-stat-label">Friends Referred</span>
+        </div>
+        <div class="ref-stat card">
+          <span class="material-icons">workspace_premium</span>
+          <span class="ref-stat-num">{{ data.pointsEarned }}</span>
+          <span class="ref-stat-label">Points Earned</span>
+        </div>
+      </div>
+
+      <!-- Referral history -->
+      @if (data.referrals?.length > 0) {
+        <div class="ref-history card">
+          <h3 class="ref-history-title"><span class="material-icons">history</span> Your Referrals</h3>
+          <div class="ref-history-list">
+            @for (r of data.referrals; track $index) {
+              <div class="ref-history-item">
+                <span class="material-icons" [class.done]="r.status === 'Completed'">
+                  {{ r.status === 'Completed' ? 'check_circle' : 'schedule' }}
+                </span>
+                <span class="ref-email">{{ r.referredEmail }}</span>
+                <span class="ref-status" [class.completed]="r.status === 'Completed'">{{ r.status }}</span>
+                <span class="ref-date">{{ r.createdAt | date:'MMM d, y' }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    }
+
+  </div>
+</div>

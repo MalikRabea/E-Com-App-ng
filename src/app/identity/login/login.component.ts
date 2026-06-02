@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CoreService } from '../../core/core.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { SupportService } from '../../core/Services/support.service';
 
 @Component({
   selector: 'app-login',
@@ -18,13 +19,20 @@ export class LoginComponent implements OnInit, AfterViewInit {
   forgotOpen = false;
   showPass = false;
 
+  // 2FA
+  otpStep = false;
+  otpCode = '';
+  otpEmail = '';
+  otpVerifying = false;
+
   constructor(
     private fb: FormBuilder,
     private _service: IdentityService,
     private route: Router,
     private router: ActivatedRoute,
     private coreService: CoreService,
-    private http: HttpClient
+    private http: HttpClient,
+    private support: SupportService
   ) {}
 
   ngOnInit(): void {
@@ -68,16 +76,44 @@ export class LoginComponent implements OnInit, AfterViewInit {
   Submit() {
     if (this.formGroup.valid) {
       this._service.Login(this.formGroup.value).subscribe({
-        next: (value) => {
-          this.coreService.getUserName().subscribe();
-          console.log(value);
-          this.route.navigateByUrl(this.retrunUrl);
+        next: () => {
+          // Check if 2FA is enabled for this account
+          this.support.twoFactorStatus().subscribe({
+            next: (s) => {
+              if (s?.enabled) {
+                this.otpEmail = this.formGroup.value.email;
+                this.support.sendOtp(this.otpEmail).subscribe();
+                this.otpStep = true;
+              } else {
+                this.coreService.getUserName().subscribe();
+                this.route.navigateByUrl(this.retrunUrl);
+              }
+            },
+            error: () => {
+              this.coreService.getUserName().subscribe();
+              this.route.navigateByUrl(this.retrunUrl);
+            }
+          });
         },
-        error(err) {
-          console.log(err);
-        },
+        error: (err) => console.log(err),
       });
     }
+  }
+
+  verifyOtp() {
+    if (this.otpCode.length < 6) return;
+    this.otpVerifying = true;
+    this.support.verifyOtp(this.otpEmail, this.otpCode).subscribe({
+      next: () => {
+        this.coreService.getUserName().subscribe();
+        this.route.navigateByUrl(this.retrunUrl);
+      },
+      error: () => { this.otpVerifying = false; this.otpCode = ''; }
+    });
+  }
+
+  resendOtp() {
+    this.support.sendOtp(this.otpEmail).subscribe();
   }
 
   googleSignIn() {

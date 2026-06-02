@@ -1,0 +1,143 @@
+<div class="page-content page-enter help-page">
+  <div class="container">
+
+    <!-- Hero -->
+    <div class="help-hero">
+      <span class="material-icons help-hero-icon">support_agent</span>
+      <h1>How can we help you?</h1>
+      <p>Find answers, manage your tickets, or reach out to our team</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="help-tabs">
+      <button class="help-tab" [class.active]="tab==='faq'" (click)="setTab('faq')">
+        <span class="material-icons">quiz</span> FAQ
+      </button>
+      <button class="help-tab" [class.active]="tab==='tickets'" (click)="setTab('tickets')">
+        <span class="material-icons">confirmation_number</span> My Tickets
+      </button>
+      <button class="help-tab" [class.active]="tab==='new'" (click)="setTab('new')">
+        <span class="material-icons">add_circle</span> New Ticket
+      </button>
+    </div>
+
+    <!-- ── FAQ ── -->
+    @if (tab === 'faq') {
+      <div class="faq-search">
+        <span class="material-icons">search</span>
+        <input type="text" [(ngModel)]="faqSearch" placeholder="Search FAQ..." />
+      </div>
+
+      @if (loadingFaq) {
+        <div class="skeleton" style="height:60px;border-radius:12px;margin-bottom:10px" *ngFor="let s of [1,2,3,4]"></div>
+      }
+
+      @if (!loadingFaq && filteredFaqs.length > 0) {
+        @for (cat of faqCategories; track cat) {
+          <div class="faq-category-block">
+            <h3 class="faq-cat-title">{{ cat }}</h3>
+            @for (f of faqsInCategory(cat); track f.id) {
+              <div class="faq-item" [class.open]="openFaqId === f.id">
+                <button class="faq-q" (click)="toggleFaq(f.id)">
+                  <span>{{ f.question }}</span>
+                  <span class="material-icons faq-chevron">expand_more</span>
+                </button>
+                <div class="faq-a" *ngIf="openFaqId === f.id">{{ f.answer }}</div>
+              </div>
+            }
+          </div>
+        }
+      }
+
+      @if (!loadingFaq && filteredFaqs.length === 0) {
+        <div class="help-empty">
+          <span class="material-icons">search_off</span>
+          <p>No FAQ found. Try a different search or <a (click)="setTab('new')">create a ticket</a>.</p>
+        </div>
+      }
+    }
+
+    <!-- ── My Tickets ── -->
+    @if (tab === 'tickets') {
+      @if (loadingTickets) {
+        <div class="skeleton" style="height:80px;border-radius:12px;margin-bottom:10px" *ngFor="let s of [1,2,3]"></div>
+      }
+      @if (!loadingTickets && tickets.length > 0) {
+        <div class="ticket-list">
+          @for (t of tickets; track t.id) {
+            <div class="ticket-row" (click)="openThread(t.id)">
+              <div class="ticket-main">
+                <span class="ticket-id">#{{ t.id }}</span>
+                <div>
+                  <p class="ticket-subject">{{ t.subject }}</p>
+                  <span class="ticket-meta">{{ t.category }} · {{ t.messageCount }} message(s) · {{ t.updatedAt | date:'MMM d, y' }}</span>
+                </div>
+              </div>
+              <span class="ticket-status" [ngClass]="statusClass(t.status)">{{ t.status }}</span>
+            </div>
+          }
+        </div>
+      }
+      @if (!loadingTickets && tickets.length === 0) {
+        <div class="help-empty">
+          <span class="material-icons">inbox</span>
+          <p>No tickets yet. <a (click)="setTab('new')">Create your first ticket</a>.</p>
+        </div>
+      }
+    }
+
+    <!-- ── New Ticket ── -->
+    @if (tab === 'new') {
+      <div class="new-ticket card">
+        <div class="form-group">
+          <label class="form-label">Subject *</label>
+          <input type="text" class="form-control" [(ngModel)]="newTicket.subject" placeholder="Brief summary of your issue" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <select class="form-select" [(ngModel)]="newTicket.category">
+            <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message *</label>
+          <textarea class="form-control" [(ngModel)]="newTicket.message" rows="5" placeholder="Describe your issue in detail..."></textarea>
+        </div>
+        <button class="btn btn-primary btn-lg" (click)="submitTicket()" [disabled]="creating">
+          <span class="material-icons">send</span>
+          {{ creating ? 'Submitting...' : 'Submit Ticket' }}
+        </button>
+      </div>
+    }
+
+  </div>
+</div>
+
+<!-- Ticket Thread Modal -->
+<div class="modal-overlay" *ngIf="activeThread" (click)="closeThread()">
+  <div class="modal-box thread-modal" (click)="$event.stopPropagation()">
+    <div class="thread-head">
+      <div>
+        <h3>{{ activeThread.subject }}</h3>
+        <span class="thread-meta">#{{ activeThread.id }} · {{ activeThread.category }} · {{ activeThread.status }}</span>
+      </div>
+      <button class="modal-close" (click)="closeThread()"><span class="material-icons">close</span></button>
+    </div>
+
+    <div class="thread-messages">
+      @for (m of activeThread.messages; track m.id || $index) {
+        <div class="thread-msg" [class.admin]="m.isAdmin">
+          <div class="msg-bubble">
+            <p>{{ m.body }}</p>
+            <span class="msg-time">{{ m.isAdmin ? 'Support' : 'You' }} · {{ m.createdAt | date:'MMM d, h:mm a' }}</span>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="thread-reply" *ngIf="activeThread.status !== 'Closed'">
+      <input type="text" class="form-control" [(ngModel)]="replyBody" placeholder="Type a reply..." (keyup.enter)="sendReply()" />
+      <button class="btn btn-primary" (click)="sendReply()"><span class="material-icons">send</span></button>
+    </div>
+  </div>
+</div>

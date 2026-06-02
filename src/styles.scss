@@ -506,6 +506,15 @@ body {
   .card { border: 1px solid #ddd !important; box-shadow: none !important; }
 }
 
+/* OTP input */
+.otp-input {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: 12px;
+  font-family: monospace;
+}
+
 /* Google Sign-In Button */
 .btn-google {
   display: flex;

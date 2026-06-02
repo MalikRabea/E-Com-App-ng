@@ -13,6 +13,7 @@ import { credentialsInterceptor } from './core/Interceptor/credentials.intercept
 import { AboutComponent } from './about/about.component';
 import { BestSellersComponent } from './best-sellers/best-sellers.component';
 import { FavoriteComponent } from './favorite/favorite.component';
+import { HelpCenterComponent } from './help-center/help-center.component';
 import { FormsModule } from '@angular/forms';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -27,6 +28,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AboutComponent,
     BestSellersComponent,
     FavoriteComponent,
+    HelpCenterComponent,
   ],
   imports: [
     BrowserModule,
