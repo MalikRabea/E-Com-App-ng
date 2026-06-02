@@ -10,6 +10,9 @@ import { AdminReviewsComponent }    from './reviews/admin-reviews.component';
 import { AdminAnalyticsComponent }  from './analytics/analytics.component';
 import { AdminCouponsComponent }    from './coupons/admin-coupons.component';
 import { AdminReturnsComponent }    from './returns/admin-returns.component';
+import { AdminSupportComponent }    from './support/admin-support.component';
+import { AdminMarketingComponent }  from './marketing/admin-marketing.component';
+import { AdminInventoryComponent }  from './inventory/admin-inventory.component';
 
 const routes: Routes = [
   {
@@ -26,6 +29,9 @@ const routes: Routes = [
       { path: 'analytics',  component: AdminAnalyticsComponent  },
       { path: 'coupons',    component: AdminCouponsComponent    },
       { path: 'returns',    component: AdminReturnsComponent    },
+      { path: 'support',    component: AdminSupportComponent    },
+      { path: 'marketing',  component: AdminMarketingComponent  },
+      { path: 'inventory',  component: AdminInventoryComponent  },
     ],
   },
 ];

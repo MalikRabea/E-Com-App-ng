@@ -1,0 +1,74 @@
+<div class="admin-section page-enter">
+  <div class="section-top">
+    <div>
+      <h1>Email Campaigns</h1>
+      <p class="section-sub">Send targeted emails to customer segments</p>
+    </div>
+  </div>
+
+  <!-- Segments -->
+  <div class="seg-cards">
+    <div class="seg-card" [class.active]="form.segment==='All'"      (click)="form.segment='All'">
+      <span class="material-icons">groups</span>
+      <span class="seg-num">{{ segmentCount('all') }}</span>
+      <span class="seg-label">All Customers</span>
+    </div>
+    <div class="seg-card vip" [class.active]="form.segment==='VIP'"  (click)="form.segment='VIP'">
+      <span class="material-icons">workspace_premium</span>
+      <span class="seg-num">{{ segmentCount('vip') }}</span>
+      <span class="seg-label">VIP ($500+)</span>
+    </div>
+    <div class="seg-card warn" [class.active]="form.segment==='Inactive'" (click)="form.segment='Inactive'">
+      <span class="material-icons">bedtime</span>
+      <span class="seg-num">{{ segmentCount('inactive') }}</span>
+      <span class="seg-label">Inactive (60d+)</span>
+    </div>
+    <div class="seg-card new" [class.active]="form.segment==='New'"  (click)="form.segment='New'">
+      <span class="material-icons">fiber_new</span>
+      <span class="seg-num">{{ segmentCount('new') }}</span>
+      <span class="seg-label">Never Purchased</span>
+    </div>
+  </div>
+
+  <div class="campaign-grid">
+    <!-- Composer -->
+    <div class="composer card">
+      <h3 class="card-title"><span class="material-icons">edit</span> Compose Campaign</h3>
+      <div class="form-group">
+        <label class="form-label">Sending to</label>
+        <div class="seg-pill">{{ form.segment }} · {{ segmentCount(form.segment.toLowerCase()) }} recipients</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Subject *</label>
+        <input type="text" class="form-control" [(ngModel)]="form.subject" placeholder="e.g. Exclusive 20% off for you!" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message * <span style="font-weight:400;color:var(--color-text-muted)">(HTML allowed)</span></label>
+        <textarea class="form-control" [(ngModel)]="form.body" rows="8" placeholder="<h2>Hello!</h2><p>We have a special offer...</p>"></textarea>
+      </div>
+      <button class="btn btn-primary btn-lg" (click)="send()" [disabled]="sending">
+        <span class="material-icons">send</span>
+        {{ sending ? 'Sending...' : 'Send Campaign' }}
+      </button>
+    </div>
+
+    <!-- History -->
+    <div class="history card">
+      <h3 class="card-title"><span class="material-icons">history</span> Sent Campaigns</h3>
+      @if (campaigns.length > 0) {
+        <div class="camp-list">
+          @for (c of campaigns; track c.id) {
+            <div class="camp-item">
+              <div class="camp-info">
+                <p class="camp-subject">{{ c.subject }}</p>
+                <span class="camp-meta">{{ c.segment }} · {{ c.recipients }} sent · {{ c.sentAt | date:'MMM d, h:mm a' }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="no-camp">No campaigns sent yet.</p>
+      }
+    </div>
+  </div>
+</div>

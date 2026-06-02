@@ -1,0 +1,70 @@
+<div class="admin-section page-enter">
+  <div class="section-top">
+    <div>
+      <h1>Support Tickets</h1>
+      <p class="section-sub" *ngIf="!loading">{{ tickets.length }} tickets</p>
+    </div>
+    <select class="form-select" [(ngModel)]="statusFilter" (change)="load()" style="min-width:150px;padding:8px 12px;font-size:0.85rem">
+      <option value="">All Statuses</option>
+      <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+    </select>
+  </div>
+
+  @if (loading) { <div class="skeleton" style="height:200px;border-radius:16px"></div> }
+
+  @if (!loading) {
+    <div class="table-wrap">
+      <table class="data-table" *ngIf="tickets.length > 0">
+        <thead><tr><th>#</th><th>Subject</th><th>Customer</th><th>Category</th><th>Updated</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+          @for (t of tickets; track t.id) {
+            <tr>
+              <td class="td-id">#{{ t.id }}</td>
+              <td>{{ t.subject }}</td>
+              <td>{{ t.userEmail }}</td>
+              <td>{{ t.category }}</td>
+              <td class="date-cell">{{ t.updatedAt | date:'MMM d, y' }}</td>
+              <td><span class="status-chip" [ngClass]="statusClass(t.status)">{{ t.status }}</span></td>
+              <td><button class="btn btn-outline btn-sm" (click)="open(t.id)"><span class="material-icons">chat</span></button></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      <div class="empty-state" *ngIf="tickets.length === 0">
+        <span class="material-icons">support_agent</span><p>No tickets</p>
+      </div>
+    </div>
+  }
+</div>
+
+<!-- Thread Modal -->
+<div class="modal-overlay" *ngIf="thread" (click)="close()">
+  <div class="modal-box admin-modal thread-modal" (click)="$event.stopPropagation()">
+    <div class="modal-head">
+      <div>
+        <h3>{{ thread.subject }}</h3>
+        <span style="font-size:0.78rem;color:var(--color-text-muted)">#{{ thread.id }} · {{ thread.userEmail }}</span>
+      </div>
+      <button class="modal-close" (click)="close()"><span class="material-icons">close</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="status-actions">
+        <button class="btn btn-outline btn-sm" *ngFor="let s of statuses" [class.active-status]="thread.status===s" (click)="setStatus(s)">{{ s }}</button>
+      </div>
+      <div class="msg-thread">
+        @for (m of thread.messages; track m.id || $index) {
+          <div class="msg-row" [class.admin]="m.isAdmin">
+            <div class="msg-b">
+              <p>{{ m.body }}</p>
+              <span>{{ m.isAdmin ? 'Support' : thread.userEmail }} · {{ m.createdAt | date:'MMM d, h:mm a' }}</span>
+            </div>
+          </div>
+        }
+      </div>
+      <div class="reply-box">
+        <input type="text" class="form-control" [(ngModel)]="replyBody" placeholder="Type a reply..." (keyup.enter)="reply()"/>
+        <button class="btn btn-primary" (click)="reply()"><span class="material-icons">send</span></button>
+      </div>
+    </div>
+  </div>
+</div>

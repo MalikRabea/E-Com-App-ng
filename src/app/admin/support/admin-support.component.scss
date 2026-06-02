@@ -1,0 +1,16 @@
+@use '../admin-shared' as *;
+
+.thread-modal { max-width: 560px; }
+.status-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.active-status { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
+
+.msg-thread { display: flex; flex-direction: column; gap: 10px; max-height: 340px; overflow-y: auto; margin-bottom: 14px; }
+.msg-row { display: flex; justify-content: flex-start; &.admin { justify-content: flex-end; } }
+.msg-b {
+  max-width: 75%; padding: 10px 14px; border-radius: 12px;
+  background: var(--color-bg-muted); color: var(--color-text);
+  p { margin: 0 0 4px; font-size: 0.875rem; line-height: 1.5; }
+  span { font-size: 0.68rem; color: var(--color-text-muted); }
+}
+.msg-row.admin .msg-b { background: var(--color-primary); color: #fff; span { color: rgba(255,255,255,.8); } }
+.reply-box { display: flex; gap: 8px; .form-control { flex: 1; } }

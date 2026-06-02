@@ -1,0 +1,14 @@
+@use '../admin-shared' as *;
+
+.section-card { margin-bottom: 24px; }
+.alert-card { border-left: 4px solid #f59e0b; }
+.alert-count { font-size: 0.85rem; font-weight: 600; color: #b45309; background: #fef3c7; padding: 0.25rem 0.75rem; border-radius: 1rem; }
+
+.stock-chip {
+  display: inline-flex; align-items: center; padding: 0.25rem 0.6rem; border-radius: 1rem; font-size: 0.78rem; font-weight: 600;
+  &.stock-out { background: #fee2e2; color: #991b1b; }
+  &.stock-low { background: #fef3c7; color: #92400e; }
+}
+
+.change { font-weight: 800; &.up { color: var(--color-success); } &.down { color: var(--color-danger); } }
+.by-cell { font-size: 0.8rem; color: var(--color-text-muted); }

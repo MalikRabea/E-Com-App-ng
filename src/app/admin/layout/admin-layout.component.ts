@@ -19,6 +19,9 @@ export class AdminLayoutComponent {
     { label: 'Users',      icon: 'people',           route: '/admin/users'       },
     { label: 'Reviews',    icon: 'rate_review',      route: '/admin/reviews'     },
     { label: 'Returns',    icon: 'assignment_return', route: '/admin/returns'     },
+    { label: 'Support',    icon: 'support_agent',     route: '/admin/support'     },
+    { label: 'Marketing',  icon: 'campaign',          route: '/admin/marketing'   },
+    { label: 'Inventory',  icon: 'inventory',         route: '/admin/inventory'   },
   ];
 
   constructor(private router: Router) {}

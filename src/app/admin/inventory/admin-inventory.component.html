@@ -1,0 +1,85 @@
+<div class="admin-section page-enter">
+  <div class="section-top">
+    <div>
+      <h1>Inventory</h1>
+      <p class="section-sub">Stock movements & reorder alerts</p>
+    </div>
+  </div>
+
+  @if (loading) { <div class="skeleton" style="height:200px;border-radius:16px"></div> }
+
+  @if (!loading) {
+    <!-- Reorder Alerts -->
+    <div class="section-card alert-card" *ngIf="alerts.length > 0">
+      <div class="section-card-header">
+        <h2><span class="material-icons" style="color:#f59e0b">warning</span> Reorder Alerts</h2>
+        <span class="alert-count">{{ alerts.length }} product(s) low</span>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Product</th><th>Current Stock</th><th>Sold</th><th>Action</th></tr></thead>
+          <tbody>
+            @for (a of alerts; track a.id) {
+              <tr>
+                <td><strong>{{ a.name }}</strong></td>
+                <td>
+                  <span class="stock-chip" [ngClass]="a.stockQuantity === 0 ? 'stock-out' : 'stock-low'">
+                    {{ a.stockQuantity === 0 ? 'Out of stock' : a.stockQuantity + ' left' }}
+                  </span>
+                </td>
+                <td>{{ a.soldCount }}</td>
+                <td><button class="btn btn-primary btn-sm" (click)="openRestock(a)"><span class="material-icons">add</span> Restock</button></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Movements -->
+    <div class="section-card">
+      <div class="section-card-header">
+        <h2><span class="material-icons">swap_vert</span> Recent Stock Movements</h2>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" *ngIf="movements.length > 0">
+          <thead><tr><th>Product</th><th>Change</th><th>New Stock</th><th>Reason</th><th>By</th><th>When</th></tr></thead>
+          <tbody>
+            @for (m of movements; track m.id) {
+              <tr>
+                <td>{{ m.productName }}</td>
+                <td><span class="change" [class.up]="m.change > 0" [class.down]="m.change < 0">{{ m.change > 0 ? '+' : '' }}{{ m.change }}</span></td>
+                <td>{{ m.newStock }}</td>
+                <td>{{ m.reason }}</td>
+                <td class="by-cell">{{ m.performedBy || '—' }}</td>
+                <td class="date-cell">{{ m.createdAt | date:'MMM d, h:mm a' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        <div class="empty-state" *ngIf="movements.length === 0">
+          <span class="material-icons">inventory</span><p>No stock movements yet</p>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<!-- Restock Modal -->
+<div class="modal-overlay" *ngIf="restockProduct" (click)="closeRestock()">
+  <div class="modal-box confirm-modal" (click)="$event.stopPropagation()">
+    <span class="material-icons confirm-icon" style="color:var(--color-primary)">add_box</span>
+    <h3>Restock {{ restockProduct.name }}</h3>
+    <p>Current stock: <strong>{{ restockProduct.stockQuantity }}</strong></p>
+    <div class="form-group" style="margin:16px 0">
+      <label class="form-label">Add quantity</label>
+      <input type="number" class="form-control" [(ngModel)]="restockAmount" min="1" />
+    </div>
+    <div class="confirm-actions">
+      <button class="btn btn-ghost" (click)="closeRestock()">Cancel</button>
+      <button class="btn btn-primary" (click)="confirmRestock()" [disabled]="restocking || restockAmount < 1">
+        <span class="material-icons">check</span> Confirm Restock
+      </button>
+    </div>
+  </div>
+</div>
