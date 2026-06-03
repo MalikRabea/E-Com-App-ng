@@ -72,8 +72,10 @@ export class NavBarComponent implements OnInit {
           next: (res) => (this.isAdmin = res.isAdmin),
           error: () => (this.isAdmin = false),
         });
+        this.notifService.startPolling();
       } else {
         this.isAdmin = false;
+        this.notifService.stopPolling();
       }
     });
 
@@ -94,7 +96,10 @@ export class NavBarComponent implements OnInit {
     document.documentElement.lang = this.currentLang;
   }
 
-  toggleNotif() { this.notifOpen = !this.notifOpen; }
+  toggleNotif() {
+    this.notifOpen = !this.notifOpen;
+    if (this.notifOpen) this.notifService.refresh();
+  }
   closeNotif()  { this.notifOpen = false; }
 
   onNotifClick(n: INotification) {

@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, map } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface INotification {
   id: string;
-  type: 'order' | 'promo' | 'info' | 'success' | 'warning';
+  type: 'order' | 'promo' | 'info' | 'success' | 'warning' | 'support';
   icon: string;
   title: string;
   message: string;
@@ -14,61 +16,66 @@ export interface INotification {
 
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
-  private readonly KEY = 'app_notifications';
-  private subject = new BehaviorSubject<INotification[]>(this.load());
+  private base = environment.baseURL + 'Notifications';
+  private subject = new BehaviorSubject<INotification[]>([]);
+  private pollTimer: any;
+  private isAuthed = false;
 
   notifications$ = this.subject.asObservable();
   unreadCount$   = this.notifications$.pipe(map(n => n.filter(x => !x.read).length));
 
-  add(n: Omit<INotification, 'id' | 'time' | 'read'>) {
-    const item: INotification = {
-      ...n,
-      id:   Date.now().toString(),
-      time: new Date().toISOString(),
-      read: false,
-    };
-    const updated = [item, ...this.subject.value].slice(0, 30);
-    this.save(updated);
+  constructor(private http: HttpClient) {}
+
+  /** Called by navbar once the user is known to be logged in */
+  startPolling() {
+    if (this.isAuthed) return;
+    this.isAuthed = true;
+    this.refresh();
+    this.pollTimer = setInterval(() => this.refresh(), 45000); // every 45s
+  }
+
+  stopPolling() {
+    this.isAuthed = false;
+    clearInterval(this.pollTimer);
+    this.subject.next([]);
+  }
+
+  refresh() {
+    this.http.get<any[]>(this.base, { withCredentials: true }).subscribe({
+      next: (data) => {
+        const mapped: INotification[] = data.map(n => ({
+          id:      n.id.toString(),
+          type:    n.type,
+          icon:    n.icon,
+          title:   n.title,
+          message: n.message,
+          time:    n.createdAt,
+          read:    n.isRead,
+          link:    n.link,
+        }));
+        this.subject.next(mapped);
+      },
+      error: () => { /* not logged in or offline — keep current */ }
+    });
   }
 
   markRead(id: string) {
-    const updated = this.subject.value.map(n => n.id === id ? { ...n, read: true } : n);
-    this.save(updated);
+    this.subject.next(this.subject.value.map(n => n.id === id ? { ...n, read: true } : n));
+    this.http.patch(`${this.base}/${id}/read`, {}, { withCredentials: true }).subscribe({ error: () => {} });
   }
 
   markAllRead() {
-    const updated = this.subject.value.map(n => ({ ...n, read: true }));
-    this.save(updated);
+    this.subject.next(this.subject.value.map(n => ({ ...n, read: true })));
+    this.http.patch(`${this.base}/read-all`, {}, { withCredentials: true }).subscribe({ error: () => {} });
+  }
+
+  /** Optional local-only toast-style notification (kept for backward compat) */
+  add(_n: Omit<INotification, 'id' | 'time' | 'read'>) {
+    // Server-driven now — refresh to pull the freshly created server notification
+    this.refresh();
   }
 
   clear() {
-    this.save([]);
-  }
-
-  private load(): INotification[] {
-    try {
-      const raw = localStorage.getItem(this.KEY);
-      return raw ? JSON.parse(raw) : this.defaults();
-    } catch {
-      return this.defaults();
-    }
-  }
-
-  private save(n: INotification[]) {
-    localStorage.setItem(this.KEY, JSON.stringify(n));
-    this.subject.next(n);
-  }
-
-  private defaults(): INotification[] {
-    return [{
-      id:      'welcome',
-      type:    'info',
-      icon:    'waving_hand',
-      title:   'Welcome to E-Shop!',
-      message: 'Discover our latest products and exclusive deals.',
-      time:    new Date().toISOString(),
-      read:    false,
-      link:    '/shop',
-    }];
+    this.markAllRead();
   }
 }
