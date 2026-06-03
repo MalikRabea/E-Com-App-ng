@@ -26,11 +26,11 @@
     <div style="display:flex;gap:8px">
       <button class="btn btn-ghost btn-sm" (click)="printInvoice()">
         <span class="material-icons">print</span>
-        Print Invoice
+        {{ 'orders.printInvoice' | translate }}
       </button>
       <a routerLink="/orders" class="btn btn-outline">
         <span class="material-icons">arrow_back</span>
-        All Orders
+        {{ 'orders.title' | translate }}
       </a>
     </div>
   </div>
@@ -112,24 +112,24 @@
     <div class="order-summary-card card">
       <h2 class="card-heading">
         <span class="material-icons">summarize</span>
-        Order Summary
+        {{ 'checkout.orderSummary' | translate }}
       </h2>
 
       <div class="summary-rows">
         <div class="summary-row">
-          <span>Subtotal</span>
+          <span>{{ 'checkout.subtotal' | translate }}</span>
           <span>{{ order.subTotal | currency }}</span>
         </div>
         <div class="summary-row">
-          <span>Shipping</span>
+          <span>{{ 'checkout.shipping' | translate }}</span>
           <span>{{ (order.total - order.subTotal) | currency }}</span>
         </div>
         <div class="summary-row summary-total">
-          <span>Total</span>
+          <span>{{ 'orders.total' | translate }}</span>
           <span>{{ order.total | currency }}</span>
         </div>
         <div class="summary-row">
-          <span>Status</span>
+          <span>{{ 'orders.status' | translate }}</span>
           <span class="status-badge" [ngClass]="{
             'status-pending':  order.status === 'Pending',
             'status-failed':   order.status === 'PaymentFaild',
@@ -158,7 +158,7 @@
         *ngIf="order.status === 'PaymentReceived'"
       >
         <span class="material-icons">assignment_return</span>
-        Request Return / Refund
+        {{ 'orders.requestReturn' | translate }}
       </button>
     </div>
 
