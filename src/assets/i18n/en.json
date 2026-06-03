@@ -135,6 +135,52 @@
     "redeem": "Redeem Points",
     "history": "Points History"
   },
+  "favorite": {
+    "title": "My Wishlist",
+    "savedItems": "saved items",
+    "inStock": "in stock",
+    "share": "Share",
+    "continueShopping": "Continue Shopping",
+    "totalValue": "Total Value",
+    "youSave": "You Save",
+    "addAll": "Add All to Cart",
+    "moveToCart": "Move to Cart",
+    "notifyMe": "Notify Me",
+    "empty": "Your wishlist is empty",
+    "emptyDesc": "Save products you love — click the heart icon on any product",
+    "browse": "Browse Products",
+    "outOfStock": "Out of Stock",
+    "onSale": "On Sale",
+    "newest": "Newest"
+  },
+  "help": {
+    "title": "How can we help you?",
+    "subtitle": "Find answers, manage your tickets, or reach out to our team",
+    "faq": "FAQ",
+    "myTickets": "My Tickets",
+    "newTicket": "New Ticket",
+    "searchFaq": "Search FAQ...",
+    "subject": "Subject",
+    "category": "Category",
+    "message": "Message",
+    "submitTicket": "Submit Ticket",
+    "noTickets": "No tickets yet.",
+    "reply": "Type a reply..."
+  },
+  "checkout": {
+    "address": "Address",
+    "delivery": "Delivery",
+    "payment": "Payment",
+    "placeOrder": "Place Order",
+    "orderSummary": "Order Summary",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "nameOnCard": "Name on Card",
+    "cardNumber": "Card Number",
+    "expiry": "Expiry Date",
+    "payNow": "Pay Now",
+    "processing": "Processing..."
+  },
   "common": {
     "loading": "Loading...",
     "save": "Save",
@@ -145,6 +191,13 @@
     "apply": "Apply",
     "submit": "Submit",
     "back": "Back",
-    "next": "Next"
+    "next": "Next",
+    "viewDetails": "View Details",
+    "addToCart": "Add to Cart",
+    "remove": "Remove",
+    "quantity": "Quantity",
+    "price": "Price",
+    "product": "Product",
+    "search": "Search"
   }
 }

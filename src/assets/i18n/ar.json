@@ -135,6 +135,52 @@
     "redeem": "استبدال النقاط",
     "history": "سجل النقاط"
   },
+  "favorite": {
+    "title": "قائمة المفضلة",
+    "savedItems": "منتج محفوظ",
+    "inStock": "متوفر",
+    "share": "مشاركة",
+    "continueShopping": "مواصلة التسوّق",
+    "totalValue": "القيمة الإجمالية",
+    "youSave": "توفّر",
+    "addAll": "أضف الكل للسلة",
+    "moveToCart": "نقل للسلة",
+    "notifyMe": "أعلمني",
+    "empty": "قائمة المفضلة فارغة",
+    "emptyDesc": "احفظ المنتجات اللي بتحبها — اضغط أيقونة القلب على أي منتج",
+    "browse": "تصفّح المنتجات",
+    "outOfStock": "نفذ من المخزون",
+    "onSale": "عليه خصم",
+    "newest": "الأحدث"
+  },
+  "help": {
+    "title": "كيف يمكننا مساعدتك؟",
+    "subtitle": "ابحث عن إجابات، أدر تذاكرك، أو تواصل مع فريقنا",
+    "faq": "الأسئلة الشائعة",
+    "myTickets": "تذاكري",
+    "newTicket": "تذكرة جديدة",
+    "searchFaq": "ابحث في الأسئلة...",
+    "subject": "الموضوع",
+    "category": "الفئة",
+    "message": "الرسالة",
+    "submitTicket": "إرسال التذكرة",
+    "noTickets": "لا توجد تذاكر بعد.",
+    "reply": "اكتب رداً..."
+  },
+  "checkout": {
+    "address": "العنوان",
+    "delivery": "التوصيل",
+    "payment": "الدفع",
+    "placeOrder": "تأكيد الطلب",
+    "orderSummary": "ملخص الطلب",
+    "subtotal": "المجموع الفرعي",
+    "shipping": "الشحن",
+    "nameOnCard": "الاسم على البطاقة",
+    "cardNumber": "رقم البطاقة",
+    "expiry": "تاريخ الانتهاء",
+    "payNow": "ادفع الآن",
+    "processing": "جاري المعالجة..."
+  },
   "common": {
     "loading": "جاري التحميل...",
     "save": "حفظ",
@@ -145,6 +191,13 @@
     "apply": "تطبيق",
     "submit": "إرسال",
     "back": "رجوع",
-    "next": "التالي"
+    "next": "التالي",
+    "viewDetails": "عرض التفاصيل",
+    "addToCart": "أضف للسلة",
+    "remove": "إزالة",
+    "quantity": "الكمية",
+    "price": "السعر",
+    "product": "المنتج",
+    "search": "بحث"
   }
 }

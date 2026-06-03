@@ -54,9 +54,9 @@ export class ShopComponent implements OnInit {
   }
 
   SortingOption = [
-    { name: 'Default',       value: 'Name'     },
-    { name: 'Price: Low → High', value: 'PriceAce' },
-    { name: 'Price: High → Low', value: 'PriceDce' },
+    { name: 'shop.sortDefault',  value: 'Name'     },
+    { name: 'shop.sortLowHigh',  value: 'PriceAce' },
+    { name: 'shop.sortHighLow',  value: 'PriceDce' },
   ];
 
   constructor(

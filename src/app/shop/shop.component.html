@@ -4,9 +4,9 @@
     <!-- Page Header -->
     <div class="shop-header">
       <div>
-        <h1 class="shop-title">Our Products</h1>
+        <h1 class="shop-title">{{ 'shop.title' | translate }}</h1>
         <p class="shop-subtitle" *ngIf="!loading">
-          Showing <strong>{{ product.length }}</strong> of <strong>{{ TotatlCount }}</strong> results
+          {{ 'shop.showing' | translate }} <strong>{{ product.length }}</strong> {{ 'shop.of' | translate }} <strong>{{ TotatlCount }}</strong> {{ 'shop.results' | translate }}
         </p>
       </div>
 
@@ -17,7 +17,7 @@
           <input
             #search
             type="text"
-            placeholder="Search products..."
+            [placeholder]="'shop.searchPlaceholder' | translate"
             (keyup.enter)="OnSearch(search.value)"
             (input)="onSearchInput(search.value)"
             [value]="ProductParam.search"
@@ -52,7 +52,7 @@
 
         <select #SortSelected class="form-select sort-select" (change)="SortingByPrice($event)">
           @for (item of SortingOption; track $index) {
-            <option [value]="item.value">{{ item.name }}</option>
+            <option [value]="item.value">{{ item.name | translate }}</option>
           }
         </select>
       </div>
@@ -65,7 +65,7 @@
         <div class="sidebar-card">
           <h3 class="sidebar-title">
             <span class="material-icons">category</span>
-            Categories
+            {{ 'shop.categories' | translate }}
           </h3>
           <ul class="category-list">
             <li
@@ -74,7 +74,7 @@
               (click)="SelectedId(0)"
             >
               <span class="material-icons cat-icon">apps</span>
-              All Products
+              {{ 'shop.allProducts' | translate }}
               <span class="cat-badge" *ngIf="ProductParam.CategoryId === 0">✓</span>
             </li>
             @for (item of Cateogry; track $index) {
@@ -95,7 +95,7 @@
         <div class="sidebar-card sidebar-filter-card">
           <h3 class="sidebar-title">
             <span class="material-icons">attach_money</span>
-            Price Range
+            {{ 'shop.priceRange' | translate }}
           </h3>
           <div class="price-display">
             <span>${{ priceMin }}</span>
@@ -145,19 +145,19 @@
         <div class="sidebar-card sidebar-filter-card">
           <h3 class="sidebar-title">
             <span class="material-icons">tune</span>
-            Filters
+            {{ 'shop.filters' | translate }}
           </h3>
           <label class="filter-toggle">
             <input type="checkbox" [(ngModel)]="inStockOnly" (change)="applyLocalFilters()"/>
-            <span class="toggle-label">In Stock Only</span>
+            <span class="toggle-label">{{ 'shop.inStockOnly' | translate }}</span>
           </label>
           <label class="filter-toggle">
             <input type="checkbox" [(ngModel)]="onSaleOnly"/>
-            <span class="toggle-label">On Sale Only</span>
+            <span class="toggle-label">{{ 'favorite.onSale' | translate }}</span>
           </label>
           <button class="btn btn-ghost btn-sm reset-filters-btn" (click)="resetPriceFilter()" *ngIf="priceFilterActive">
             <span class="material-icons">restart_alt</span>
-            Reset Filters
+            {{ 'shop.resetFilters' | translate }}
           </button>
         </div>
       </aside>
@@ -211,9 +211,9 @@
           @if (displayProducts.length === 0) {
             <div class="empty-state">
               <span class="material-icons empty-icon">search_off</span>
-              <h3>No products found</h3>
+              <h3>{{ 'shop.noProducts' | translate }}</h3>
               <p>Try different keywords or browse all categories.</p>
-              <button class="btn btn-primary" (click)="ResetValue()">Browse All</button>
+              <button class="btn btn-primary" (click)="ResetValue()">{{ 'shop.allProducts' | translate }}</button>
             </div>
           }
 

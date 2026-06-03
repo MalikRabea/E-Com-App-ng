@@ -3,10 +3,10 @@
 
     <!-- Header -->
     <div class="basket-header">
-      <h1 class="basket-title">Shopping Cart</h1>
+      <h1 class="basket-title">{{ 'basket.title' | translate }}</h1>
       <a routerLink="/shop" class="btn btn-ghost btn-sm">
         <span class="material-icons">arrow_back</span>
-        Continue Shopping
+        {{ 'basket.continueShopping' | translate }}
       </a>
     </div>
 
@@ -14,11 +14,11 @@
     @if (!basket.id || basket.basketItems?.length === 0) {
       <div class="basket-empty">
         <span class="material-icons empty-icon">shopping_bag</span>
-        <h2>Your cart is empty</h2>
-        <p>Looks like you haven't added anything to your cart yet.</p>
+        <h2>{{ 'basket.empty' | translate }}</h2>
+        <p>{{ 'basket.emptyDesc' | translate }}</p>
         <a routerLink="/shop" class="btn btn-primary btn-lg">
           <span class="material-icons">storefront</span>
-          Start Shopping
+          {{ 'basket.startShopping' | translate }}
         </a>
       </div>
     }
@@ -30,10 +30,10 @@
         <!-- Items -->
         <div class="basket-items">
           <div class="items-header">
-            <span>Product</span>
-            <span>Price</span>
-            <span>Quantity</span>
-            <span>Total</span>
+            <span>{{ 'common.product' | translate }}</span>
+            <span>{{ 'common.price' | translate }}</span>
+            <span>{{ 'common.quantity' | translate }}</span>
+            <span>{{ 'orders.total' | translate }}</span>
             <span></span>
           </div>
 
@@ -102,7 +102,7 @@
           <div class="coupon-box">
             <h4 class="coupon-title">
               <span class="material-icons">local_offer</span>
-              Coupon Code
+              {{ 'basket.couponCode' | translate }}
             </h4>
             @if (!appliedCoupon) {
               <div class="coupon-input-row">
@@ -114,7 +114,7 @@
                   (keyup.enter)="applyCoupon()"
                 />
                 <button class="btn btn-outline btn-sm" (click)="applyCoupon()" [disabled]="couponLoading">
-                  @if (couponLoading) { <span>...</span> } @else { Apply }
+                  @if (couponLoading) { <span>...</span> } @else { {{ 'common.apply' | translate }} }
                 </button>
               </div>
             }
@@ -133,7 +133,7 @@
           <div class="shipping-estimate-box">
             <h4 class="coupon-title">
               <span class="material-icons">local_shipping</span>
-              Estimate Shipping
+              {{ 'basket.estimateShipping' | translate }}
             </h4>
             <select class="coupon-input" [(ngModel)]="shippingRegion" (change)="calcShipping()">
               <option value="">Select region...</option>
@@ -153,7 +153,7 @@
           <app-order-total></app-order-total>
           <a routerLink="/checkout" class="btn btn-primary btn-full btn-lg checkout-btn">
             <span class="material-icons">lock</span>
-            Secure Checkout
+            {{ 'basket.checkout' | translate }}
           </a>
           <p class="secure-note">
             <span class="material-icons" style="font-size:14px">verified_user</span>

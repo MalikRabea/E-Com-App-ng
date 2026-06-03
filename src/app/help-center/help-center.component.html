@@ -4,20 +4,20 @@
     <!-- Hero -->
     <div class="help-hero">
       <span class="material-icons help-hero-icon">support_agent</span>
-      <h1>How can we help you?</h1>
-      <p>Find answers, manage your tickets, or reach out to our team</p>
+      <h1>{{ 'help.title' | translate }}</h1>
+      <p>{{ 'help.subtitle' | translate }}</p>
     </div>
 
     <!-- Tabs -->
     <div class="help-tabs">
       <button class="help-tab" [class.active]="tab==='faq'" (click)="setTab('faq')">
-        <span class="material-icons">quiz</span> FAQ
+        <span class="material-icons">quiz</span> {{ 'help.faq' | translate }}
       </button>
       <button class="help-tab" [class.active]="tab==='tickets'" (click)="setTab('tickets')">
-        <span class="material-icons">confirmation_number</span> My Tickets
+        <span class="material-icons">confirmation_number</span> {{ 'help.myTickets' | translate }}
       </button>
       <button class="help-tab" [class.active]="tab==='new'" (click)="setTab('new')">
-        <span class="material-icons">add_circle</span> New Ticket
+        <span class="material-icons">add_circle</span> {{ 'help.newTicket' | translate }}
       </button>
     </div>
 

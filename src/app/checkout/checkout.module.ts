@@ -18,6 +18,7 @@ import { SuccessComponent } from './success/success.component';
 import { CoreService } from '../core/core.service';
 import { RatingComponent } from '../rating/rating.component';
 import { RatingModule } from '../rating/rating.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -40,10 +41,8 @@ import { RatingModule } from '../rating/rating.module';
     FormsModule,
     ReactiveFormsModule,
     MatRadioModule,
-    RatingModule
-    
-    
-    
+    RatingModule,
+    TranslateModule
   ],
   exports:[
     StepperComponent,

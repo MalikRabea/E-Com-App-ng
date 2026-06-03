@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { BasketRoutingModule } from './basket-routing.module';
 import { BasketComponent } from './basket/basket.component';
 import { SharedModule } from '../shared/shared.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     FormsModule,
     BasketRoutingModule,
-    SharedModule
+    SharedModule,
+    TranslateModule
   ]
 })
 export class BasketModule { }

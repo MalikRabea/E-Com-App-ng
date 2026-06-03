@@ -14,6 +14,7 @@ import { LoyaltyComponent } from './loyalty/loyalty.component';
 import { GiftCardsComponent } from './gift-cards/gift-cards.component';
 import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
 import { ReferralComponent } from './referral/referral.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,6 @@ import { ReferralComponent } from './referral/referral.component';
     LogoutComponent, ChangePasswordComponent, ProfileComponent, AddressBookComponent,
     LoyaltyComponent, GiftCardsComponent, SubscriptionsComponent, ReferralComponent,
   ],
-  imports: [CommonModule, IdentityRoutingModule, ReactiveFormsModule, FormsModule]
+  imports: [CommonModule, IdentityRoutingModule, ReactiveFormsModule, FormsModule, TranslateModule]
 })
 export class IdentityModule { }

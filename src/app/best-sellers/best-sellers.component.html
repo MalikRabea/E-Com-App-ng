@@ -4,16 +4,16 @@
     <!-- Page Header -->
     <div class="bs-page-header">
       <div>
-        <p class="bs-eyebrow">Top Picks</p>
+        <p class="bs-eyebrow">{{ 'home.topPicks' | translate }}</p>
         <h1 class="bs-title">
           <span class="material-icons">trending_up</span>
-          Best Sellers
+          {{ 'nav.bestSellers' | translate }}
         </h1>
         <p class="bs-subtitle">Our most loved products, chosen by thousands of happy customers</p>
       </div>
       <a routerLink="/shop" class="btn btn-outline">
         <span class="material-icons">storefront</span>
-        View All Products
+        {{ 'home.viewAll' | translate }}
       </a>
     </div>
 
@@ -66,7 +66,7 @@
               <span class="price-old" *ngIf="product.oldPrice > product.newPrice">{{ product.oldPrice | currency }}</span>
             </div>
             <button class="btn btn-primary podium-cart" (click)="addToBasket(product)">
-              <span class="material-icons">shopping_cart</span> Add to Cart
+              <span class="material-icons">shopping_cart</span> {{ 'common.addToCart' | translate }}
             </button>
           </div>
         </div>
@@ -74,7 +74,7 @@
 
       <!-- ── Ranked Grid ── -->
       <h2 class="bs-section-heading" *ngIf="activeCategory === 'All' && rest.length > 0">
-        <span class="material-icons">format_list_numbered</span> More Top Sellers
+        <span class="material-icons">format_list_numbered</span> {{ 'home.moreTopSellers' | translate }}
       </h2>
 
       <div class="bs-grid">
@@ -140,7 +140,7 @@
             </div>
 
             <button class="btn btn-primary bs-cart-btn" (click)="addToBasket(product)">
-              <span class="material-icons">shopping_cart</span> Add to Cart
+              <span class="material-icons">shopping_cart</span> {{ 'common.addToCart' | translate }}
             </button>
           </div>
 
@@ -185,7 +185,7 @@
         <p class="qv-desc">{{ quickViewProduct.description }}</p>
         <div class="qv-actions">
           <button class="btn btn-primary btn-full" (click)="addToBasket(quickViewProduct); closeQuickView()">
-            <span class="material-icons">shopping_cart</span> Add to Cart
+            <span class="material-icons">shopping_cart</span> {{ 'common.addToCart' | translate }}
           </button>
           <a [routerLink]="'/shop/product-details/' + quickViewProduct.id" class="btn btn-outline btn-full" (click)="closeQuickView()">
             View Full Details

@@ -7,10 +7,7 @@ import { ProductDetailsComponent } from './product-details/product-details.compo
 import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { ShopRoutingModule } from './shop-routing.module';
 import { FormsModule } from '@angular/forms';
-
-
-
-
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -23,7 +20,8 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     SharedModule,
     NgxImageZoomModule,
-    FormsModule
+    FormsModule,
+    TranslateModule
   ],
   exports:[
    

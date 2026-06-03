@@ -6,18 +6,18 @@
     <div>
       <h1 class="section-title">
         <span class="material-icons">favorite</span>
-        My Wishlist
+        {{ 'favorite.title' | translate }}
       </h1>
       <p class="section-sub" *ngIf="favorites.length > 0">
-        {{ favorites.length }} saved item{{ favorites.length > 1 ? 's' : '' }} · {{ inStockCount }} in stock
+        {{ favorites.length }} {{ 'favorite.savedItems' | translate }} · {{ inStockCount }} {{ 'favorite.inStock' | translate }}
       </p>
     </div>
     <div class="header-actions">
       <button class="btn btn-outline btn-sm" *ngIf="favorites.length > 0" (click)="shareWishlist()">
-        <span class="material-icons">share</span> Share
+        <span class="material-icons">share</span> {{ 'favorite.share' | translate }}
       </button>
       <a routerLink="/shop" class="btn btn-outline btn-sm">
-        <span class="material-icons">storefront</span> Continue Shopping
+        <span class="material-icons">storefront</span> {{ 'favorite.continueShopping' | translate }}
       </a>
     </div>
   </div>
@@ -26,11 +26,11 @@
   <div class="wishlist-toolbar" *ngIf="!loading && favorites.length > 0">
     <div class="summary-stats">
       <div class="stat">
-        <span class="stat-label">Total Value</span>
+        <span class="stat-label">{{ 'favorite.totalValue' | translate }}</span>
         <span class="stat-value">{{ totalValue | currency }}</span>
       </div>
       <div class="stat" *ngIf="totalSavings > 0">
-        <span class="stat-label">You Save</span>
+        <span class="stat-label">{{ 'favorite.youSave' | translate }}</span>
         <span class="stat-value savings">{{ totalSavings | currency }}</span>
       </div>
     </div>
@@ -39,24 +39,24 @@
       <!-- Filters -->
       <label class="chip-toggle" [class.active]="inStockOnly">
         <input type="checkbox" [(ngModel)]="inStockOnly" hidden />
-        <span class="material-icons">inventory_2</span> In Stock
+        <span class="material-icons">inventory_2</span> {{ 'favorite.inStock' | translate }}
       </label>
       <label class="chip-toggle" [class.active]="onSaleOnly">
         <input type="checkbox" [(ngModel)]="onSaleOnly" hidden />
-        <span class="material-icons">sell</span> On Sale
+        <span class="material-icons">sell</span> {{ 'favorite.onSale' | translate }}
       </label>
 
       <!-- Sort -->
       <select class="sort-select" [ngModel]="sortKey" (ngModelChange)="setSort($event)">
-        <option value="newest">Newest</option>
-        <option value="priceLow">Price: Low → High</option>
-        <option value="priceHigh">Price: High → Low</option>
-        <option value="discount">Biggest Discount</option>
+        <option value="newest">{{ 'favorite.newest' | translate }}</option>
+        <option value="priceLow">{{ 'shop.sortLowHigh' | translate }}</option>
+        <option value="priceHigh">{{ 'shop.sortHighLow' | translate }}</option>
+        <option value="discount">{{ 'favorite.onSale' | translate }}</option>
       </select>
 
       <!-- Add all -->
       <button class="btn btn-primary btn-sm add-all-btn" (click)="addAllToCart()">
-        <span class="material-icons">add_shopping_cart</span> Add All to Cart
+        <span class="material-icons">add_shopping_cart</span> {{ 'favorite.addAll' | translate }}
       </button>
     </div>
   </div>
@@ -64,11 +64,11 @@
   <!-- Empty State -->
   <div class="empty-state" *ngIf="!loading && favorites.length === 0">
     <span class="material-icons empty-icon">favorite_border</span>
-    <h2>Your wishlist is empty</h2>
-    <p>Save products you love — click the heart icon on any product</p>
+    <h2>{{ 'favorite.empty' | translate }}</h2>
+    <p>{{ 'favorite.emptyDesc' | translate }}</p>
     <a routerLink="/shop" class="btn btn-primary">
       <span class="material-icons">storefront</span>
-      Browse Products
+      {{ 'favorite.browse' | translate }}
     </a>
   </div>
 
@@ -113,7 +113,7 @@
         </div>
 
         <div class="out-overlay" *ngIf="isOutOfStock(product)">
-          <span>Out of Stock</span>
+          <span>{{ 'favorite.outOfStock' | translate }}</span>
         </div>
 
         <div class="fav-remove" (click)="removeFavorite(product.id); $event.stopPropagation()" title="Remove">
@@ -141,7 +141,7 @@
         <div class="fav-actions" *ngIf="!isOutOfStock(product)">
           <button class="btn btn-primary" style="flex:1" (click)="moveToBasket(product)">
             <span class="material-icons">shopping_cart</span>
-            Move to Cart
+            {{ 'favorite.moveToCart' | translate }}
           </button>
           <button class="btn btn-outline icon-only" (click)="openSubscribe(product)" title="Subscribe & Save 10%">
             <span class="material-icons">autorenew</span>
@@ -152,7 +152,7 @@
         <div class="fav-actions" *ngIf="isOutOfStock(product)">
           <button class="btn btn-outline" style="flex:1" (click)="notifyMe(product)">
             <span class="material-icons">notifications_active</span>
-            Notify Me
+            {{ 'favorite.notifyMe' | translate }}
           </button>
         </div>
       </div>
