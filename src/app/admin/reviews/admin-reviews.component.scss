@@ -1,24 +1,4 @@
-.section-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-
-  h1 {
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: var(--color-text);
-    margin: 0 0 4px;
-  }
-}
-
-.section-sub {
-  color: var(--color-text-muted);
-  font-size: 0.875rem;
-  margin: 0;
-}
+@use '../admin-shared' as *;
 
 .search-wrap {
   position: relative;
@@ -45,8 +25,6 @@
     &:focus { border-color: var(--color-primary); }
   }
 }
-
-.reviews-table-wrap { overflow-x: auto; }
 
 .stars-row {
   display: flex;
