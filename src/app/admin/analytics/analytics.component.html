@@ -130,6 +130,86 @@
       </div>
 
     </div>
+
+    <!-- ── Customer Lifetime Value ── -->
+    @if (ltv) {
+      <div class="ltv-kpis">
+        <div class="kpi-card">
+          <span class="material-icons">paid</span>
+          <span class="kpi-num">{{ ltv.avgLtv | currency }}</span>
+          <span class="kpi-label">Avg Lifetime Value</span>
+        </div>
+        <div class="kpi-card">
+          <span class="material-icons">repeat</span>
+          <span class="kpi-num">{{ ltv.repeatRate }}%</span>
+          <span class="kpi-label">Repeat Purchase Rate</span>
+        </div>
+        <div class="kpi-card">
+          <span class="material-icons">shopping_bag</span>
+          <span class="kpi-num">{{ ltv.avgOrders }}</span>
+          <span class="kpi-label">Avg Orders / Customer</span>
+        </div>
+        <div class="kpi-card">
+          <span class="material-icons">groups</span>
+          <span class="kpi-num">{{ ltv.totalCustomers }}</span>
+          <span class="kpi-label">Paying Customers</span>
+        </div>
+      </div>
+
+      <div class="section-card" style="margin-top:20px">
+        <div class="section-card-header">
+          <h2><span class="material-icons">emoji_events</span> Top Customers by Value</h2>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Customer</th><th>Total Spent</th><th>Orders</th><th>Avg Order</th><th>Last Order</th></tr></thead>
+            <tbody>
+              @for (c of ltv.topCustomers; track $index) {
+                <tr>
+                  <td class="email-cell">{{ c.email }}</td>
+                  <td class="amount-cell">{{ c.totalSpent | currency }}</td>
+                  <td>{{ c.orders }}</td>
+                  <td>{{ c.avgOrder | currency }}</td>
+                  <td class="date-cell">{{ c.lastOrder | date:'MMM d, y' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+    <!-- ── Cohort Retention ── -->
+    @if (cohorts.length > 0) {
+      <div class="section-card" style="margin-top:20px">
+        <div class="section-card-header">
+          <h2><span class="material-icons">grid_on</span> Cohort Retention (by first-purchase month)</h2>
+        </div>
+        <div class="cohort-wrap">
+          <table class="cohort-table">
+            <thead>
+              <tr>
+                <th>Cohort</th><th>Size</th>
+                <th>M0</th><th>M1</th><th>M2</th><th>M3</th><th>M4</th><th>M5</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of cohorts; track $index) {
+                <tr>
+                  <td class="cohort-name">{{ row.cohort }}</td>
+                  <td class="cohort-size">{{ row.size }}</td>
+                  @for (pct of row.retention; track $index) {
+                    <td class="cohort-cell" [style.background]="cohortColor(pct)" [style.color]="pct >= 20 ? '#fff' : 'var(--color-text-muted)'">
+                      {{ pct }}%
+                    </td>
+                  }
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
   }
 
 </div>

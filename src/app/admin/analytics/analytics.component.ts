@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../admin.service';
+import { CommercialService } from '../../core/Services/commercial.service';
 
 @Component({
   selector: 'app-admin-analytics',
@@ -13,6 +14,9 @@ export class AdminAnalyticsComponent implements OnInit {
   dailyOrders:   any[] = [];
   loading = true;
 
+  ltv: any = null;
+  cohorts: any[] = [];
+
   maxRevenue    = 1;
   maxTopSold    = 1;
   maxCatRev     = 1;
@@ -22,7 +26,7 @@ export class AdminAnalyticsComponent implements OnInit {
 
   readonly catColors = ['#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#f97316','#06b6d4','#84cc16'];
 
-  constructor(private svc: AdminService) {}
+  constructor(private svc: AdminService, private commercial: CommercialService) {}
 
   ngOnInit() {
     Promise.all([
@@ -42,6 +46,17 @@ export class AdminAnalyticsComponent implements OnInit {
       this.maxDayCount = Math.max(...this.dailyOrders.map(d => d.count), 1);
       this.loading = false;
     }).catch(() => { this.loading = false; });
+
+    this.commercial.customerLtv().subscribe({ next: (d) => this.ltv = d, error: () => {} });
+    this.commercial.cohorts().subscribe({ next: (c) => this.cohorts = c, error: () => {} });
+  }
+
+  cohortColor(pct: number): string {
+    if (pct >= 70) return '#059669';
+    if (pct >= 40) return '#10b981';
+    if (pct >= 20) return '#f59e0b';
+    if (pct > 0)   return '#fb923c';
+    return 'var(--color-bg-muted)';
   }
 
   barH(val: number, max: number): number { return Math.max((val / max) * 100, 2); }

@@ -1,5 +1,41 @@
 @use '../admin-shared' as *;
 
+/* Customer LTV KPIs */
+.ltv-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+  @media (max-width: 700px) { grid-template-columns: 1fr 1fr; }
+}
+.kpi-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  text-align: center;
+  .material-icons { font-size: 1.8rem; color: var(--color-primary); }
+  .kpi-num { display: block; font-size: 1.8rem; font-weight: 900; color: var(--color-text); margin: 6px 0 2px; }
+  .kpi-label { font-size: 0.75rem; color: var(--color-text-muted); font-weight: 600; }
+}
+
+/* Cohort table */
+.cohort-wrap { overflow-x: auto; padding: 16px; }
+.cohort-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 4px;
+  min-width: 560px;
+  th {
+    font-size: 0.72rem; font-weight: 700; color: var(--color-text-muted);
+    text-transform: uppercase; padding: 6px; text-align: center;
+  }
+  td { text-align: center; font-size: 0.82rem; padding: 8px; border-radius: 6px; }
+  .cohort-name { font-weight: 700; color: var(--color-text); white-space: nowrap; text-align: left; }
+  .cohort-size { color: var(--color-text-muted); font-weight: 600; }
+  .cohort-cell { font-weight: 700; min-width: 52px; }
+}
+
 .analytics-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

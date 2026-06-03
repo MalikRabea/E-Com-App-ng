@@ -70,14 +70,35 @@
 
         <!-- Price -->
         <div class="pd-price-block">
-          <span class="pd-new-price">{{ product?.newPrice | currency }}</span>
-          <div class="pd-old-block" *ngIf="product?.oldPrice > product?.newPrice">
+          <span class="pd-new-price">{{ effectiveUnitPrice | currency }}</span>
+          <div class="pd-old-block" *ngIf="effectiveUnitPrice < product?.newPrice">
+            <span class="pd-old-price">{{ product?.newPrice | currency }}</span>
+            <span class="pd-savings">Bulk price!</span>
+          </div>
+          <div class="pd-old-block" *ngIf="effectiveUnitPrice >= product?.newPrice && product?.oldPrice > product?.newPrice">
             <span class="pd-old-price">{{ product?.oldPrice | currency }}</span>
-            <span class="pd-savings">
-              Save {{ product?.oldPrice - product?.newPrice | currency }}
-            </span>
+            <span class="pd-savings">Save {{ product?.oldPrice - product?.newPrice | currency }}</span>
           </div>
         </div>
+
+        <!-- Tiered / wholesale pricing -->
+        @if (priceTiers.length > 0) {
+          <div class="tier-table">
+            <div class="tier-head">
+              <span class="material-icons">inventory</span> Buy more, save more
+            </div>
+            <div class="tier-row" [class.active]="qunatity < priceTiers[0].minQuantity">
+              <span>1 - {{ priceTiers[0].minQuantity - 1 }}</span>
+              <strong>{{ product?.newPrice | currency }} <small>/ ea</small></strong>
+            </div>
+            @for (t of priceTiers; track t.id; let i = $index) {
+              <div class="tier-row" [class.active]="qunatity >= t.minQuantity && (i === priceTiers.length-1 || qunatity < priceTiers[i+1].minQuantity)">
+                <span>{{ t.minQuantity }}+</span>
+                <strong>{{ t.unitPrice | currency }} <small>/ ea</small></strong>
+              </div>
+            }
+          </div>
+        }
 
         <div class="divider"></div>
 
@@ -237,6 +258,43 @@
           }
         </div>
       </div>
+    }
+
+    <!-- Bundle Deals -->
+    @if (bundles.length > 0) {
+      <section class="bundles-section">
+        <h2 class="rv-title">
+          <span class="material-icons">redeem</span>
+          Buy Together & Save
+        </h2>
+        @for (bundle of bundles; track bundle.id) {
+          <div class="bundle-card">
+            <div class="bundle-items">
+              @for (it of bundle.items; track it.productId; let last = $last) {
+                <a class="bundle-item" [routerLink]="['/shop/product-details', it.productId]">
+                  <img [src]="it.image || 'assets/no-image.png'" [alt]="it.name" onerror="this.src='assets/no-image.png'"/>
+                  <span class="bundle-item-name">{{ it.name }}</span>
+                  <span class="bundle-item-price">{{ it.price | currency }}</span>
+                </a>
+                @if (!last) { <span class="bundle-plus material-icons">add</span> }
+              }
+            </div>
+            <div class="bundle-summary">
+              <div class="bundle-info">
+                <span class="bundle-name">{{ bundle.name }}</span>
+                <div class="bundle-prices">
+                  <span class="bundle-original">{{ bundle.originalPrice | currency }}</span>
+                  <span class="bundle-price">{{ bundle.bundlePrice | currency }}</span>
+                  <span class="bundle-save">Save {{ bundle.savings | currency }} ({{ bundle.discountPercent }}%)</span>
+                </div>
+              </div>
+              <button class="btn btn-primary" (click)="addBundleToCart(bundle)">
+                <span class="material-icons">add_shopping_cart</span> Add Bundle
+              </button>
+            </div>
+          </div>
+        }
+      </section>
     }
 
     <!-- Frequently Bought Together -->

@@ -7,6 +7,7 @@ import { BasketService } from '../../basket/basket.service';
 import { IReview } from '../../shared/Models/review';
 import { FavoriteService } from '../../favorite/favorite.service';
 import { CommerceService } from '../../core/Services/commerce.service';
+import { CommercialService } from '../../core/Services/commercial.service';
 
 @Component({
   selector: 'app-product-details',
@@ -20,8 +21,13 @@ export class ProductDetailsComponent implements OnInit {
     private toast: ToastrService,
     private basketService: BasketService,
     private favoriteService: FavoriteService,
-    private commerce: CommerceService
+    private commerce: CommerceService,
+    private commercial: CommercialService
   ) {}
+
+  bundles: any[] = [];
+  priceTiers: any[] = [];
+  basePrice = 0;
 
   reviews: IReview[] = [];
   qunatity: number = 1;
@@ -68,6 +74,8 @@ export class ProductDetailsComponent implements OnInit {
         this.loadRelatedProducts(productId);
         this.loadVariants(productId);
         this.loadFrequentlyBought(productId);
+        this.loadBundles(productId);
+        this.loadTiers(productId);
       },
       error: (err) => {
         console.error(err);
@@ -111,6 +119,43 @@ export class ProductDetailsComponent implements OnInit {
       next: (products) => { this.frequentlyBought = products; },
       error: () => { this.frequentlyBought = []; }
     });
+  }
+
+  private loadBundles(productId: number) {
+    this.commercial.bundlesForProduct(productId).subscribe({
+      next: (b) => { this.bundles = b; },
+      error: () => { this.bundles = []; }
+    });
+  }
+
+  private loadTiers(productId: number) {
+    this.commercial.getTiers(productId).subscribe({
+      next: (res) => { this.basePrice = res.basePrice; this.priceTiers = res.tiers || []; },
+      error: () => { this.priceTiers = []; }
+    });
+  }
+
+  // Effective unit price for current quantity given the tiers
+  get effectiveUnitPrice(): number {
+    if (this.priceTiers.length === 0) return this.product.newPrice;
+    const applicable = this.priceTiers
+      .filter(t => t.minQuantity <= this.qunatity)
+      .sort((a, b) => b.minQuantity - a.minQuantity)[0];
+    return applicable ? applicable.unitPrice : this.product.newPrice;
+  }
+
+  get tierSavings(): number {
+    return (this.product.newPrice - this.effectiveUnitPrice) * this.qunatity;
+  }
+
+  addBundleToCart(bundle: any) {
+    bundle.items.forEach((it: any) => {
+      this.basketService.addItemToBasket({
+        id: it.productId, name: it.name, newPrice: it.price,
+        photos: it.image ? [{ imageName: it.image, productId: it.productId }] : [],
+      } as any, 1);
+    });
+    this.toast.success(`"${bundle.name}" added to cart — you saved ${bundle.savings}!`, 'Bundle Added');
   }
 
   get subDiscountedPrice(): number {

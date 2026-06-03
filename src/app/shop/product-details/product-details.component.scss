@@ -448,6 +448,56 @@
   color: var(--color-primary);
 }
 
+/* Tiered Pricing */
+.tier-table {
+  margin: 12px 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.tier-head {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--color-bg-muted); padding: 8px 14px;
+  font-size: 0.78rem; font-weight: 700; color: var(--color-text);
+  .material-icons { font-size: 16px; color: var(--color-primary); }
+}
+.tier-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; font-size: 0.85rem; color: var(--color-text-muted);
+  border-top: 1px solid var(--color-border);
+  strong { color: var(--color-text); font-weight: 700; small { font-weight: 400; font-size: 0.7rem; color: var(--color-text-muted); } }
+  &.active { background: rgba(16,185,129,.08); strong { color: #059669; } }
+}
+
+/* Bundle Deals */
+.bundles-section { margin-top: 2.5rem; }
+.bundle-card {
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px;
+}
+.bundle-items {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;
+}
+.bundle-item {
+  flex: 1; min-width: 110px; text-decoration: none; text-align: center;
+  display: flex; flex-direction: column; gap: 4px; padding: 10px;
+  background: var(--color-bg-muted); border-radius: var(--radius-md); transition: var(--transition);
+  &:hover { box-shadow: var(--shadow-sm); }
+  img { width: 100%; height: 80px; object-fit: contain; }
+  .bundle-item-name { font-size: 0.78rem; font-weight: 600; color: var(--color-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bundle-item-price { font-size: 0.8rem; font-weight: 700; color: var(--color-primary); }
+}
+.bundle-plus { color: var(--color-text-muted); font-size: 1.2rem; flex-shrink: 0; }
+.bundle-summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  padding-top: 16px; border-top: 1px solid var(--color-border);
+}
+.bundle-name { display: block; font-size: 0.95rem; font-weight: 700; color: var(--color-text); margin-bottom: 4px; }
+.bundle-prices { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.bundle-original { font-size: 0.85rem; color: var(--color-text-muted); text-decoration: line-through; }
+.bundle-price { font-size: 1.3rem; font-weight: 900; color: var(--color-text); }
+.bundle-save { font-size: 0.75rem; font-weight: 700; color: #059669; background: rgba(16,185,129,.12); padding: 2px 8px; border-radius: 999px; }
+
 /* Subscribe & Save */
 .subscribe-btn {
   margin-top: 12px;
