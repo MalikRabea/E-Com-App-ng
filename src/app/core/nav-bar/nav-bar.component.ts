@@ -118,7 +118,13 @@ export class NavBarComponent implements OnInit {
 
   logout() {
     this.coreService.logout().subscribe({
-      next: () => this.router.navigateByUrl('/'),
+      next: () => {
+        this.favoriteService.setFavoriteCount(0);
+        this.favoriteCount = 0;
+        this.notifService.stopPolling();
+        this.isAdmin = false;
+        this.router.navigateByUrl('/');
+      },
       error: (err) => console.error('Logout failed', err),
     });
   }
