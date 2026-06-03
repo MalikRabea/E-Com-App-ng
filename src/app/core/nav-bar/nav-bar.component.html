@@ -11,14 +11,14 @@
 
     <!-- Desktop Links -->
     <ul class="navbar-links">
-      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-link">Home</a></li>
-      <li><a routerLink="/shop" routerLinkActive="active" class="nav-link">Shop</a></li>
-      <li><a routerLink="/best-sellers" routerLinkActive="active" class="nav-link">Best Sellers</a></li>
-      <li><a routerLink="/about" routerLinkActive="active" class="nav-link">About</a></li>
+      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="nav-link">{{ 'nav.home' | translate }}</a></li>
+      <li><a routerLink="/shop" routerLinkActive="active" class="nav-link">{{ 'nav.shop' | translate }}</a></li>
+      <li><a routerLink="/best-sellers" routerLinkActive="active" class="nav-link">{{ 'nav.bestSellers' | translate }}</a></li>
+      <li><a routerLink="/about" routerLinkActive="active" class="nav-link">{{ 'nav.about' | translate }}</a></li>
       <li *ngIf="isAdmin">
         <a routerLink="/admin" routerLinkActive="active" class="nav-link admin-link">
           <span class="material-icons" style="font-size:16px;vertical-align:-3px">admin_panel_settings</span>
-          Admin
+          {{ 'nav.admin' | translate }}
         </a>
       </li>
     </ul>
@@ -30,7 +30,7 @@
         #navSearch
         type="text"
         class="search-input"
-        placeholder="Search products..."
+        [placeholder]="'nav.search' | translate"
         (focus)="searchFocused = true"
         (blur)="searchFocused = false"
         (keyup.enter)="onSearchNav(navSearch.value)"
@@ -81,10 +81,10 @@
 
         <div class="notif-dropdown" [class.open]="notifOpen">
           <div class="notif-header">
-            <span class="notif-title">Notifications</span>
+            <span class="notif-title">{{ 'nav.notifications' | translate }}</span>
             <div class="notif-header-actions">
-              <button class="notif-action-btn" (click)="notifService.markAllRead()" *ngIf="unreadCount > 0">Mark all read</button>
-              <button class="notif-action-btn notif-clear" (click)="notifService.clear()">Clear</button>
+              <button class="notif-action-btn" (click)="notifService.markAllRead()" *ngIf="unreadCount > 0">{{ 'nav.markAllRead' | translate }}</button>
+              <button class="notif-action-btn notif-clear" (click)="notifService.clear()">{{ 'nav.clear' | translate }}</button>
             </div>
           </div>
 
@@ -109,7 +109,7 @@
 
           <div class="notif-empty" *ngIf="notifications.length === 0">
             <span class="material-icons">notifications_none</span>
-            <p>No notifications</p>
+            <p>{{ 'nav.noNotifications' | translate }}</p>
           </div>
         </div>
       </div>
@@ -138,63 +138,63 @@
 
         <div class="dropdown-menu" [class.open]="visibale">
           <div class="dropdown-header" *ngIf="!userName">
-            <p>Welcome to E-Shop</p>
+            <p>{{ 'nav.welcome' | translate }}</p>
           </div>
           <div class="dropdown-header" *ngIf="userName">
-            <p>Hello, <strong>{{ userName }}</strong></p>
+            <p>{{ 'nav.hello' | translate }}, <strong>{{ userName }}</strong></p>
           </div>
 
           <div class="dropdown-divider"></div>
 
           <ng-container *ngIf="!userName">
             <a routerLink="/Account/Login" class="dropdown-item" (click)="closeDropdown()">
-              <span class="material-icons">login</span> Sign In
+              <span class="material-icons">login</span> {{ 'nav.signIn' | translate }}
             </a>
             <a routerLink="/Account/Register" class="dropdown-item" (click)="closeDropdown()">
-              <span class="material-icons">person_add</span> Create Account
+              <span class="material-icons">person_add</span> {{ 'nav.createAccount' | translate }}
             </a>
           </ng-container>
 
           <ng-container *ngIf="userName">
             <a routerLink="/Account/profile" class="dropdown-item" (click)="closeDropdown()">
-              <span class="material-icons">account_circle</span> My Profile
+              <span class="material-icons">account_circle</span> {{ 'nav.myProfile' | translate }}
             </a>
             <a routerLink="/orders" class="dropdown-item" (click)="closeDropdown()">
-              <span class="material-icons">inventory_2</span> My Orders
+              <span class="material-icons">inventory_2</span> {{ 'nav.myOrders' | translate }}
             </a>
             <a routerLink="/favorite" class="dropdown-item" (click)="closeDropdown()">
-              <span class="material-icons">favorite</span> Wishlist
+              <span class="material-icons">favorite</span> {{ 'nav.wishlist' | translate }}
             </a>
             <a routerLink="/Account/change-password" class="dropdown-item" (click)="closeDropdown()">
-              <span class="material-icons">lock_reset</span> Change Password
+              <span class="material-icons">lock_reset</span> {{ 'nav.changePassword' | translate }}
             </a>
             <a routerLink="/Account/addresses" class="dropdown-item" (click)="closeDropdown()">
-              <span class="material-icons">location_on</span> My Addresses
+              <span class="material-icons">location_on</span> {{ 'nav.myAddresses' | translate }}
             </a>
             <a routerLink="/Account/loyalty" class="dropdown-item" (click)="closeDropdown()">
-              <span class="material-icons">workspace_premium</span> Loyalty Points
+              <span class="material-icons">workspace_premium</span> {{ 'nav.loyaltyPoints' | translate }}
             </a>
             <a routerLink="/Account/subscriptions" class="dropdown-item" (click)="closeDropdown()">
-              <span class="material-icons">autorenew</span> My Subscriptions
+              <span class="material-icons">autorenew</span> {{ 'nav.mySubscriptions' | translate }}
             </a>
             <a routerLink="/Account/gift-cards" class="dropdown-item" (click)="closeDropdown()">
-              <span class="material-icons">card_giftcard</span> Gift Cards
+              <span class="material-icons">card_giftcard</span> {{ 'nav.giftCards' | translate }}
             </a>
             <a routerLink="/Account/referral" class="dropdown-item" (click)="closeDropdown()">
-              <span class="material-icons">group_add</span> Refer a Friend
+              <span class="material-icons">group_add</span> {{ 'nav.referFriend' | translate }}
             </a>
             <a routerLink="/help" class="dropdown-item" (click)="closeDropdown()">
-              <span class="material-icons">support_agent</span> Help Center
+              <span class="material-icons">support_agent</span> {{ 'nav.helpCenter' | translate }}
             </a>
             <ng-container *ngIf="isAdmin">
               <div class="dropdown-divider"></div>
               <a routerLink="/admin" class="dropdown-item admin-dropdown-item" (click)="closeDropdown()">
-                <span class="material-icons">admin_panel_settings</span> Admin Dashboard
+                <span class="material-icons">admin_panel_settings</span> {{ 'nav.adminDashboard' | translate }}
               </a>
             </ng-container>
             <div class="dropdown-divider"></div>
             <button class="dropdown-item danger" (click)="logout(); closeDropdown()">
-              <span class="material-icons">logout</span> Sign Out
+              <span class="material-icons">logout</span> {{ 'nav.signOut' | translate }}
             </button>
           </ng-container>
         </div>
@@ -210,15 +210,15 @@
   <!-- Mobile Menu -->
   <div class="mobile-menu" [class.open]="mobileOpen">
     <ul class="mobile-links">
-      <li><a routerLink="/" (click)="closeMobileMenu()">Home</a></li>
-      <li><a routerLink="/shop" (click)="closeMobileMenu()">Shop</a></li>
-      <li><a routerLink="/best-sellers" (click)="closeMobileMenu()">Best Sellers</a></li>
-      <li><a routerLink="/about" (click)="closeMobileMenu()">About</a></li>
-      <li *ngIf="isAdmin"><a routerLink="/admin" (click)="closeMobileMenu()">Admin</a></li>
+      <li><a routerLink="/" (click)="closeMobileMenu()">{{ 'nav.home' | translate }}</a></li>
+      <li><a routerLink="/shop" (click)="closeMobileMenu()">{{ 'nav.shop' | translate }}</a></li>
+      <li><a routerLink="/best-sellers" (click)="closeMobileMenu()">{{ 'nav.bestSellers' | translate }}</a></li>
+      <li><a routerLink="/about" (click)="closeMobileMenu()">{{ 'nav.about' | translate }}</a></li>
+      <li *ngIf="isAdmin"><a routerLink="/admin" (click)="closeMobileMenu()">{{ 'nav.admin' | translate }}</a></li>
     </ul>
     <div class="mobile-search">
-      <input #mobileSearch type="text" placeholder="Search products..." (keyup.enter)="onSearchNav(mobileSearch.value); closeMobileMenu()">
-      <button (click)="onSearchNav(mobileSearch.value); closeMobileMenu()">Search</button>
+      <input #mobileSearch type="text" [placeholder]="'nav.search' | translate" (keyup.enter)="onSearchNav(mobileSearch.value); closeMobileMenu()">
+      <button (click)="onSearchNav(mobileSearch.value); closeMobileMenu()">{{ 'nav.shop' | translate }}</button>
     </div>
   </div>
 </header>

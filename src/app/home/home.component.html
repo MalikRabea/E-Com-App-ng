@@ -68,11 +68,11 @@
         <div class="hero-actions">
           <a routerLink="/shop" class="btn btn-primary btn-xl">
             <span class="material-icons">shopping_bag</span>
-            Shop Now
+            {{ 'home.shopNow' | translate }}
           </a>
           <a routerLink="/best-sellers" class="btn btn-outline hero-outline-btn btn-xl">
             <span class="material-icons">star</span>
-            Best Sellers
+            {{ 'nav.bestSellers' | translate }}
           </a>
         </div>
         <div class="hero-stats reveal">
@@ -123,29 +123,29 @@
       <div class="trust-item">
         <span class="material-icons trust-icon">local_shipping</span>
         <div>
-          <strong>Free Delivery</strong>
-          <span>Orders over $100</span>
+          <strong>{{ 'home.freeDelivery' | translate }}</strong>
+          <span>{{ 'home.freeDeliveryDesc' | translate }}</span>
         </div>
       </div>
       <div class="trust-item">
         <span class="material-icons trust-icon">verified_user</span>
         <div>
-          <strong>2-Year Warranty</strong>
-          <span>On all products</span>
+          <strong>{{ 'home.warranty' | translate }}</strong>
+          <span>{{ 'home.warrantyDesc' | translate }}</span>
         </div>
       </div>
       <div class="trust-item">
         <span class="material-icons trust-icon">replay</span>
         <div>
-          <strong>Easy Returns</strong>
-          <span>30-day policy</span>
+          <strong>{{ 'home.easyReturns' | translate }}</strong>
+          <span>{{ 'home.easyReturnsDesc' | translate }}</span>
         </div>
       </div>
       <div class="trust-item">
         <span class="material-icons trust-icon">support_agent</span>
         <div>
-          <strong>24/7 Support</strong>
-          <span>Always here for you</span>
+          <strong>{{ 'home.support' | translate }}</strong>
+          <span>{{ 'home.supportDesc' | translate }}</span>
         </div>
       </div>
     </div>
@@ -160,8 +160,8 @@
         <div class="flash-title-wrap">
           <span class="material-icons flash-icon">bolt</span>
           <div>
-            <h2 class="flash-title">Flash Sale</h2>
-            <p class="flash-sub">Ends in — hurry up!</p>
+            <h2 class="flash-title">{{ 'home.flashSale' | translate }}</h2>
+            <p class="flash-sub">{{ 'home.flashEnds' | translate }}</p>
           </div>
         </div>
         <div class="flash-timer">
@@ -201,10 +201,10 @@
     <div class="container">
       <div class="section-header">
         <div>
-          <p class="section-eyebrow">Browse by Category</p>
-          <h2 class="section-title">Shop by Category</h2>
+          <p class="section-eyebrow">{{ 'home.browseByCategory' | translate }}</p>
+          <h2 class="section-title">{{ 'home.shopByCategory' | translate }}</h2>
         </div>
-        <a routerLink="/shop" class="btn btn-outline btn-sm">View All</a>
+        <a routerLink="/shop" class="btn btn-outline btn-sm">{{ 'home.viewAll' | translate }}</a>
       </div>
 
       <div class="categories-grid">
@@ -227,8 +227,8 @@
     <div class="container">
       <div class="section-header">
         <div>
-          <p class="section-eyebrow">Customer Favorites</p>
-          <h2 class="section-title">Best Sellers</h2>
+          <p class="section-eyebrow">{{ 'home.customerFavorites' | translate }}</p>
+          <h2 class="section-title">{{ 'nav.bestSellers' | translate }}</h2>
         </div>
         <div class="carousel-nav">
           <button class="carousel-btn" (click)="scrollCarousel(-1)"><span class="material-icons">chevron_left</span></button>
@@ -261,10 +261,10 @@
     <div class="container">
       <div class="section-header">
         <div>
-          <p class="section-eyebrow">Handpicked For You</p>
-          <h2 class="section-title">Featured Products</h2>
+          <p class="section-eyebrow">{{ 'home.handpicked' | translate }}</p>
+          <h2 class="section-title">{{ 'home.featuredProducts' | translate }}</h2>
         </div>
-        <a routerLink="/shop" class="btn btn-outline btn-sm">See All</a>
+        <a routerLink="/shop" class="btn btn-outline btn-sm">{{ 'home.seeAll' | translate }}</a>
       </div>
 
       <!-- Skeleton while loading -->
@@ -353,7 +353,7 @@
   ══════════════════════════════════════════ -->
   <section class="brands-section reveal">
     <div class="container">
-      <p class="brands-label">Trusted by top brands</p>
+      <p class="brands-label">{{ 'home.trustedBy' | translate }}</p>
     </div>
     <div class="brands-marquee">
       <div class="brands-track">
@@ -370,8 +370,8 @@
     <div class="container">
       <div class="section-header" style="justify-content:center;text-align:center">
         <div>
-          <p class="section-eyebrow">What Customers Say</p>
-          <h2 class="section-title">Loved by Thousands</h2>
+          <p class="section-eyebrow">{{ 'home.whatCustomersSay' | translate }}</p>
+          <h2 class="section-title">{{ 'home.lovedByThousands' | translate }}</h2>
         </div>
       </div>
       <div class="testimonials-grid">
@@ -399,20 +399,20 @@
   <section class="newsletter-section reveal">
     <div class="container newsletter-inner">
       <div class="newsletter-text">
-        <h2>Stay in the loop</h2>
-        <p>Get exclusive deals, new arrivals, and tech news — straight to your inbox.</p>
+        <h2>{{ 'home.stayLoop' | translate }}</h2>
+        <p>{{ 'home.newsletterDesc' | translate }}</p>
       </div>
       <form class="newsletter-form" (submit)="subscribeNewsletter(); $event.preventDefault()">
         <input
           [(ngModel)]="email"
           name="email"
           type="email"
-          placeholder="Enter your email address"
+          [placeholder]="'home.emailPlaceholder' | translate"
           class="newsletter-input"
         />
         <button type="submit" class="btn btn-primary">
           <span class="material-icons">send</span>
-          Subscribe
+          {{ 'home.subscribe' | translate }}
         </button>
       </form>
     </div>
@@ -429,7 +429,7 @@
           <span class="material-icons">bolt</span>
           <span>E-<strong>Shop</strong></span>
         </div>
-        <p class="footer-tagline">Your one-stop destination for premium electronics in Jordan.</p>
+        <p class="footer-tagline">{{ 'footer.tagline' | translate }}</p>
         <div class="footer-social">
           <a href="#" class="social-btn" aria-label="Facebook">
             <span class="material-icons">language</span>
@@ -444,27 +444,27 @@
       </div>
 
       <div class="footer-col">
-        <h4>Information</h4>
+        <h4>{{ 'footer.information' | translate }}</h4>
         <ul>
-          <li><a routerLink="/about">About Us</a></li>
-          <li><a routerLink="/delivery-info">Delivery Information</a></li>
-          <li><a routerLink="/privacy-policy">Privacy Policy</a></li>
-          <li><a routerLink="/terms-conditions">Terms & Conditions</a></li>
+          <li><a routerLink="/about">{{ 'footer.aboutUs' | translate }}</a></li>
+          <li><a routerLink="/delivery-info">{{ 'footer.deliveryInfo' | translate }}</a></li>
+          <li><a routerLink="/privacy-policy">{{ 'footer.privacy' | translate }}</a></li>
+          <li><a routerLink="/terms-conditions">{{ 'footer.terms' | translate }}</a></li>
         </ul>
       </div>
 
       <div class="footer-col">
-        <h4>My Account</h4>
+        <h4>{{ 'footer.myAccount' | translate }}</h4>
         <ul>
-          <li><a routerLink="/Account/Login">Sign In</a></li>
-          <li><a routerLink="/Account/Register">Register</a></li>
-          <li><a routerLink="/orders">My Orders</a></li>
-          <li><a routerLink="/favorite">Wishlist</a></li>
+          <li><a routerLink="/Account/Login">{{ 'nav.signIn' | translate }}</a></li>
+          <li><a routerLink="/Account/Register">{{ 'footer.register' | translate }}</a></li>
+          <li><a routerLink="/orders">{{ 'nav.myOrders' | translate }}</a></li>
+          <li><a routerLink="/favorite">{{ 'nav.wishlist' | translate }}</a></li>
         </ul>
       </div>
 
       <div class="footer-col">
-        <h4>Contact Us</h4>
+        <h4>{{ 'footer.contactUs' | translate }}</h4>
         <ul class="footer-contact">
           <li>
             <span class="material-icons">location_on</span>

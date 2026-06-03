@@ -6,6 +6,7 @@ import { HomeComponent } from './home.component';
 import { DeliveryInfoComponent } from './delivery-info/delivery-info.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { TermsConditionComponent } from './terms-condition/terms-condition.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { TermsConditionComponent } from './terms-condition/terms-condition.compo
     CommonModule,
     RouterModule,
     FormsModule,
+    TranslateModule,
   ],
   exports: [HomeComponent],
 })
