@@ -32,15 +32,15 @@
       <div class="auth-form-inner">
 
         <div class="auth-form-header">
-          <h1>Create Account</h1>
-          <p>Already registered? <a routerLink="/Account/Login">Sign in here</a></p>
+          <h1>{{ 'auth.register' | translate }}</h1>
+          <p>{{ 'auth.haveAccount' | translate }} <a routerLink="/Account/Login">{{ 'auth.login' | translate }}</a></p>
         </div>
 
         <form [formGroup]="fromGroup" (ngSubmit)="Submit()">
 
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Username</label>
+              <label class="form-label">{{ 'auth.userName' | translate }}</label>
               <input
                 type="text"
                 class="form-control"
@@ -53,7 +53,7 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label">Display Name</label>
+              <label class="form-label">{{ 'auth.displayName' | translate }}</label>
               <input
                 type="text"
                 class="form-control"
@@ -67,7 +67,7 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Email address</label>
+            <label class="form-label">{{ 'auth.email' | translate }}</label>
             <input
               type="email"
               class="form-control"
@@ -81,7 +81,7 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Password</label>
+            <label class="form-label">{{ 'auth.password' | translate }}</label>
             <div class="password-wrap">
               <input
                 [type]="showPass ? 'text' : 'password'"
@@ -102,16 +102,16 @@
           </div>
 
           <button class="btn btn-primary btn-full btn-lg" [disabled]="fromGroup.invalid" type="submit">
-            Create Account
+            {{ 'auth.register' | translate }}
             <span class="material-icons">arrow_forward</span>
           </button>
 
         </form>
 
-        <div class="auth-divider"><span>or</span></div>
+        <div class="auth-divider"><span>{{ 'auth.orContinueWith' | translate }}</span></div>
 
         <a routerLink="/Account/Login" class="btn btn-outline btn-full">
-          Already have an account? Sign in
+          {{ 'auth.haveAccount' | translate }} {{ 'auth.login' | translate }}
         </a>
 
       </div>

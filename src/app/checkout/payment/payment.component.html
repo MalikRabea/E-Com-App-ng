@@ -3,7 +3,7 @@
   <div class="step-header">
     <h2>
       <span class="material-icons">credit_card</span>
-      Payment
+      {{ 'checkout.payment' | translate }}
     </h2>
     <div class="secure-badge">
       <span class="material-icons">lock</span>
@@ -14,7 +14,7 @@
   <form [formGroup]="paymentform" class="payment-form">
 
     <div class="form-group">
-      <label class="form-label">Name on Card</label>
+      <label class="form-label">{{ 'checkout.nameOnCard' | translate }}</label>
       <input
         type="text"
         class="form-control"
@@ -26,12 +26,12 @@
 
     <div class="stripe-fields">
       <div class="stripe-field-group">
-        <label class="form-label">Card Number</label>
+        <label class="form-label">{{ 'checkout.cardNumber' | translate }}</label>
         <div #cardNumber class="stripe-element"></div>
       </div>
       <div class="stripe-field-row">
         <div class="stripe-field-group">
-          <label class="form-label">Expiry Date</label>
+          <label class="form-label">{{ 'checkout.expiry' | translate }}</label>
           <div #cardExpiry class="stripe-element"></div>
         </div>
         <div class="stripe-field-group">
@@ -59,7 +59,7 @@
       >
         <span class="material-icons" *ngIf="!loader">payment</span>
         <span class="spinner" *ngIf="loader"></span>
-        {{ loader ? 'Processing...' : 'Pay Now' }}
+        {{ loader ? ('checkout.processing' | translate) : ('checkout.payNow' | translate) }}
       </button>
     </div>
 

@@ -4,7 +4,7 @@
     <div class="loyalty-header">
       <h1 class="loyalty-title">
         <span class="material-icons">workspace_premium</span>
-        Loyalty Program
+        {{ 'loyalty.title' | translate }}
       </h1>
       <p class="loyalty-sub">Earn points with every purchase and unlock exclusive rewards</p>
     </div>
@@ -64,7 +64,7 @@
       <!-- Redeem -->
       @if (data.points >= 100) {
         <div class="redeem-card card">
-          <h3 class="section-heading"><span class="material-icons">redeem</span> Redeem Points</h3>
+          <h3 class="section-heading"><span class="material-icons">redeem</span> {{ 'loyalty.redeem' | translate }}</h3>
           <div class="redeem-row">
             <div class="redeem-input-group">
               <label class="form-label">Points to redeem (min 100)</label>
@@ -84,7 +84,7 @@
       <!-- History -->
       @if (data.history?.length > 0) {
         <div class="history-card card">
-          <h3 class="section-heading"><span class="material-icons">history</span> Points History</h3>
+          <h3 class="section-heading"><span class="material-icons">history</span> {{ 'loyalty.history' | translate }}</h3>
           <div class="history-list">
             @for (t of data.history; track $index) {
               <div class="history-item">
